@@ -1,7 +1,82 @@
 body {
-    color: #d6d6d6;
-    background: #1f1f1f;
+    color: #000;
+    background: #fff;
 }
 .tot-height{
     height: 100vh;
 }
+h1, h2, h3, h5 {
+    font-family: 'Cutive Mono', monospace;
+}
+h6 {
+    line-height: 1.7;
+  }
+.bg-black{
+      background: #000;
+  }
+
+  .rgba-gradient {
+    background: -moz-linear-gradient(45deg, rgba(42, 27, 161, 0.7), rgba(29, 210, 177, 0.7) 100%);
+    background: -webkit-linear-gradient(45deg, rgba(42, 27, 161, 0.7), rgba(29, 210, 177, 0.7) 100%);
+    background: -webkit-gradient(linear, 45deg, from(rgba(42, 27, 161, 0.7)), to(rgba(29, 210, 177, 0.7)));
+    background: -o-linear-gradient(45deg, rgba(42, 27, 161, 0.7), rgba(29, 210, 177, 0.7) 100%);
+    background: linear-gradient(to 45deg, rgba(42, 27, 161, 0.7), rgba(29, 210, 177, 0.7) 100%);
+  }
+/*Navbar*/
+.navbar-dark .navbar-nav .nav-link {
+    color: white;
+}
+.top-nav-collapse {
+    background-color: #000 !important;
+  }
+  .nav-item i {
+    color: #907479;
+}
+  .navbar:not(.top-nav-collapse) {
+    background: #000 !important;
+  }
+  .dropdown-item:hover {
+    background: #1f1f1f;
+}
+/*Index*/
+.card-body i {
+    color: #907479;
+    font-size: 1.25rem;
+    border-bottom: 1px solid #907479;
+}
+
+/* Required for full background image */
+.tot-height{
+    height: 100vh;
+}
+html,
+body,
+.view {
+    height: 100%;
+}
+.view{
+    background-image: url('https://images.unsplash.com/reserve/LJIZlzHgQ7WPSh5KVTCB_Typewriter.jpg?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2741&q=80'); 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    background-position: center center;
+
+}
+
+
+@media (max-width: 740px) {
+  html,
+  body,
+  .view {
+    height: 1000px;
+  }
+  .tot-height {height: auto};
+}
+@media (min-width: 800px) and (max-width: 850px) {
+  html,
+  body,
+  .view {
+    height: 600px;
+  }
+  .tot-height {height: auto};
+}
+
