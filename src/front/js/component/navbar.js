@@ -24,7 +24,7 @@ export const Navbar = () => {
 					<ul className="navbar-nav mr-auto">
 						<li className="nav-item d-flex justify-content-center align-items-center">
 							<i className="fas fa-feather-alt" />
-							<Link className="nav-link" to="/">
+							<Link className="nav-link" to="/discoverPrompts">
 								Discover Prompts
 							</Link>
 						</li>
@@ -45,21 +45,21 @@ export const Navbar = () => {
 								aria-expanded="false">
 								My profile
 							</a>
-							<div className="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a className="dropdown-item" href="#">
+							<div className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+								<a className="dropdown-item text-light" href="#">
 									<i className="fas fa-star" /> Favorite Prompts
 								</a>
-								<a className="dropdown-item" href="#">
+								<a className="dropdown-item text-light" href="#">
 									<i className="fas fa-quote-right" /> Organize my plots
 								</a>
-								<a className="dropdown-item" href="#">
+								<a className="dropdown-item text-light" href="#">
 									<i className="fas fa-user-edit" /> My Characters
 								</a>
 								<div className="dropdown-divider" />
-								<a className="dropdown-item" href="#">
+								<a className="dropdown-item text-light" href="#">
 									<i className="fas fa-cog" /> Configure
 								</a>
-								<a className="dropdown-item" href="#">
+								<a className="dropdown-item text-light" href="#">
 									<i className="fas fa-sign-out-alt" /> Log Out
 								</a>
 							</div>
