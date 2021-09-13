@@ -41,6 +41,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			getRandom: length => {
+				return Math.floor(Math.random() * length);
 			}
 		}
 	};
