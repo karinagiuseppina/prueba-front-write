@@ -184,20 +184,20 @@ export const PromptModal = () => {
 					</button>
 					<h3 className="text-beige p-2">New {Genre} prompt </h3>
 					<hr className="hr-prin" />
-					<p className="text-justify">{actualPrompt}</p>
-					<div className="d-flex justify-content-center align-items-center">
+					<p className="text-justify text-white my-4">{actualPrompt}</p>
+					<div className="d-flex justify-content-center align-items-center mt-2">
 						<button
 							type="button"
 							onClick={handleSelectPrompt}
-							className="btn bg-black flex-grow-1 m-1 text-white d-flex flex-column align-items-center">
-							<i className="fas fa-star text-beige" />
+							className="btn bg-beige flex-grow-1 m-1 text-white d-flex flex-column align-items-center">
+							<i className="fas fa-star text-black" />
 							Save it
 						</button>
 						<button
 							type="button"
 							onClick={handleNextPrompt}
-							className="btn bg-black flex-grow-1 m-1 text-white d-flex flex-column align-items-center">
-							<i className="fas fa-forward text-beige" />
+							className="btn bg-beige flex-grow-1 m-1 text-white d-flex flex-column align-items-center">
+							<i className="fas fa-forward text-black" />
 							Next
 						</button>
 					</div>
