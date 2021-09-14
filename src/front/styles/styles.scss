@@ -108,6 +108,7 @@ body,
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border:1px solid #1f1f1f;
 }
 .display-block {
   display: block;
@@ -116,6 +117,37 @@ body,
 .display-none {
   display: none;
 }
+
+.buttonFavorite, .buttonNotFavorite {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: none;
+  background-color: var(--colorPrin);
+  font-family: "Font Awesome 5 Free";
+  align-self:flex-end;
+  margin: -50px 5px 30px;
+}
+
+.buttonNotFavorite::before {
+   font-weight: 400; content: "\f005";
+}
+
+.buttonFavorite::before {
+  font-weight: 900; content: "\f005";
+}
+a.button-next {
+  color: rgb(108,117,125);
+  text-decoration: none;
+  transition: 0.5s ease-in-out;
+  cursor: pointer;
+}
+a.button-next:hover{
+  color: var(--colorPrin);
+  transition: 0.5 ease-in-out;
+}
+
+/*Responsive*/
 
 @media (max-width: 740px) {
   html,

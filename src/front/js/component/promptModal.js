@@ -9,6 +9,18 @@ export const PromptModal = () => {
 	const [Genre, setGenre] = useState(null);
 	const [actualPrompt, setActualPrompt] = useState(null);
 	const [possiblePrompts, setPossiblePrompts] = useState([]);
+	const [classProperty, setClassProperty] = useState("buttonNotFavorite");
+	const [favoriteAction, setFavoriteAction] = useState("Add to Favorites");
+
+	function handleOnClick() {
+		if (classProperty === "buttonNotFavorite") {
+			setClassProperty("buttonFavorite");
+			setFavoriteAction("Remove from Favorites");
+		} else {
+			setClassProperty("buttonNotFavorite");
+			setFavoriteAction("Add to Favorites");
+		}
+	}
 
 	let prompts = [
 		{
@@ -183,24 +195,19 @@ export const PromptModal = () => {
 						<i className="fas fa-times" />
 					</button>
 					<h3 className="text-beige p-2">New {Genre} prompt </h3>
+					<button
+						type="button"
+						onClick={handleOnClick}
+						className={classProperty}
+						data-bs-toggle="tooltip"
+						data-bs-placement="right"
+						title={favoriteAction}
+					/>
 					<hr className="hr-prin" />
 					<p className="text-justify text-white my-4">{actualPrompt}</p>
-					<div className="d-flex justify-content-center align-items-center mt-2">
-						<button
-							type="button"
-							onClick={handleSelectPrompt}
-							className="btn bg-beige flex-grow-1 m-1 text-white d-flex flex-column align-items-center">
-							<i className="fas fa-star text-black" />
-							Save it
-						</button>
-						<button
-							type="button"
-							onClick={handleNextPrompt}
-							className="btn bg-beige flex-grow-1 m-1 text-white d-flex flex-column align-items-center">
-							<i className="fas fa-forward text-black" />
-							Next
-						</button>
-					</div>
+					<a onClick={handleNextPrompt} className="align-self-end button-next">
+						Next Prompt <i className="fas fa-chevron-right" />
+					</a>
 				</section>
 			</div>
 			<div className="col-12 col-lg-8 m-auto">
