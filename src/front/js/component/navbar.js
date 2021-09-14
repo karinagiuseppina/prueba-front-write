@@ -1,16 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 
 export const Navbar = () => {
 	return (
 		<header>
 			<nav className="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
 				<div className="container">
-					<img src={rigoImageUrl} width="30" height="30" />
-					<a className="navbar-brand" href="#">
+					<Link className="navbar-brand mx-1" to="/">
 						<strong>WRITEMEIN</strong>
-					</a>
+					</Link>
 					<button
 						className="navbar-toggler"
 						type="button"
