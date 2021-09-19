@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { SignupModal } from "./signupModal";
+import { LoginModal } from "./loginModal";
 
 export const Navbar = () => {
 	return (
@@ -37,6 +38,10 @@ export const Navbar = () => {
 							<li className="nav-item d-flex justify-content-center align-items-center">
 								<i className="fas fa-user-ninja" />
 								<SignupModal />
+							</li>
+							<li className="nav-item d-flex justify-content-center align-items-center">
+								<i className="fas fa-user-ninja" />
+								<loginModal />
 							</li>
 							<li className="nav-item dropdown">
 								<a
