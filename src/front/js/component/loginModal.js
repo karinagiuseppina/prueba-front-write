@@ -19,8 +19,7 @@ export const LoginModal = () => {
 		});
 		if (!resp.ok) throw Error("There was a problem in the signup request.");
 		const data = await resp.json();
-		actions.setToken(data.token);
-		actions.setUser_info(data.user);
+		actions.setUserSession(data.user, data.token);
 		hideModal();
 		history.push("/");
 	};
@@ -37,7 +36,7 @@ export const LoginModal = () => {
 			<div className={Modal ? "modal display-block" : "modal display-none"}>
 				<section className="modal-main">
 					<div className="bg-beige d-flex justify-content-stretch p-2 align-items-center">
-						<h5 className="text-black flex-grow-1 p-0">Sign Up </h5>
+						<h5 className="text-black flex-grow-1 p-0">Log In </h5>
 						<button type="button" onClick={hideModal} className="btn text-black">
 							<i className="fas fa-times text-black" />
 						</button>
@@ -66,7 +65,7 @@ export const LoginModal = () => {
 					</div>
 				</section>
 			</div>
-			<button type="button" onClick={showModal} className="btn bg-black w-100 text-white">
+			<button type="button" onClick={showModal} className="btn">
 				Log In
 			</button>
 		</div>

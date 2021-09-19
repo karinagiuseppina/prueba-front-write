@@ -21,7 +21,6 @@ export const SignupModal = () => {
 		});
 		if (!resp.ok) throw Error("There was a problem in the signup request.");
 		const data = await resp.json();
-		console.log(data);
 		hideModal();
 		history.push("/");
 	};
@@ -83,7 +82,7 @@ export const SignupModal = () => {
 					</div>
 				</section>
 			</div>
-			<button type="button" onClick={showModal} className="btn bg-black w-100 text-white">
+			<button type="button" onClick={showModal} className="btn">
 				SignUp
 			</button>
 		</div>

@@ -11,7 +11,15 @@ export const Home = () => {
 		<div className="view">
 			<div className="mask rgba-gradient d-flex justify-content-center align-items-center tot-height">
 				<div className="container">
-					<HeaderTitle title={title} subtitle="Let your inner writer go wild!" />
+					<div className="row">
+						<div className="col-md-6 white-text text-center text-md-left mt-5 mb-5">
+							<h1 className="h1-responsive font-weight-bold mt-5 w-75">
+								One plot,
+								<br /> infinite stories
+							</h1>
+							<h6 className="mb-4">Let your inner writer go wild!</h6>
+						</div>
+					</div>
 					<div className="row">
 						<HomeServiceCard
 							icon="fas fa-feather-alt"

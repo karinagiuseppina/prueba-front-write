@@ -9,16 +9,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getRandom: length => {
 				return Math.floor(Math.random() * length);
 			},
-			setToken: token => {
+			setUserSession: (user, token) => {
 				localStorage.setItem("token", JSON.stringify(token));
 				setStore({ token: token });
+				setStore("user_info", user);
+				localStorage.setItem("user_info", JSON.stringify(user));
 			},
-			deleteToken: () => {
+			deleteUserSession: () => {
 				localStorage.removeItem("token");
 				setStore({ token: null });
+				localStorage.removeItem("user_info");
+				setStore({ user_info: null });
 			},
-			setUser_info: user => {
-				setStore("user_info", user);
+			syncUserFromLocalStorage: () => {
+				const token = localStorage.getItem("token");
+				const user_info = localStorage.getItem("user_info");
+
+				if (token && token !== undefined && token !== "") {
+					setStore({ token: token });
+				}
+				if (user_info && user_info !== undefined && user_info !== "") {
+					setStore({ user_info: user_info });
+				}
 			}
 		}
 	};
