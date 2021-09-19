@@ -54,6 +54,14 @@ def create_user():
 
     return jsonify(user.serialize()), 200
 
+@api.route("/users", methods=["GET"])
+def get_users():
+
+    users = User.query.all()
+
+    users = list(map(lambda user : user.serialize(), users))
+
+    return jsonify(users), 200
 
 @api.route("/protected", methods=["GET"])
 @jwt_required()
@@ -62,4 +70,4 @@ def protected():
     current_user_id = get_jwt_identity()
     user = User.query.filter_by(id=current_user_id).first()
     
-    return jsonify({"id": user.id, "name": user.name,"email": user.email,"city": user.city_id, "country": user.country_id }), 200
+    return jsonify({"id": user.id, "name": user.name,"email": user.email}), 200

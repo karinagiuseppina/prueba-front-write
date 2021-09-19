@@ -190,7 +190,7 @@ export const PromptModal = () => {
 	return (
 		<div>
 			<div className={Modal ? "modal display-block" : "modal display-none"}>
-				<section className="modal-main">
+				<section className="modal-main p-4 bg-black">
 					<button type="button" onClick={hideModal} className="btn text-muted align-self-end">
 						<i className="fas fa-times" />
 					</button>

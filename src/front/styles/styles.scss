@@ -54,9 +54,6 @@ h6 {
 .top-nav-collapse {
     background-color: #000 !important;
   }
-  .nav-item i {
-    color: var(--colorPrin);
-  }
 
   .navbar:not(.top-nav-collapse) {
     background: #000 !important;
@@ -101,8 +98,6 @@ body,
   position: fixed;
   display: flex;
   flex-direction: column;
-  padding: 2rem;
-  background: black;
   width: 40%;
   height: auto;
   top: 50%;
