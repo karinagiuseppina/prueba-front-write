@@ -10,14 +10,26 @@ export const Home = () => {
 	return (
 		<div className="view">
 			<div className="mask rgba-gradient d-flex justify-content-center align-items-center tot-height">
-				<div className="container">
+				<div className="container tot-height">
 					<div className="row">
-						<div className="col-md-6 white-text text-center text-md-left mt-5 mb-5">
-							<h1 className="h1-responsive font-weight-bold mt-5 w-75">
-								One plot,
-								<br /> infinite stories
+						<div className="col-12 col-md-6 col-12 col-md-6 d-flex flex-column align-items-center justify-content-stretch">
+							<div className="vertical-line-long" />
+							<h1 className="h1-responsive text-center">
+								One{" "}
+								<i>
+									<u>plot</u>
+								</i>
+								,<br /> <b>infinite stories</b>
 							</h1>
+							<div className="vertical-line-short" />
 							<h6 className="mb-4">Let your inner writer go wild!</h6>
+						</div>
+						<div className="col-12 col-md-6 d-flex justify-content-center align-items-center">
+							<img
+								src="https://mdbootstrap.com/img/Mockups/Transparent/Small/admin-new.png"
+								alt=""
+								width="300px"
+							/>
 						</div>
 					</div>
 					<div className="row">

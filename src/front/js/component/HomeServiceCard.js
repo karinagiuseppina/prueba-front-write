@@ -6,13 +6,13 @@ import PropTypes from "prop-types";
 export const HomeServiceCard = ({ icon, title, text, buttonText, link }) => {
 	return (
 		<div className="col-12 col-md-6 col-lg-3">
-			<div className="card bg-black text-white my-2 h-38">
+			<div className="card bg-white text-dark my-2 h-38 box-shadow-sec">
 				<div className="card-body d-flex flex-column justify-content-stretch align-items-stretch">
 					<i className={icon + " p-2 m-1 text-beige align-self-start"} />
 					<h5 className="card-title text-beige">{title}</h5>
 
 					<p className="card-text text-justify flex-grow-1">{text}</p>
-					<Link to={link} className="btn bg-white w-100">
+					<Link to={link} className="btn bg-sec w-100">
 						{buttonText}
 					</Link>
 				</div>
