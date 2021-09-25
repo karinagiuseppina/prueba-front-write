@@ -2,30 +2,46 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
+from firebase import firebase
+import pyrebase
+
+firebaseConfig = {
+  "apiKey": "AIzaSyCrj0v7MEfDYh1hYJY8oqMS5QtH9y3BCNU",
+  "authDomain": "pruebas-dcda9.firebaseapp.com",
+  "databaseURL": "https://pruebas-dcda9-default-rtdb.europe-west1.firebasedatabase.app",
+  "projectId": "pruebas-dcda9",
+  "storageBucket": "pruebas-dcda9.appspot.com",
+  "messagingSenderId": "883550791745",
+  "appId": "1:883550791745:web:a83969d3f572a0957efec0",
+  "measurementId": "G-EF0W5BTRGL"
+}
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+db = firebase.database()
 
 api = Blueprint('api', __name__)
 
-
-@api.route('/hello', methods=['POST', 'GET'])
+@api.route('/hello', methods=['GET'])
 def handle_hello():
+    all_users = db.child("users").child("Morty").child("name").get()
 
     response_body = {
-        "message": "Hello! I'm a message that came from the backend"
+        "message": all_users.val()
     }
 
     return jsonify(response_body), 200
 
 @api.route("/login", methods=["POST"])
 def login():
-    username = request.json.get("username", None)
+    email = request.json.get("email", None)
     password = request.json.get("password", None)
-    user = User.query.filter_by(username=username, password=password).first()
-    if user is None:
-        return jsonify({"msg": "Ups! Wrong email or password. Try again!"}), 401
+    try:
+        user = auth.sign_in_with_email_and_password(email, password)
+        user_id = auth.get_account_info(login['idToken']['users'][0]['localId']
+    except:
+        return jsonify({"msg": "Wrong email or password"}), 400
     
-    # create a new token with the user id inside
-    access_token = create_access_token(identity=user.id)
-    return jsonify({ "token": access_token, "user": user.serialize()})
+    return jsonify(user), 200
 
 @api.route("/signup", methods=["POST"])
 def create_user():
@@ -33,26 +49,21 @@ def create_user():
     name = request.json.get("name", None)
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    is_active = request.json.get("is_active", None)
 
-    # Query your database for username and password
-    if email is None or password is None or username is None:
-        return jsonify({"msg": "Sorry! An email, username and password are required. "}), 401
-    
-    user = User.query.filter_by(username=username).first()
-    if user is not None: 
-        return jsonify({"msg": "Sorry! The Username is already taken."}), 403
+    try: 
+        user = auth.create_user_with_email_and_password(email, password)
+        user_id = user['localId']
+        data = {
+                "users/"+user_id: {
+                                    "name": name, 
+                                    "username": username
+                                }
+                }
+        db.update(data)
+    except: 
+        return jsonify({"msg": "Sorry! Something went wrong"}), 400
 
-    user = User.query.filter_by(email=email).first()
-    if user is not None: 
-        return jsonify({"msg": "Sorry! The email is already taken."}), 403
-
-    user = User(username=username, name=name, email=email, password = password, is_active= is_active)
-
-    db.session.add(user)
-    db.session.commit()
-
-    return jsonify(user.serialize()), 200
+    return 200
 
 @api.route("/users", methods=["GET"])
 def get_users():

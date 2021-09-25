@@ -18,6 +18,13 @@ gunicorn = "*"
 cloudinary = "*"
 flask-admin = "*"
 flask-jwt-extended = "*"
+firebase = "*"
+python-jwt = "*"
+gcloud = "*"
+sseclient = "*"
+pycrypto = "*"
+requests-toolbelt = "*"
+pyrebase = "*"
 
 [requires]
 python_version = "3.8"
