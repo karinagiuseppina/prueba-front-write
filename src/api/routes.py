@@ -21,27 +21,19 @@ db = firebase.database()
 
 api = Blueprint('api', __name__)
 
-@api.route('/hello', methods=['GET'])
-def handle_hello():
-    all_users = db.child("users").child("Morty").child("name").get()
 
-    response_body = {
-        "message": all_users.val()
-    }
-
-    return jsonify(response_body), 200
 
 @api.route("/login", methods=["POST"])
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    try:
+    try: 
         user = auth.sign_in_with_email_and_password(email, password)
-        user_id = auth.get_account_info(login['idToken']['users'][0]['localId']
-    except:
+    except: 
         return jsonify({"msg": "Wrong email or password"}), 400
-    
+
     return jsonify(user), 200
+
 
 @api.route("/signup", methods=["POST"])
 def create_user():
@@ -63,7 +55,7 @@ def create_user():
     except: 
         return jsonify({"msg": "Sorry! Something went wrong"}), 400
 
-    return 200
+    return jsonify({"user_id": user_id}), 200
 
 @api.route("/users", methods=["GET"])
 def get_users():

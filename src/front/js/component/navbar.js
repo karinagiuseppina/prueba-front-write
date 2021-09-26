@@ -18,10 +18,10 @@ export const Navbar = () => {
 	const logIn = (
 		<>
 			<li className="nav-item d-flex justify-content-center align-items-center">
-				<SignupModal />
+				<LoginModal />
 			</li>
 			<li className="nav-item d-flex justify-content-center align-items-center">
-				<LoginModal />
+				<SignupModal />
 			</li>
 		</>
 	);
