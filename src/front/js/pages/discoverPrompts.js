@@ -1,11 +1,26 @@
-import React, { useContext } from "react";
-import { Context } from "../store/appContext";
+import React, { useState, useEffect } from "react";
 import "../../styles/styles.scss";
 import { PromptModal } from "../component/promptModal";
 import { HeaderTitle } from "../component/HeaderTitle";
 
 export const DiscoverPrompts = () => {
-	const { store, actions } = useContext(Context);
+	const [genre, setGenre] = useState("fantasy");
+
+	let genres = ["fantasy", "sci-fi", "dystopian", "contemporary", "romance", "thriller", "mystery"];
+
+	let genresInHtml = genres.map(function(genre) {
+		return (
+			<option key={genre} value={genre}>
+				{genre}
+			</option>
+		);
+	});
+	useEffect(
+		() => {
+			console.log(genre);
+		},
+		[genre]
+	);
 
 	return (
 		<div className="view">
@@ -20,24 +35,16 @@ export const DiscoverPrompts = () => {
 							<div className="input-group mb-3">
 								<select
 									className="form-select flex-grow-1 bg-white border-black text-black p-2 rounded"
-									id="inputGroupSelectGenre">
-									<option value="none" defaultValue>
-										Choose Genre...
-									</option>
-									<option value="fantasy">Fantasy</option>
-									<option value="sci-fi">Sci-fi</option>
-									<option value="dystopian">Dystopian</option>
-									<option value="contemporary">Contemporary</option>
-									<option value="romance">Romance</option>
-									<option value="thriller">Thriller</option>
-									<option value="mystery">Mystery</option>
+									value={genre}
+									onChange={e => setGenre(e.target.value)}>
+									{genresInHtml}
 								</select>
 							</div>
 						</div>
 					</div>
 					<div className="row">
 						<div className="col-12 m-auto p-0">
-							<PromptModal />
+							<PromptModal genre={genre} />
 						</div>
 					</div>
 				</div>

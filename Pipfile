@@ -18,12 +18,7 @@ gunicorn = "*"
 cloudinary = "*"
 flask-admin = "*"
 flask-jwt-extended = "*"
-firebase = "*"
-python-jwt = "*"
-gcloud = "*"
-sseclient = "*"
-pycrypto = "*"
-requests-toolbelt = "*"
+firebase-admin = "*"
 pyrebase = "*"
 
 [requires]
