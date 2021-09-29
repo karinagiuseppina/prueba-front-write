@@ -53,6 +53,8 @@ Thumbs.db
 *.tar
 *.zip
 
+firestore-key.json
+
 # ignore node/grunt dependency directories
 node_modules/
 
