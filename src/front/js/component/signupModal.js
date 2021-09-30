@@ -18,7 +18,7 @@ export const SignupModal = () => {
 		const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/signup`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ name: name, username: username, email: email, password: password })
+			body: JSON.stringify({ name: name, email: email, password: password })
 		});
 		if (!resp.ok) setMessage("Something went wrong with the Sign up request!");
 		else {
@@ -54,14 +54,6 @@ export const SignupModal = () => {
 					</div>
 					<div className="p-4 bg-white d-flex flex-column justify-content-stretch align-items-center">
 						<div className="text-dark">{message}</div>
-						<Formgroup
-							id="inputUsername"
-							name="Username"
-							type="text"
-							placeholder="Enter your username here."
-							set={setUsername}
-							value={username}
-						/>
 						<Formgroup
 							id="inputName"
 							name="Name"

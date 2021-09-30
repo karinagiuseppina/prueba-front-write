@@ -3,6 +3,7 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 import firebase_admin
 from firebase_admin import credentials, firestore
+from firebase_admin import auth
 
 firebaseConfig = credentials.Certificate("/workspace/prueba-front-write/src/api/firestore-key.json")
 
@@ -17,35 +18,30 @@ api = Blueprint('api', __name__)
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    try: 
-        user = auth.sign_in_with_email_and_password(email, password)
-    except: 
-        return jsonify({"msg": "Wrong email or password"}), 400
 
     return jsonify(user), 200
 
 
 @api.route("/signup", methods=["POST"])
 def create_user():
-    username = request.json.get("username", None)
     name = request.json.get("name", None)
     email = request.json.get("email", None)
     password = request.json.get("password", None)
+    image = request.json.get("profile_image", None)
 
     try: 
-        user = auth.create_user_with_email_and_password(email, password)
-        user_id = user['localId']
-        data = {
-                "users/"+user_id: {
-                                    "name": name, 
-                                    "username": username
-                                }
-                }
-        db.update(data)
+        user = auth.create_user(
+        email=email,
+        email_verified=False,
+        password=password,
+        display_name=name,
+        photo_url=image,
+        disabled=False)
+
     except: 
         return jsonify({"msg": "Sorry! Something went wrong"}), 400
 
-    return jsonify({"user_id": user_id}), 200
+    return jsonify({"user_id": user.uid}), 200
 
 @api.route("/prompts/<genre>", methods=["GET"])
 def get_random_prompts(genre):

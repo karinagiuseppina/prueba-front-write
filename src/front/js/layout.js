@@ -4,7 +4,6 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./pages/home";
 import { DiscoverPrompts } from "./pages/discoverPrompts";
-import { Signup } from "./pages/signup";
 
 import injectContext from "./store/appContext";
 
@@ -25,9 +24,6 @@ const Layout = () => {
 					<Switch>
 						<Route exact path="/">
 							<Home />
-						</Route>
-						<Route exact path="/signup">
-							<Signup />
 						</Route>
 						<Route exact path="/discoverPrompts">
 							<DiscoverPrompts />

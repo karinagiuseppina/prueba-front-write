@@ -19,7 +19,7 @@ cloudinary = "*"
 flask-admin = "*"
 flask-jwt-extended = "*"
 firebase-admin = "*"
-pyrebase = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"
