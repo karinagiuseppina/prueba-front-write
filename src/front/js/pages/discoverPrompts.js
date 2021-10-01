@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/styles.scss";
-import { PromptModal } from "../component/promptModal";
+import { PromptModal } from "./promptModal";
 import { HeaderTitle } from "../component/HeaderTitle";
 
 export const DiscoverPrompts = () => {
@@ -15,12 +15,6 @@ export const DiscoverPrompts = () => {
 			</option>
 		);
 	});
-	useEffect(
-		() => {
-			console.log(genre);
-		},
-		[genre]
-	);
 
 	return (
 		<div className="view">

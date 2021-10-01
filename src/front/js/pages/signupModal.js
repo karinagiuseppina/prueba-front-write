@@ -4,15 +4,32 @@ import { Context } from "../store/appContext";
 import { Formgroup } from "../component/formGroup";
 import { useHistory } from "react-router-dom";
 
-export const LoginModal = () => {
-	const { actions } = useContext(Context);
+export const SignupModal = () => {
+	const { store, actions } = useContext(Context);
 	const [Modal, setModal] = useState(false);
-	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [username, setUsername] = useState("");
+	const [name, setName] = useState("");
 	const [message, setMessage] = useState("");
 	let history = useHistory();
 
-	const login = async () => {
+	const signup = async () => {
+		const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/signup`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ username: username, name: name, email: email, password: password })
+		});
+		if (!resp.ok) setMessage("Something went wrong with the Sign up request!");
+		else {
+			const data = await resp.json();
+			emptyFields();
+			hideModal();
+			await login(email, password);
+			history.push("/");
+		}
+	};
+	const login = async (email, password) => {
 		const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/login`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -21,13 +38,16 @@ export const LoginModal = () => {
 		if (!resp.ok) setMessage("Wrong mail or password, try again!");
 		else {
 			const data = await resp.json();
-			console.log(data);
 			actions.setUserSession(data.localId, data.idToken);
-			hideModal();
-			history.push("/");
 		}
 	};
-
+	const emptyFields = () => {
+		setEmail("");
+		setName("");
+		setUsername("");
+		setPassword("");
+		setMessage("");
+	};
 	const showModal = () => {
 		setModal(true);
 	};
@@ -40,7 +60,7 @@ export const LoginModal = () => {
 			<div className={Modal ? "modal display-block" : "modal display-none"}>
 				<section className="modal-main">
 					<div className="bg-prin d-flex justify-content-stretch p-4 align-items-center">
-						<h5 className="text-white font-prin flex-grow-1 p-0">Log In </h5>
+						<h5 className="text-white font-prin flex-grow-1 p-0">Sign Up </h5>
 						<button type="button" onClick={hideModal} className="btn">
 							<i className="fas fa-times text-white" />
 						</button>
@@ -48,9 +68,25 @@ export const LoginModal = () => {
 					<div className="p-4 bg-white d-flex flex-column justify-content-stretch align-items-center">
 						<div className="text-dark">{message}</div>
 						<Formgroup
+							id="inputUsername"
+							name="Username"
+							type="text"
+							placeholder="Enter your username here."
+							set={setUsername}
+							value={username}
+						/>
+						<Formgroup
+							id="inputName"
+							name="Name"
+							type="text"
+							placeholder="Enter your name here."
+							set={setName}
+							value={name}
+						/>
+						<Formgroup
 							id="inputEmail"
 							name="Email"
-							type="text"
+							type="email"
 							placeholder="Enter your email here."
 							set={setEmail}
 							value={email}
@@ -64,14 +100,14 @@ export const LoginModal = () => {
 							value={password}
 						/>
 
-						<button type="submit" className="btn bg-prin text-white rounded py-2 px-4" onClick={login}>
-							Log in
+						<button type="submit" className="btn bg-prin text-white rounded py-2 px-4" onClick={signup}>
+							SignUp
 						</button>
 					</div>
 				</section>
 			</div>
-			<button type="button" onClick={showModal} className="btn">
-				Log In
+			<button type="button" onClick={showModal} className="btn bg-prin text-white rounded p-2">
+				Sign Up
 			</button>
 		</div>
 	);

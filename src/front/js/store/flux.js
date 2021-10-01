@@ -3,7 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			token: null,
-			user_info: null
+			user_id: null
 		},
 		actions: {
 			getRandom: length => {
@@ -12,8 +12,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setUserSession: (user, token) => {
 				localStorage.setItem("token", JSON.stringify(token));
 				setStore({ token: token });
-				setStore("user_info", user);
-				localStorage.setItem("user_info", JSON.stringify(user));
+				setStore("user_id", user);
+				localStorage.setItem("user_id", JSON.stringify(user));
 			},
 			deleteUserSession: () => {
 				localStorage.removeItem("token");

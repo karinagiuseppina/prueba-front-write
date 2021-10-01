@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { SignupModal } from "./signupModal";
-import { LoginModal } from "./loginModal";
+import { SignupModal } from "../pages/signupModal";
+import { LoginModal } from "../pages/loginModal";
 import { Context } from "../store/appContext";
 import logo from "../../img/loguito.png";
 

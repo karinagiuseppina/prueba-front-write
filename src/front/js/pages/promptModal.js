@@ -29,7 +29,6 @@ export const PromptModal = ({ genre }) => {
 		if (!resp.ok) setActualPrompt("ERROR!");
 		else {
 			const prompts = await resp.json();
-			console.log(prompts);
 			setPossiblePrompts(prompts);
 			selectPrompt(prompts);
 		}
