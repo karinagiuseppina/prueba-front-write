@@ -1,23 +1,18 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
-from firebase import firebase
 import firebase_admin
-import pyrebase
+from firebase_admin import credentials, db, auth
+import requests
+from requests import Session
+from requests.exceptions import HTTPError
+import json
 
-firebaseConfig = {
-  "apiKey": "AIzaSyCrj0v7MEfDYh1hYJY8oqMS5QtH9y3BCNU",
-  "authDomain": "pruebas-dcda9.firebaseapp.com",
-  "databaseURL": "https://pruebas-dcda9-default-rtdb.europe-west1.firebasedatabase.app",
-  "projectId": "pruebas-dcda9",
-  "storageBucket": "pruebas-dcda9.appspot.com",
-  "messagingSenderId": "883550791745",
-  "appId": "1:883550791745:web:a83969d3f572a0957efec0",
-  "measurementId": "G-EF0W5BTRGL"
-}
-firebase = pyrebase.initialize_app(firebaseConfig)
-auth = firebase.auth()
-db = firebase.database()
+apiKey = "AIzaSyDi7UUdcDjl0nVjA4ZEbR-gn4zAWePaL2w"
+cred = credentials.Certificate('/workspace/prueba-front-write/firebase-key.json')
+firebaseDatabase = firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://write-me-in-default-rtdb.firebaseio.com/'
+})
 
 api = Blueprint('api', __name__)
 
@@ -28,11 +23,14 @@ def login():
     password = request.json.get("password", None)
 
     try:
-        user = auth.sign_in_with_email_and_password(email, password)
+        request_ref = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={}".format(apiKey)
+        headers = {"content-type": "application/json"}
+        data =  json.dumps({"email": email, "password": password, "returnSecureToken": True})
+        request_object = requests.post(request_ref, headers=headers, data=data)
     except:
         return jsonify({"msg": "Wrong email or password"}), 400
 
-    return jsonify(user), 200
+    return jsonify(request_object.json()), 200
 
 
 @api.route("/signup", methods=["POST"])
@@ -43,36 +41,28 @@ def create_user():
     username = request.json.get("username", None)
 
     try: 
-        user = auth.create_user_with_email_and_password(email, password)
-        user_id = user['localId']
-        user_data = {
-                "users/"+user_id: {
-                                    "name": name, 
-                                    "username": username, 
-                                    "email": email
-                                }
-                }
-        db.update(user_data)
+        user = auth.create_user(
+        email=email,
+        password=password,
+        display_name=name)
+
+        ref = db.reference("private/users")
+        ref.child(user.uid).set({
+            "username": username,
+            "name": name,
+            "email": email
+        })
     except: 
         return jsonify({"msg": "Something went wrong"}),400
 
-    return jsonify({"user_id": user_id}), 200
+    return jsonify({"user_id": user.uid}), 200
 
 @api.route("/prompts/<genre>", methods=["GET"])
 def get_random_prompts(genre):
-    ref = db.reference('writing-prompts')
-    print(ref.get())
-    prompts_array = []
-    for prompt in prompts:
-        prompts_array.append(prompt.to_dict())
+    ref = db.reference('public/writing-prompts')
+    data = ref.order_by_child('genre').equal_to('fantasy').limit_to_last(5).get()
+    prompts = []
+    for key, val in data.items():
+        prompts.append({'prompt_id': key, 'genre': val['genre'], 'prompt': val['prompt']})
 
-    return jsonify(prompts_array), 200
-
-@api.route("/hello", methods=["GET"])
-def say_hello():
-    #GET de todos separando clave valor
-    all_users = db.child("users").get()
-    users = {}
-    for user in all_users.each():
-        users[user.key()] = user.val()
-    return jsonify(users), 200
+    return jsonify(prompts), 200
