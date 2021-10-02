@@ -4,6 +4,14 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./pages/home";
 import { DiscoverPrompts } from "./pages/discoverPrompts";
+import { EditProfile } from "./pages/editProfile";
+import { FavoritePrompts } from "./pages/favoritePrompts";
+import { AllPlots } from "./pages/allPlots";
+import { AllCharacters } from "./pages/allCharacters";
+import { DetailedPlot } from "./pages/detailedPlot";
+import { DetailedCharacter } from "./pages/detailedCharacter";
+import { DiscoverCharacters } from "./pages/discoverCharacters";
+import { FavoriteCharacters } from "./pages/favoriteCharacters";
 
 import injectContext from "./store/appContext";
 
@@ -27,6 +35,30 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/discoverPrompts">
 							<DiscoverPrompts />
+						</Route>
+						<Route exact path="/discoverCharacters">
+							<DiscoverCharacters />
+						</Route>
+						<Route exact path="/mycharacters">
+							<AllCharacters />
+						</Route>
+						<Route exact path="/mycharacters/:id">
+							<DetailedCharacter />
+						</Route>
+						<Route exact path="/myplots">
+							<AllPlots />
+						</Route>
+						<Route exact path="/myplots/:id">
+							<DetailedPlot />
+						</Route>
+						<Route exact path="/editmyprofile">
+							<EditProfile />
+						</Route>
+						<Route exact path="/favoriteprompts">
+							<FavoritePrompts />
+						</Route>
+						<Route exact path="/favoritecharacters">
+							<FavoriteCharacters />
 						</Route>
 						<Route>
 							<h1>Not found!</h1>

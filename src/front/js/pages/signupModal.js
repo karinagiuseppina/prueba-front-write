@@ -9,10 +9,19 @@ export const SignupModal = () => {
 	const [Modal, setModal] = useState(false);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [verifypassword, setVerifyPassword] = useState("");
 	const [username, setUsername] = useState("");
 	const [name, setName] = useState("");
 	const [message, setMessage] = useState("");
 	let history = useHistory();
+
+	const handleSignUp = () => {
+		if (password !== verifypassword) {
+			setMessage("Passwords don't match!");
+		} else {
+			signup();
+		}
+	};
 
 	const signup = async () => {
 		const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/signup`, {
@@ -99,8 +108,19 @@ export const SignupModal = () => {
 							set={setPassword}
 							value={password}
 						/>
+						<Formgroup
+							id="inputVerifyPassword"
+							name="VerifyPassword"
+							type="password"
+							placeholder="Please confirm your password here."
+							set={setVerifyPassword}
+							value={verifypassword}
+						/>
 
-						<button type="submit" className="btn bg-prin text-white rounded py-2 px-4" onClick={signup}>
+						<button
+							type="submit"
+							className="btn bg-prin text-white rounded py-2 px-4"
+							onClick={handleSignUp}>
 							SignUp
 						</button>
 					</div>

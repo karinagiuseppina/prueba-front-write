@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { SignupModal } from "../pages/signupModal";
 import { LoginModal } from "../pages/loginModal";
@@ -7,6 +7,7 @@ import logo from "../../img/loguito.png";
 
 export const Navbar = () => {
 	const token = localStorage.getItem("token");
+	const [username, setUsername] = useState("Prueba");
 	const { actions } = useContext(Context);
 	let history = useHistory();
 
@@ -39,19 +40,22 @@ export const Navbar = () => {
 				My profile
 			</a>
 			<div className="dropdown-menu bg-white" aria-labelledby="navbarDropdown">
-				<a className="dropdown-item text-dark" href="#">
+				<Link className="dropdown-item text-dark" to="/favoriteprompts">
 					Favorite Prompts
-				</a>
-				<a className="dropdown-item text-dark" href="#">
-					Organize my plots
-				</a>
-				<a className="dropdown-item text-dark" href="#">
+				</Link>
+				<Link className="dropdown-item text-dark" to="/favoritecharacters">
+					Favorite Characters
+				</Link>
+				<Link className="dropdown-item text-dark" to="/myplots">
+					My plots
+				</Link>
+				<Link className="dropdown-item text-dark" to="/mycharacters">
 					My Characters
-				</a>
+				</Link>
 				<div className="dropdown-divider" />
-				<a className="dropdown-item text-dark" href="#">
+				<Link className="dropdown-item text-dark" to="/editmyprofile">
 					Configure
-				</a>
+				</Link>
 				<button className="dropdown-item text-dark" onClick={handleLogOut}>
 					Log Out
 				</button>
@@ -84,7 +88,7 @@ export const Navbar = () => {
 								</Link>
 							</li>
 							<li className="nav-item d-flex justify-content-center align-items-center">
-								<Link className="nav-link" to="/">
+								<Link className="nav-link" to="/discoverCharacters">
 									Discover Characters
 								</Link>
 							</li>
