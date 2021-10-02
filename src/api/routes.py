@@ -38,7 +38,6 @@ def create_user():
     name = request.json.get("name", None)
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    username = request.json.get("username", None)
 
     try: 
         user = auth.create_user(
@@ -48,7 +47,6 @@ def create_user():
 
         ref = db.reference("private/users")
         ref.child(user.uid).set({
-            "username": username,
             "name": name,
             "email": email
         })
@@ -66,3 +64,17 @@ def get_random_prompts(genre):
         prompts.append({'prompt_id': key, 'genre': val['genre'], 'prompt': val['prompt']})
 
     return jsonify(prompts), 200
+
+@api.route("/add/favoriteprompts", methods=["POST"])
+def add_favorite_prompt():
+    prompt_id = request.json.get("prompt_id", None)
+    user_id = request.json.get("user_id", None)
+
+    try: 
+        ref = db.reference("private/users")
+        favorite_prompt = {"id": prompt_id}
+        ref.child(user_id).child("favorite-prompts").push(favorite_prompt)
+    except: 
+        return jsonify({"msg": "Something went wrong"}),400
+
+    return jsonify([]), 200

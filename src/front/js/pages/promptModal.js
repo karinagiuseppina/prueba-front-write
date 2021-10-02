@@ -7,6 +7,7 @@ export const PromptModal = ({ genre }) => {
 	const { store, actions } = useContext(Context);
 	const [Modal, setModal] = useState(false);
 	const [actualPrompt, setActualPrompt] = useState(null);
+	const [actualPromptId, setActualPromptId] = useState(null);
 	const [possiblePrompts, setPossiblePrompts] = useState([]);
 	const [classProperty, setClassProperty] = useState("buttonNotFavorite");
 	const [favoriteAction, setFavoriteAction] = useState("Add to Favorites");
@@ -15,11 +16,28 @@ export const PromptModal = ({ genre }) => {
 		if (classProperty === "buttonNotFavorite") {
 			setClassProperty("buttonFavorite");
 			setFavoriteAction("Remove from Favorites");
+			addtofavorite();
 		} else {
 			setClassProperty("buttonNotFavorite");
 			setFavoriteAction("Add to Favorites");
 		}
 	}
+
+	const addtofavorite = async () => {
+		let user_id = JSON.parse(localStorage.getItem("user_id"));
+		console.log(user_id, actualPromptId);
+		if (user_id !== null) {
+			const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/add/favoriteprompts`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ prompt_id: actualPromptId, user_id: user_id })
+			});
+			if (!resp.ok) setActualPrompt("ERROR!");
+			else {
+				const data = await resp.json();
+			}
+		}
+	};
 
 	const handleSelectPrompt = async () => {
 		const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/prompts/${genre}`, {
@@ -39,6 +57,7 @@ export const PromptModal = ({ genre }) => {
 	const selectPrompt = PromptList => {
 		let choosedPrompt = actions.getRandom(PromptList.length);
 		setActualPrompt(PromptList[choosedPrompt].prompt);
+		setActualPromptId(PromptList[choosedPrompt].prompt_id);
 		showModal();
 	};
 
