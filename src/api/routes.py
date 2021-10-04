@@ -57,8 +57,10 @@ def create_user():
 
 @api.route("/prompts/<genre>", methods=["GET"])
 def get_random_prompts(genre):
+
     ref = db.reference('public/writing-prompts')
-    data = ref.order_by_child('genre').equal_to('fantasy').limit_to_last(5).get()
+    data = ref.order_by_child('genre').equal_to(genre).limit_to_last(10).get()
+
     prompts = []
     for key, val in data.items():
         prompts.append({'prompt_id': key, 'genre': val['genre'], 'prompt': val['prompt']})
@@ -67,13 +69,30 @@ def get_random_prompts(genre):
 
 @api.route("/add/favoriteprompts", methods=["POST"])
 def add_favorite_prompt():
+    prompt = request.json.get("prompt", None)
+    user_id = request.json.get("user_id", None)
+    if prompt is None or user_id is None: 
+        return jsonify({"msg": "Something went wrong"}),400
+    try: 
+        ref = db.reference("private/favorite-prompts")
+        ref.child(user_id).child(prompt['prompt_id']).set({
+            'genre': prompt['genre'],
+            'prompt': prompt['prompt']
+        })
+    except: 
+        return jsonify({"msg": "Something went wrong"}),400
+
+    return jsonify([]), 200
+
+@api.route("/delete/favoriteprompts", methods=["POST"])
+def delete_favorite_prompt():
     prompt_id = request.json.get("prompt_id", None)
     user_id = request.json.get("user_id", None)
-
+    if prompt_id is None or user_id is None: 
+        return jsonify({"msg": "Something went wrong"}),400
     try: 
-        ref = db.reference("private/users")
-        favorite_prompt = {"id": prompt_id}
-        ref.child(user_id).child("favorite-prompts").push(favorite_prompt)
+        ref = db.reference("private/favorite-prompts")
+        prompt = ref.child(user_id).child(prompt_id).delete()
     except: 
         return jsonify({"msg": "Something went wrong"}),400
 

@@ -7,30 +7,64 @@ export const PromptModal = ({ genre }) => {
 	const { store, actions } = useContext(Context);
 	const [Modal, setModal] = useState(false);
 	const [actualPrompt, setActualPrompt] = useState(null);
-	const [actualPromptId, setActualPromptId] = useState(null);
 	const [possiblePrompts, setPossiblePrompts] = useState([]);
+	const [isFavorite, setIsFavorite] = useState([]);
 	const [classProperty, setClassProperty] = useState("buttonNotFavorite");
 	const [favoriteAction, setFavoriteAction] = useState("Add to Favorites");
 
 	function handleOnFavorite() {
 		if (classProperty === "buttonNotFavorite") {
-			setClassProperty("buttonFavorite");
-			setFavoriteAction("Remove from Favorites");
-			addtofavorite();
+			handleNotFavoriteToFavorite();
 		} else {
-			setClassProperty("buttonNotFavorite");
-			setFavoriteAction("Add to Favorites");
+			handleFavoriteToNotFavorite();
 		}
 	}
+	const handleNotFavoriteToFavorite = () => {
+		setClassProperty("buttonFavorite");
+		setFavoriteAction("Remove from Favorites");
+		addtofavorite();
+		let fav = isFavorite;
+		fav.push(actualPrompt.prompt_id);
+		console.log(fav);
+		setIsFavorite(fav);
+	};
+	const checkIsFavorite = prompt_id => {
+		return isFavorite.includes(prompt_id);
+	};
+	const handleFavoriteToNotFavorite = () => {
+		setClassProperty("buttonNotFavorite");
+		setFavoriteAction("Add to Favorites");
+		let index = isFavorite.findIndex(prompt => prompt === actualPrompt.prompt_id);
+		console.log(index);
+		if (index !== -1) {
+			let fav = isFavorite;
+			fav.splice(index, 1);
+			setIsFavorite(fav);
+		}
+		removefromfavorite();
+	};
 
 	const addtofavorite = async () => {
-		let user_id = JSON.parse(localStorage.getItem("user_id"));
-		console.log(user_id, actualPromptId);
+		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
 		if (user_id !== null) {
 			const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/add/favoriteprompts`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ prompt_id: actualPromptId, user_id: user_id })
+				body: JSON.stringify({ prompt: actualPrompt, user_id: user_id })
+			});
+			if (!resp.ok) setActualPrompt("ERROR!");
+			else {
+				const data = await resp.json();
+			}
+		}
+	};
+	const removefromfavorite = async () => {
+		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
+		if (user_id !== null) {
+			const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/delete/favoriteprompts`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ prompt_id: actualPrompt["prompt_id"], user_id: user_id })
 			});
 			if (!resp.ok) setActualPrompt("ERROR!");
 			else {
@@ -46,9 +80,9 @@ export const PromptModal = ({ genre }) => {
 		});
 		if (!resp.ok) setActualPrompt("ERROR!");
 		else {
-			const prompts = await resp.json();
-			setPossiblePrompts(prompts);
-			selectPrompt(prompts);
+			const data = await resp.json();
+			setPossiblePrompts(data);
+			selectPrompt(data);
 		}
 	};
 	const handleNextPrompt = () => {
@@ -56,8 +90,9 @@ export const PromptModal = ({ genre }) => {
 	};
 	const selectPrompt = PromptList => {
 		let choosedPrompt = actions.getRandom(PromptList.length);
-		setActualPrompt(PromptList[choosedPrompt].prompt);
-		setActualPromptId(PromptList[choosedPrompt].prompt_id);
+		setActualPrompt(PromptList[choosedPrompt]);
+		if (checkIsFavorite(PromptList[choosedPrompt].prompt_id)) setClassProperty("buttonFavorite");
+		else setClassProperty("buttonNotFavorite");
 		showModal();
 	};
 
@@ -85,7 +120,9 @@ export const PromptModal = ({ genre }) => {
 						title={favoriteAction}
 					/>
 					<hr className="hr-prin" />
-					<p className="text-justify text-white my-4">{actualPrompt}</p>
+					<p className="text-justify text-white my-4">
+						{actualPrompt && actualPrompt !== undefined ? actualPrompt.prompt : ""}
+					</p>
 					<a onClick={handleNextPrompt} className="align-self-end button-next">
 						Next Prompt <i className="fas fa-chevron-right" />
 					</a>
