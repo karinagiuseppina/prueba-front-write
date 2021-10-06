@@ -21,7 +21,7 @@ export const LoginModal = () => {
 		if (!resp.ok) setMessage("Wrong mail or password, try again!");
 		else {
 			const data = await resp.json();
-			actions.setUserSession(data.localId, data.idToken);
+			actions.setUserSession(data);
 			emptyFields();
 			hideModal();
 			history.push("/");
