@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../store/appContext";
 import "../../styles/styles.scss";
 import { PromptModal } from "./promptModal";
 import { HeaderTitle } from "../component/HeaderTitle";
 
 export const DiscoverPrompts = () => {
+	const { store } = useContext(Context);
 	const [genre, setGenre] = useState("fantasy");
 
-	let genres = ["fantasy", "sci-fi", "dystopian", "contemporary", "romance", "thriller", "mystery"];
+	let genres = store.genres;
 
 	let genresInHtml = genres.map(function(genre) {
 		return (

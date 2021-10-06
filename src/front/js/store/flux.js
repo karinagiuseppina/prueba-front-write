@@ -1,14 +1,15 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			user: null
+			user: null,
+			genres: ["fantasy", "sci-fi", "dystopian", "contemporary", "romance", "thriller", "mystery"],
+			genders: ["female", "male"]
 		},
 		actions: {
 			getRandom: length => {
 				return Math.floor(Math.random() * length);
 			},
 			setUserSession: user => {
-				console.log(typeof user, user);
 				setStore({ user: user });
 				localStorage.setItem("user", JSON.stringify(user));
 			},

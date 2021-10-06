@@ -25,7 +25,6 @@ export const PromptModal = ({ genre }) => {
 		addtofavorite();
 		let fav = isFavorite;
 		fav.push(actualPrompt.prompt_id);
-		console.log(fav);
 		setIsFavorite(fav);
 	};
 	const checkIsFavorite = prompt_id => {
@@ -35,7 +34,6 @@ export const PromptModal = ({ genre }) => {
 		setClassProperty("buttonNotFavorite");
 		setFavoriteAction("Add to Favorites");
 		let index = isFavorite.findIndex(prompt => prompt === actualPrompt.prompt_id);
-		console.log(index);
 		if (index !== -1) {
 			let fav = isFavorite;
 			fav.splice(index, 1);
