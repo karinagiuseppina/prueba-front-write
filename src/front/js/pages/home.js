@@ -1,12 +1,9 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/styles.scss";
 import { HomeServiceCard } from "../component/HomeServiceCard";
-import { HeaderTitle } from "../component/HeaderTitle";
 
 export const Home = () => {
-	let title = "One plot, infinite stories";
 	return (
 		<div className="view">
 			<div className="mask rgba-gradient d-flex justify-content-center align-items-center tot-height">
@@ -69,17 +66,3 @@ export const Home = () => {
 		</div>
 	);
 };
-
-{
-	/* <div className="container-fluid mt-5 p-4 d-flex flex-column justify-content-center bg-img-index">
-			<div className="row">
-				<h2>
-					One plot, <br />
-					infinite stories
-				</h2>
-			</div>
-			<div className="row">
-
-			</div>
-		</div> */
-}

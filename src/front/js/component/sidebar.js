@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { SignupModal } from "../pages/signupModal";
-import { LoginModal } from "../pages/loginModal";
 import { Context } from "../store/appContext";
 import "../../styles/styles.scss";
 import PropTypes from "prop-types";
 
-import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from "react-pro-sidebar";
+import { ProSidebar, Menu, MenuItem, SidebarHeader, SidebarFooter, SidebarContent } from "react-pro-sidebar";
 
 export const Sidebar = ({ toggled, collapsed, handleToggleSidebar, handleCollapsedChange }) => {
 	const { store, actions } = useContext(Context);
@@ -17,31 +15,39 @@ export const Sidebar = ({ toggled, collapsed, handleToggleSidebar, handleCollaps
 		actions.deleteUserSession();
 		history.push("/");
 	};
-	const handleSignIn = () => {
-		<LoginModal />;
-	};
-	const handleSignUp = () => {
-		<SignupModal />;
-	};
 
 	const logIn = (
 		<>
-			<MenuItem icon={<i className="fas fa-adjust" />} onClick={handleSignIn}>
-				Sign In
+			<MenuItem icon={<i className="fas fa-power-off" />}>
+				Sign In <Link to="/login" />
 			</MenuItem>
-			<MenuItem icon={<i className="fas fa-adjust" />} onClick={handleSignUp}>
-				Discover Characters
+			<MenuItem icon={<i className="fas fa-sign-in-alt" />}>
+				Sign Up <Link to="/register" />
 			</MenuItem>
 		</>
 	);
 	const logOut = (
 		<>
-			<MenuItem icon={<i className="fas fa-adjust" />}>Favorite Prompts</MenuItem>
-			<MenuItem icon={<i className="fas fa-adjust" />}>Favorite Characters</MenuItem>
-			<MenuItem icon={<i className="fas fa-adjust" />}>My Plots</MenuItem>
-			<MenuItem icon={<i className="fas fa-adjust" />}>My Characters</MenuItem>
-			<MenuItem icon={<i className="fas fa-adjust" />}>Edite Profile</MenuItem>
-			<MenuItem icon={<i className="fas fa-adjust" />} onClick={handleLogOut}>
+			<MenuItem icon={<i className="fas fa-book-open" />}>
+				Favorite Prompts <Link to="/favoriteprompts" />
+			</MenuItem>
+			<MenuItem icon={<i className="fas fa-bookmark" />}>
+				Favorite Characters
+				<Link to="/favoritecharacters" />
+			</MenuItem>
+			<MenuItem icon={<i className="fas fa-pen" />}>
+				My Plots
+				<Link to="/myplots" />
+			</MenuItem>
+			<MenuItem icon={<i className="fas fa-user-edit" />}>
+				My Characters
+				<Link to="/mycharacters" />
+			</MenuItem>
+			<MenuItem icon={<i className="fas fa-user-cog" />}>
+				Edite Profile
+				<Link to="/editmyprofile" />
+			</MenuItem>
+			<MenuItem icon={<i className="fas fa-power-off" />} onClick={handleLogOut}>
 				Log Out
 			</MenuItem>
 		</>
@@ -58,10 +64,10 @@ export const Sidebar = ({ toggled, collapsed, handleToggleSidebar, handleCollaps
 			</SidebarHeader>
 			<SidebarContent>
 				<Menu iconShape="circle">
-					<MenuItem icon={<i className="fas fa-adjust" />}>
+					<MenuItem icon={<i className="fas fa-lightbulb" />}>
 						Discover Prompts <Link to="/discoverPrompts" />
 					</MenuItem>
-					<MenuItem icon={<i className="fas fa-adjust" />}>
+					<MenuItem icon={<i className="fas fa-user-check" />}>
 						Discover Characters <Link to="/discoverCharacters" />
 					</MenuItem>
 					{token && token !== undefined && token !== "" ? logOut : logIn}

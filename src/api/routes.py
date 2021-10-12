@@ -24,13 +24,10 @@ def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
 
-    try:
-        request_ref = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={}".format(apiKey)
-        headers = {"content-type": "application/json"}
-        data =  json.dumps({"email": email, "password": password, "returnSecureToken": True})
-        request_object = requests.post(request_ref, headers=headers, data=data)
-    except:
-        return jsonify({"msg": "Wrong email or password"}), 400
+    request_ref = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={}".format(apiKey)
+    headers = {"content-type": "application/json"}
+    data =  json.dumps({"email": email, "password": password, "returnSecureToken": True})
+    request_object = requests.post(request_ref, headers=headers, data=data)
 
     return jsonify(request_object.json()), 200
 

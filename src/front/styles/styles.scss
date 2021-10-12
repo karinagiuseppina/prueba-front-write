@@ -1,11 +1,19 @@
+$sidebar-bg-color: var(--colorSec);
+$sidebar-color:  var(--colorGray);
+$highlight-color: #d8d8d8 !default;
+$submenu-bg-color: var(--colorCuar);
+$submenu-bg-color-collapsed: var(--colorCuar);
+$icon-bg-color: var(--colorCuar);
 @import '~react-pro-sidebar/dist/scss/styles.scss';
 
 :root {
-  --colorPrin: #CB997E; //durazno
-  --colorSec: #A7B5C1;
-  --colorTer: #BFB6A4; //verde
+  --colorPrin: #8C4B45; //durazno
+  --colorSec: #475957; //verde osc
+  --colorTer: #8C6046; //durazno claro
+  --colorCuar: #748A8C; //verde claro
   --colorGray: #EDEEEF;
-  --colorOsc: #303538;
+  --colorOsc: #0D0C0B;
+  --colorSecTrans: rgba(71, 89, 87, 0.25); 
 
 }
 /*Main y Navbar*/
@@ -17,7 +25,6 @@
 }
 
 .app main {
-  padding: 24px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -36,6 +43,7 @@
   justify-content: center;
   font-size: 15px;
   display: none;
+  margin:10px;
 }
 @media (max-width: 768px){
 .app {
@@ -54,9 +62,6 @@ body {
 .tot-height{
     height: 100vh;
 }
-h1, h2, h3, h5 {
-  font-family: 'Merriweather', serif;
-}
 .font-prin{
   font-family: 'Merriweather', serif;
 }
@@ -64,14 +69,8 @@ h1, h2, h3, h5 {
   font-family: 'Fira Sans', sans-serif;
 }
 
-h6 {
-  line-height: 1.7;
-}
 .bg-black{
       background: #000;
-}
-.bg-white{
-  background: #fff;
 }
 .bg-sec{
   background: var(--colorSec);
@@ -105,13 +104,17 @@ h6 {
     height: 18rem;
   }
 
-  .rgba-gradient {
-    background: -moz-linear-gradient(90deg, rgba(212, 212, 212, 0.7), rgba(255,255,255, 1) 100%);
-    background: -webkit-linear-gradient(90deg, rgba(212, 212, 212, 0.7), rgba(255, 255, 255, 1) 100%);
-    background: -webkit-gradient(linear, 90deg, from(rgba(212, 212, 212, 0.7)), to(rgba(255,255,255, 1)));
-    background: -o-linear-gradient(90deg, rgba(212, 212, 212,0.7), rgba(255,255,255, 1) 100%);
-    background: linear-gradient(to 90deg, rgba(212, 212, 212, 0.7), rgba(255,255,255, 1) 100%);
-  }
+.bg-gradiente {
+  background: linear-gradient(to right top, var(--colorTer), var(--colorCuar));
+}
+.btn-prin {
+  color: white;
+  background-color: var(--colorTer);
+}
+.btn-prin:hover {
+  color:white;
+  background-color: var(--colorSec);
+}
 /*Navbar*/
 .navbar-nav a{
     color: var(--colorosc);
@@ -268,7 +271,6 @@ content: "#";
   .view {
     height: 1000px;
   }
-  .tot-height {height: 100%};
   .modal-main {width: 80%}
   .logo-nav {margin-bottom: 0px; }
 }
@@ -278,6 +280,49 @@ content: "#";
   .view {
     height: 600px;
   }
-  .tot-height {height: 100%};
   .modal-main {width: 60%}
+}
+/*login*/
+.card-img-left {
+  width: 45%;
+  background: scroll center url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
+  background-size: cover;
+}
+/*Form*/
+.form-control:focus {
+  color: var(--colorOsc);
+  border-color: var(--colorSec);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem var(--colorSecTrans);
+}
+.form-control{
+  color: var(--colorOsc);
+  border-color: var(--colorGray);
+}
+.form-floating label {
+  color: var(--colorPrin);
+}
+.password-type {
+  display: flex;
+  justify-content: stretch;
+  align-items: center;
+  margin-bottom:1rem; 
+  border: 1px solid var(--colorGray);
+  border-radius: 5px;
+}
+.password-type i {
+  font-size: 1rem;
+  margin: 0 10px;
+  border: none;
+  color: var(--colorCuar);
+}
+.card-img-top {
+  height: 30vh;
+  background: scroll center url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
+  background-size: cover;
+}
+.discover-prompt-image {
+  padding: 25px;
+  background: scroll center url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
+  background-size: cover;
 }

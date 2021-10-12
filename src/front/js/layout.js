@@ -12,11 +12,12 @@ import { DetailedPlot } from "./pages/detailedPlot";
 import { DetailedCharacter } from "./pages/detailedCharacter";
 import { DiscoverCharacters } from "./pages/discoverCharacters";
 import { FavoriteCharacters } from "./pages/favoriteCharacters";
+import { Login } from "./pages/login";
+import { SignUp } from "./pages/SignUp";
 
 import injectContext from "./store/appContext";
 
 import { Sidebar } from "./component/sidebar";
-import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 
 //create your first component
@@ -24,7 +25,7 @@ const Layout = () => {
 	//the basename is used when your project is published in a subdirectory and not in the root of the domain
 	// you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
 	const basename = process.env.BASENAME || "";
-	const [collapsed, setCollapsed] = useState(false);
+	const [collapsed, setCollapsed] = useState(true);
 	const [toggled, setToggled] = useState(false);
 
 	const handleCollapsedChange = checked => {
@@ -32,6 +33,7 @@ const Layout = () => {
 	};
 
 	const handleToggleSidebar = value => {
+		setCollapsed(false);
 		setToggled(value);
 	};
 
@@ -61,6 +63,12 @@ const Layout = () => {
 						<Switch>
 							<Route exact path="/">
 								<Home />
+							</Route>
+							<Route exact path="/login">
+								<Login />
+							</Route>
+							<Route exact path="/register">
+								<SignUp />
 							</Route>
 							<Route exact path="/discoverPrompts">
 								<DiscoverPrompts />

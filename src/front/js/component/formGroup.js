@@ -1,17 +1,18 @@
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 
-export const Formgroup = ({ type, name, placeholder, set, value }) => {
+export const Formgroup = ({ type, name, placeholder, set, value, id }) => {
 	return (
-		<div className="form-group d-flex flex-column w-100 px-4 py-1">
-			<label className="text-prin font-sec font-weight-bold">{name}</label>
+		<div className="form-floating mb-3">
 			<input
 				type={type}
-				className="form-control border-top-0 border-right-0 border-left-0 rounded-0 w-auto px-0"
+				className="form-control"
+				id={id}
 				placeholder={placeholder}
 				onChange={e => set(e.target.value)}
 				value={value}
 			/>
+			<label htmlFor={id}>{name}</label>
 		</div>
 	);
 };
@@ -21,5 +22,6 @@ Formgroup.propTypes = {
 	placeholder: PropTypes.string,
 	type: PropTypes.string,
 	value: PropTypes.string,
-	set: PropTypes.func
+	set: PropTypes.func,
+	id: PropTypes.string
 };
