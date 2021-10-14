@@ -17,7 +17,7 @@ export const SignUp = () => {
 	let history = useHistory();
 
 	const handleSignUp = async () => {
-		const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/signup`, {
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/signup`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ name: name, email: email, password: password })

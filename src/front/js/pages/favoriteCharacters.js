@@ -35,13 +35,10 @@ export const FavoriteCharacters = () => {
 
 	const getUserFavoriteCharacters = async () => {
 		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
-		const resp = await fetch(
-			`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/user/${user_id}/favoritecharacters`,
-			{
-				method: "GET",
-				headers: { "Content-Type": "application/json" }
-			}
-		);
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/favoritecharacters`, {
+			method: "GET",
+			headers: { "Content-Type": "application/json" }
+		});
 		if (resp.ok) {
 			const favorite_characters = await resp.json();
 			setFavoriteCharacters(favorite_characters);
@@ -65,14 +62,11 @@ export const FavoriteCharacters = () => {
 	const removefromfavorite = async id => {
 		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
 		if (user_id !== null) {
-			const resp = await fetch(
-				`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/delete/favoritecharacters`,
-				{
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ character_id: id, user_id: user_id })
-				}
-			);
+			const resp = await fetch(`${process.env.BACKEND_URL}/api/delete/favoritecharacters`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ character_id: id, user_id: user_id })
+			});
 			if (resp.ok) {
 				const data = await resp.json();
 			}

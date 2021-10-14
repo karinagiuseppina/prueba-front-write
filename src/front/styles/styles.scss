@@ -115,33 +115,13 @@ body {
   color:white;
   background-color: var(--colorSec);
 }
-/*Navbar*/
-.navbar-nav a{
-    color: var(--colorosc);
-}
-.dropdown-item:hover {
-  background: var(--colorSec);
-}
-.logo-nav img{
-  width: 60px;
-}
-.logo-nav {
-  margin-bottom: -90px;
-  background-color: white;
-}
-.border-bottom-gray{
-  border-bottom: 2px solid var(--colorGray);
-}
-.nav-link {
-  font-family: 'Fira Sans', sans-serif;
-  text-transform: lowercase;
-}
+
 /*Index*/
-.card-body i {
-    font-size: 1.25rem;
-    border-bottom: 2px solid var(--colorSec);
-    color: var(--colorSec);
-}
+// .card-body i {
+//     font-size: 1.25rem;
+//     border-bottom: 2px solid var(--colorSec);
+//     color: var(--colorSec);
+// }
 .vertical-line-long {
   width: 2px;
   background: var(--colorGray);
@@ -180,18 +160,24 @@ body,
   width:100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
 }
-
+// @keyframes backInDown {
+//   from {top: 0px;}
+//   to {top: 20%;}
+// }
 .modal-main {
-  position: fixed;
+  // position: fixed;
   display: flex;
   flex-direction: column;
   width: 40%;
   height: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  // top: 20%;
+  // left: 20%;
+  //transform: translate(-50%, -50%);
 }
+
 .display-block {
   display: block;
 }
@@ -205,10 +191,11 @@ body,
   height: 30px;
   border-radius: 100%;
   border: none;
-  background-color: var(--colorPrin);
+  background-color: var(--colorGray);
   font-family: "Font Awesome 5 Free";
   align-self:flex-end;
   margin: -50px 5px 30px;
+  color: var(--colorCuar);
 }
 
 .buttonNotFavorite::before {
@@ -219,7 +206,7 @@ body,
   font-weight: 900; content: "\f005";
 }
 a.button-next {
-  color: rgb(108,117,125);
+  color: var(--colorSec);
   text-decoration: none;
   transition: 0.5s ease-in-out;
   cursor: pointer;

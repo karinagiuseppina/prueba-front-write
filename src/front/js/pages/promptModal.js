@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
+import "animate.css";
 
 export const PromptModal = ({ genre }) => {
 	const { store, actions } = useContext(Context);
@@ -11,6 +12,45 @@ export const PromptModal = ({ genre }) => {
 	const [isFavorite, setIsFavorite] = useState([]);
 	const [classProperty, setClassProperty] = useState("buttonNotFavorite");
 	const [favoriteAction, setFavoriteAction] = useState("Add to Favorites");
+	const [modalAnimation, setModalAnimation] = useState("animate__backInLeft");
+
+	const handleSelectGenre = async () => {
+		genre === null ? actions.setToast("warning", "You need to select a genre first!") : getPossiblePrompts();
+	};
+
+	const getPossiblePrompts = async () => {
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/prompts/${genre}`, {
+			method: "GET",
+			headers: { "Content-Type": "application/json" }
+		});
+		if (!resp.ok) setActualPrompt("ERROR!");
+		else {
+			const data = await resp.json();
+			setPossiblePrompts(data);
+			selectPrompt(data);
+		}
+	};
+
+	const handleNextPrompt = () => {
+		selectPrompt(possiblePrompts);
+	};
+	const selectPrompt = PromptList => {
+		let choosedPrompt = actions.getRandom(PromptList.length);
+		setActualPrompt(PromptList[choosedPrompt]);
+		if (checkIsFavorite(PromptList[choosedPrompt].prompt_id)) setClassProperty("buttonFavorite");
+		else setClassProperty("buttonNotFavorite");
+		showModal();
+	};
+
+	const showModal = () => {
+		setModal(true);
+		setModalAnimation("animate__backOutRight");
+	};
+
+	const hideModal = () => {
+		setModal(false);
+		setModalAnimation("animate__backInLeft");
+	};
 
 	function handleOnFavorite() {
 		if (classProperty === "buttonNotFavorite") {
@@ -45,92 +85,63 @@ export const PromptModal = ({ genre }) => {
 	const addtofavorite = async () => {
 		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
 		if (user_id !== null) {
-			const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/add/favoriteprompts`, {
+			const resp = await fetch(`${process.env.BACKEND_URL}/api/add/favoriteprompts`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ prompt: actualPrompt, user_id: user_id })
 			});
-			if (!resp.ok) setActualPrompt("ERROR!");
+			if (!resp.ok) actions.setToast("warning", "Sorry! We couldnt add the prompt");
 			else {
 				const data = await resp.json();
+				actions.setToast("success", "Prompt added to your favorites!");
 			}
 		}
 	};
 	const removefromfavorite = async () => {
 		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
 		if (user_id !== null) {
-			const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/delete/favoriteprompts`, {
+			const resp = await fetch(`${process.env.BACKEND_URL}/api/delete/favoriteprompts`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ prompt_id: actualPrompt["prompt_id"], user_id: user_id })
 			});
-			if (!resp.ok) setActualPrompt("ERROR!");
+			if (!resp.ok) actions.setToast("warning", "Sorry! We could not remove the prompt");
 			else {
 				const data = await resp.json();
+				actions.setToast("error", "Prompt removed from your favorites!");
 			}
 		}
 	};
 
-	const handleSelectPrompt = async () => {
-		const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/prompts/${genre}`, {
-			method: "GET",
-			headers: { "Content-Type": "application/json" }
-		});
-		if (!resp.ok) setActualPrompt("ERROR!");
-		else {
-			const data = await resp.json();
-			setPossiblePrompts(data);
-			selectPrompt(data);
-		}
-	};
-	const handleNextPrompt = () => {
-		selectPrompt(possiblePrompts);
-	};
-	const selectPrompt = PromptList => {
-		let choosedPrompt = actions.getRandom(PromptList.length);
-		setActualPrompt(PromptList[choosedPrompt]);
-		if (checkIsFavorite(PromptList[choosedPrompt].prompt_id)) setClassProperty("buttonFavorite");
-		else setClassProperty("buttonNotFavorite");
-		showModal();
-	};
-
-	const showModal = () => {
-		setModal(true);
-	};
-
-	const hideModal = () => {
-		setModal(false);
-	};
 	return (
 		<div>
-			<div className={Modal ? "modal display-block" : "modal display-none"}>
-				<section className="modal-main p-4 bg-black">
-					<button type="button" onClick={hideModal} className="btn text-muted align-self-end">
-						<i className="fas fa-times" />
-					</button>
-					<h3 className="text-beige p-2">New {genre} prompt </h3>
-					<button
-						type="button"
-						onClick={handleOnFavorite}
-						className={classProperty}
-						data-bs-toggle="tooltip"
-						data-bs-placement="right"
-						title={favoriteAction}
-					/>
-					<hr className="hr-prin" />
-					<p className="text-justify text-white my-4">
+			<div className={Modal ? "modal d-flex" : "modal display-none"}>
+				<section className={`modal-main bg-white rounded text-start animate__animated animate__backInLeft`}>
+					<div className="d-flex flex-column bg-sec p-3 rounded">
+						<button type="button" onClick={hideModal} className="btn text-muted align-self-end">
+							<i className="fas fa-times" />
+						</button>
+						<h3 className="text-white px-4 py-3 bg-sec">New {genre} prompt </h3>
+						<button
+							type="button"
+							onClick={handleOnFavorite}
+							className={classProperty}
+							data-bs-toggle="tooltip"
+							data-bs-placement="right"
+							title={favoriteAction}
+						/>
+					</div>
+					<p className="text-center text-dark m-4 p-3">
 						{actualPrompt && actualPrompt !== undefined ? actualPrompt.prompt : ""}
 					</p>
-					<a onClick={handleNextPrompt} className="align-self-end button-next">
+					<a onClick={handleNextPrompt} className="align-self-end button-next p-4">
 						Next Prompt <i className="fas fa-chevron-right" />
 					</a>
 				</section>
 			</div>
-			<div className="col-12 col-lg-8 m-auto">
-				<button type="button" onClick={handleSelectPrompt} className="btn bg-black w-100 text-white">
-					Discover!
-				</button>
-			</div>
+			<button type="button" onClick={handleSelectGenre} className="btn bg-prin text-white">
+				Discover!
+			</button>
 		</div>
 	);
 };

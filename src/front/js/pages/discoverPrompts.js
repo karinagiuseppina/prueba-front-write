@@ -1,22 +1,32 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/styles.scss";
 import { PromptModal } from "./promptModal";
-import { HeaderTitle } from "../component/HeaderTitle";
 
 export const DiscoverPrompts = () => {
 	const { store } = useContext(Context);
-	const [genre, setGenre] = useState("fantasy");
+	const [genreSelected, setGenreSelected] = useState(null);
+	const [genreInHTML, setGenreInHTML] = useState([]);
 
-	let genres = store.genres;
-
-	let genresInHtml = genres.map(function(genre) {
-		return (
-			<option key={genre} value={genre}>
-				{genre}
-			</option>
-		);
-	});
+	useEffect(
+		() => {
+			setGenreInHTML(
+				store.genres.map(genre => {
+					return (
+						<button
+							key={genre}
+							className={
+								genreSelected === genre ? "prompt-genre m-4 bg-prin" : "prompt-genre m-4 bg-white"
+							}
+							onClick={() => setGenreSelected(genre)}>
+							{genre}
+						</button>
+					);
+				})
+			);
+		},
+		[genreSelected]
+	);
 
 	return (
 		<div className="container-fluid m-0 bg-gradiente">
@@ -26,27 +36,12 @@ export const DiscoverPrompts = () => {
 						<div className="col-12 col-md-6 discover-prompt-image d-flex align-items-center justify-content-center">
 							<h1 className="card-title text-uppercase fs-1 text-white">Discover Prompts</h1>
 						</div>
-						<div className="col-12 col-md-6 card-body p-4 p-sm-5 bg-white">
-							<p>
-								There are many variations of passages of Lorem Ipsum available, but the majority have
-								suffered alteration in some form, by injected humour, or randomised words which dont
-								look even slightly believable. If you are going to use a passage of Lorem Ipsum, you
-								need to be sure there isnt anything embarrassing hidden in the middle of text. All the
-								Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary,
-								making this the first true generator on the Internet. It uses a dictionary of over 200
-								Latin words, combined with a handful of model sentence structures, to generate Lorem
-								Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from
-								repetition, injected humour, or non-characteristic words etc.
-							</p>
-							<div className="input-group mb-3">
-								<select
-									className="form-select flex-grow-1 bg-white border-black text-black p-2 rounded"
-									value={genre}
-									onChange={e => setGenre(e.target.value)}>
-									{genresInHtml}
-								</select>
+						<div className="col-12 col-md-6 card-body p-4 p-sm-5 bg-white text-center">
+							<p>Choose a genre and discover new prompts!</p>
+							<div className="d-flex flex-wrap justify-content-center align-items-center">
+								{genreInHTML}
 							</div>
-							<PromptModal genre={genre} />
+							<PromptModal genre={genreSelected} />
 						</div>
 					</div>
 				</div>

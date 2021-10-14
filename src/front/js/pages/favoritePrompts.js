@@ -35,13 +35,10 @@ export const FavoritePrompts = () => {
 
 	const getUserPrompts = async () => {
 		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
-		const resp = await fetch(
-			`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/user/${user_id}/favoriteprompts`,
-			{
-				method: "GET",
-				headers: { "Content-Type": "application/json" }
-			}
-		);
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/favoriteprompts`, {
+			method: "GET",
+			headers: { "Content-Type": "application/json" }
+		});
 		if (resp.ok) {
 			const favorite_prompts = await resp.json();
 			setPrompts(favorite_prompts);
@@ -65,7 +62,7 @@ export const FavoritePrompts = () => {
 	const removefromfavorite = async id => {
 		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
 		if (user_id !== null) {
-			const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/delete/favoriteprompts`, {
+			const resp = await fetch(`${process.env.BACKEND_URL}/api/delete/favoriteprompts`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ prompt_id: id, user_id: user_id })

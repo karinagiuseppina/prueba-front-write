@@ -27,12 +27,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			login: async (email, password) => {
-				const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/login`, {
+				const resp = await fetch(`${process.env.BACKEND_URL}/api/login`, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ email: email, password: password })
 				});
 				const data = await resp.json();
+				console.log(data);
 
 				if (data.error) {
 					return { code: 400, msg: "Sorry, invalid email/password" };

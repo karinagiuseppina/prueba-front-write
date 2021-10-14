@@ -43,7 +43,7 @@ export const CharacterModal = () => {
 	const addtofavorite = async () => {
 		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
 		if (user_id !== null) {
-			const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/add/favoritecharacters`, {
+			const resp = await fetch(`${process.env.BACKEND_URL}/api/add/favoritecharacters`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ character: character, user_id: user_id })
@@ -57,14 +57,11 @@ export const CharacterModal = () => {
 	const removefromfavorite = async () => {
 		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
 		if (user_id !== null) {
-			const resp = await fetch(
-				`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/delete/favoritecharacters`,
-				{
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ character_id: characterId, user_id: user_id })
-				}
-			);
+			const resp = await fetch(`${process.env.BACKEND_URL}/api/delete/favoritecharacters`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ character_id: characterId, user_id: user_id })
+			});
 			if (resp.ok) {
 				const data = await resp.json();
 			}
@@ -72,7 +69,7 @@ export const CharacterModal = () => {
 	};
 
 	const handleRandomCharacter = async () => {
-		const resp = await fetch(`https://3001-black-camel-fh347ukm.ws-eu18.gitpod.io/api/randomcharacter`, {
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/randomcharacter`, {
 			method: "GET",
 			headers: { "Content-Type": "application/json" }
 		});
