@@ -59,6 +59,7 @@ body {
     color: var(--colorOsc);
     background: #fff;
 }
+.text-justify{text-align: justify;}
 .tot-height{
     height: 100vh;
 }
@@ -89,6 +90,12 @@ body {
 }
 .text-dark {
   color: var(--colorOsc);
+}
+.text-cuar{
+  color: var(--colorCuar);
+}
+.text-ter{
+  color: var(--colorTer);
 }
 .bg-prin{
   background-color: var(--colorPrin);
@@ -252,22 +259,22 @@ content: "#";
 
 /*Responsive*/
 
-@media (max-width: 740px) {
+@media (max-width: 799px) {
   html,
   body,
   .view {
     height: 1000px;
   }
-  .modal-main {width: 80%}
+  .modal-main {width: 90%}
   .logo-nav {margin-bottom: 0px; }
 }
-@media (min-width: 800px) and (max-width: 850px) {
+@media (min-width: 800px) and (max-width: 950px) {
   html,
   body,
   .view {
     height: 600px;
   }
-  .modal-main {width: 60%}
+  .modal-main {width: 80%}
 }
 /*login*/
 .card-img-left {

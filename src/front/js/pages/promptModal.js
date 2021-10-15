@@ -12,7 +12,6 @@ export const PromptModal = ({ genre }) => {
 	const [isFavorite, setIsFavorite] = useState([]);
 	const [classProperty, setClassProperty] = useState("buttonNotFavorite");
 	const [favoriteAction, setFavoriteAction] = useState("Add to Favorites");
-	const [modalAnimation, setModalAnimation] = useState("animate__backInLeft");
 
 	const handleSelectGenre = async () => {
 		genre === null ? actions.setToast("warning", "You need to select a genre first!") : getPossiblePrompts();
@@ -44,12 +43,10 @@ export const PromptModal = ({ genre }) => {
 
 	const showModal = () => {
 		setModal(true);
-		setModalAnimation("animate__backOutRight");
 	};
 
 	const hideModal = () => {
 		setModal(false);
-		setModalAnimation("animate__backInLeft");
 	};
 
 	function handleOnFavorite() {

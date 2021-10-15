@@ -67,8 +67,10 @@ export const FavoritePrompts = () => {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ prompt_id: id, user_id: user_id })
 			});
-			if (resp.ok) {
+			if (!resp.ok) actions.setToast("warning", "Sorry! We could not remove the prompt");
+			else {
 				const data = await resp.json();
+				actions.setToast("error", "Prompt removed from your favorites!");
 			}
 		}
 	};
@@ -76,21 +78,25 @@ export const FavoritePrompts = () => {
 	const buildPromptsHTML = prompts_array => {
 		setpromptsInHTML(
 			prompts_array.map(prompt => (
-				<div className="card" key={prompt.prompt_id}>
-					<div className="card-body">
-						<div
-							className="text-muted text-right"
-							onClick={() => {
-								handleDeleteFavorite(prompt.prompt_id);
-							}}>
-							<i className="fas fa-times border-0" />
+				<div className="col-12 col-md-6" key={prompt.prompt_id}>
+					<div className="card my-2">
+						<div className="card-body">
+							<div
+								className="text-muted text-right"
+								onClick={() => {
+									handleDeleteFavorite(prompt.prompt_id);
+								}}>
+								<i className="fas fa-times border-0" />
+							</div>
+							<p className="card-text text-justify overflow-auto" style={{ maxHeight: "150px" }}>
+								{prompt.prompt}
+							</p>
+							<p
+								className={`prompt-genre bg-${prompt.genre}`}
+								onClick={() => handleSelectGenre(prompt.genre)}>
+								{prompt.genre}
+							</p>
 						</div>
-						<p className="card-text text-justify">{prompt.prompt}</p>
-						<p
-							className={`prompt-genre bg-${prompt.genre}`}
-							onClick={() => handleSelectGenre(prompt.genre)}>
-							{prompt.genre}
-						</p>
 					</div>
 				</div>
 			))
@@ -125,13 +131,19 @@ export const FavoritePrompts = () => {
 		);
 
 	return (
-		<div className="container">
-			<h1>Favorite Prompts</h1>
-			<div className="row p-4">
-				<div className="col d-flex justify-content-center">{genresInHTML}</div>
-			</div>
-			<div className="row">
-				<div className="col card-columns">{prompstInHTML} </div>
+		<div className="container-fluid m-0 bg-gradiente">
+			<div className="row align-items-center">
+				<div className="col-lg-12 col-xl-11 mx-auto p-4">
+					<div className="row my-3 border-0 shadow rounded-3 overflow-auto bg-white">
+						<div className="col-12 bg-prin p-5 d-flex align-items-center justify-content-center">
+							<h1 className="card-title text-uppercase fs-1 text-white">My Favorite Prompts</h1>
+						</div>
+						<div className="row p-4">
+							<div className="col d-flex justify-content-center">{genresInHTML}</div>
+						</div>
+						<div className="row p-5">{prompstInHTML}</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

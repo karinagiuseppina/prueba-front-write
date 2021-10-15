@@ -48,9 +48,11 @@ export const CharacterModal = () => {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ character: character, user_id: user_id })
 			});
-			if (resp.ok) {
+			if (!resp.ok) actions.setToast("warning", "Sorry! We couldnt add the prompt");
+			else {
 				const data = await resp.json();
 				setCharacterId(data["character_id"]);
+				actions.setToast("success", "Character added to your favorites!");
 			}
 		}
 	};
@@ -62,8 +64,10 @@ export const CharacterModal = () => {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ character_id: characterId, user_id: user_id })
 			});
-			if (resp.ok) {
+			if (!resp.ok) actions.setToast("warning", "Sorry! We could not remove the character");
+			else {
 				const data = await resp.json();
+				actions.setToast("error", "Character removed from your favorites!");
 			}
 		}
 	};
@@ -94,37 +98,40 @@ export const CharacterModal = () => {
 	};
 	return (
 		<div>
-			<div className={Modal ? "modal display-block" : "modal display-none"}>
-				<section className="modal-main p-4 bg-black">
-					<button type="button" onClick={hideModal} className="btn text-muted align-self-end">
-						<i className="fas fa-times" />
-					</button>
-					<h3 className="text-beige p-2">{character ? `${character.name} ${character.last_name}` : ""} </h3>
-					<button
-						type="button"
-						onClick={handleOnFavorite}
-						className={classProperty}
-						data-bs-toggle="tooltip"
-						data-bs-placement="right"
-						title={favoriteAction}
-					/>
-					<hr className="hr-prin" />
-					<p className="text-justify text-white my-4">
+			<div className={Modal ? "modal d-flex" : "modal display-none"}>
+				<section className={`modal-main bg-white rounded text-start animate__animated animate__backInLeft`}>
+					<div className="d-flex flex-column bg-sec p-3 rounded">
+						<button type="button" onClick={hideModal} className="btn text-muted align-self-end">
+							<i className="fas fa-times" />
+						</button>
+						<h3 className="text-white px-4 py-3 bg-sec text-uppercase">
+							{character ? `${character.name} ${character.last_name}` : ""}{" "}
+						</h3>
+						<button
+							type="button"
+							onClick={handleOnFavorite}
+							className={classProperty}
+							data-bs-toggle="tooltip"
+							data-bs-placement="right"
+							title={favoriteAction}
+						/>
+					</div>
+					<p className="text-center text-white bg-prin p-3 text-uppercase">
 						{character
 							? `${character.age} || ${character.occupation} || ${character.personality_name}`
 							: ""}
 					</p>
-					<p className="text-justify text-white my-4">{character ? `${character.personality_desc}` : ""} </p>
-					<a className="align-self-end button-next" onClick={handleNextCharacter}>
-						Next Character <i className="fas fa-chevron-right" />
+					<p className="text-justify text-dark m-4 px-3 py-2">
+						{character ? `${character.personality_desc}` : ""}
+					</p>
+					<a onClick={handleNextCharacter} className="align-self-end button-next p-4">
+						Next Prompt <i className="fas fa-chevron-right" />
 					</a>
 				</section>
 			</div>
-			<div className="col-12 col-lg-8 m-auto">
-				<button type="button" onClick={handleRandomCharacter} className="btn bg-black w-100 text-white">
-					Discover possible Characters!
-				</button>
-			</div>
+			<button type="button" onClick={handleRandomCharacter} className="btn bg-prin text-white">
+				Discover possible Characters!
+			</button>
 		</div>
 	);
 };

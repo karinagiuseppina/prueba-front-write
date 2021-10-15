@@ -4,21 +4,12 @@ import { Context } from "../store/appContext";
 import { Formgroup } from "../component/formGroup";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
 
 export const Login = () => {
 	const { actions } = useContext(Context);
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
-	const [message, setMessage] = useState("");
 	let history = useHistory();
-
-	const Toast = Swal.mixin({
-		toast: true,
-		position: "top-end",
-		showConfirmButton: false,
-		timer: 1500
-	});
 
 	const handleLogin = async () => {
 		let response = await actions.login(email, password);
