@@ -1,24 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export const Formgroup = ({ type, name, placeholder, set, value, id }) => {
+export const NormalInput = ({ type, placeholder, set, value, id }) => {
 	return (
-		<div className="form-floating mb-3">
+		<div className="mb-3">
+			<label htmlFor={id}>{placeholder}</label>
 			<input
 				type={type}
 				className="form-control border-0 border-bottom"
 				id={id}
 				placeholder={placeholder}
-				onChange={e => set(e.target.value)}
+				onChange={e => set(id, e.target.value)}
 				value={value}
 			/>
-			<label htmlFor={id}>{name}</label>
 		</div>
 	);
 };
 
-Formgroup.propTypes = {
-	name: PropTypes.string,
+NormalInput.propTypes = {
 	placeholder: PropTypes.string,
 	type: PropTypes.string,
 	value: PropTypes.string,

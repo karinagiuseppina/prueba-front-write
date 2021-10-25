@@ -7,7 +7,8 @@ export const AllCharacters = () => {
 		<div className="container">
 			<h1>My characters</h1>
 
-			<button>Create new character</button>
+			<Link to="/create-character"> Create new Character </Link>
+
 			<div className="d-flex flex-wrap justify-content-center">
 				<div className="card w-25 m-2">
 					<div className="card-body">

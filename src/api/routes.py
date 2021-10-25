@@ -10,8 +10,9 @@ import json
 from random import seed
 from random import randint
 import datetime
+import os
 
-apiKey = "AIzaSyDi7UUdcDjl0nVjA4ZEbR-gn4zAWePaL2w"
+apiKey = os.getenv('API_KEY_FIREBASE'), 
 cred = credentials.Certificate('/workspace/prueba-front-write/firebase-key.json')
 firebaseDatabase = firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://write-me-in-default-rtdb.firebaseio.com/'
@@ -192,3 +193,20 @@ def get_favorite_characters(user_id):
         return jsonify({"msg": "Something went wrong"}),400
 
     return jsonify(characters), 200
+
+
+@api.route("/create-character", methods=["POST"])
+def create_character():
+    character = request.json.get("character", None)
+    user_id = request.json.get("user_id", None)
+
+    if character is None or user_id is None: 
+        return jsonify({"msg": "Something went wrong"}),401
+
+    try: 
+        ref = db.reference("private/custom-character")
+        ref.child(user_id).push(character)
+    except: 
+        return jsonify({"msg": "There has been an error creating this character"}),400
+
+    return jsonify({"msg": "Character created!"}), 200

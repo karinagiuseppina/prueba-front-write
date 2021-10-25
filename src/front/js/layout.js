@@ -14,6 +14,7 @@ import { DiscoverCharacters } from "./pages/discoverCharacters";
 import { FavoriteCharacters } from "./pages/favoriteCharacters";
 import { Login } from "./pages/login";
 import { SignUp } from "./pages/SignUp";
+import { CreateCustomCharacterForm } from "./pages/createCharacterForm";
 
 import injectContext from "./store/appContext";
 
@@ -97,6 +98,10 @@ const Layout = () => {
 							<Route exact path="/favoritecharacters">
 								<FavoriteCharacters />
 							</Route>
+							<Route exact path="/create-character">
+								<CreateCustomCharacterForm />
+							</Route>
+
 							<Route>
 								<h1>Not found!</h1>
 							</Route>

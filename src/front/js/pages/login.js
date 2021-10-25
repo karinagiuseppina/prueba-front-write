@@ -9,6 +9,8 @@ export const Login = () => {
 	const { actions } = useContext(Context);
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
+	const [vissiblePasswordType, setVissiblePasswordType] = useState("password");
+	const [isVisiblePassword, setIsVissiblePassword] = useState(false);
 	let history = useHistory();
 
 	const handleLogin = async () => {
@@ -18,6 +20,15 @@ export const Login = () => {
 		} else {
 			actions.setToast("success", response.msg);
 			history.push("/");
+		}
+	};
+	const handleVissibleInput = () => {
+		if (vissiblePasswordType === "password") {
+			setVissiblePasswordType("text");
+			setIsVissiblePassword(true);
+		} else {
+			setVissiblePasswordType("password");
+			setIsVissiblePassword(false);
 		}
 	};
 
@@ -41,13 +52,27 @@ export const Login = () => {
 								value={email}
 							/>
 							<Formgroup
-								type="password"
+								type={vissiblePasswordType}
 								id="password"
 								placeholder="Password"
 								name="Password"
 								set={setPassword}
 								value={password}
 							/>
+							<div className="form-check">
+								<input
+									className="form-check-input"
+									type="checkbox"
+									onClick={handleVissibleInput}
+									id="passwordVissible"
+									checked={isVisiblePassword}
+								/>
+								<label
+									className="form-check-label text-muted small mt-0 mb-2"
+									htmlFor="passwordVissible">
+									Visible password
+								</label>
+							</div>
 
 							<div className="d-flex mb-2 justify-content-center">
 								<button

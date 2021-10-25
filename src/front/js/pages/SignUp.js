@@ -4,7 +4,6 @@ import { Context } from "../store/appContext";
 import { Formgroup } from "../component/formGroup";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { PasswordInput } from "../component/passwordInput";
 
 export const SignUp = () => {
 	const { actions } = useContext(Context);
@@ -12,7 +11,7 @@ export const SignUp = () => {
 	const [password, setPassword] = useState("");
 	const [name, setName] = useState("");
 	const [vissiblePasswordType, setVissiblePasswordType] = useState("password");
-	const [visiblePasswordIcon, setVissiblePasswordIcon] = useState("fas fa-eye-slash");
+	const [isVisiblePassword, setIsVissiblePassword] = useState(false);
 	const [message, setMessage] = useState("");
 	let history = useHistory();
 
@@ -23,7 +22,6 @@ export const SignUp = () => {
 			body: JSON.stringify({ name: name, email: email, password: password })
 		});
 		const data = await resp.json();
-		console.log(data);
 
 		if (!data.ok) alert("Sorry, invalid email/password");
 		else {
@@ -36,10 +34,10 @@ export const SignUp = () => {
 	const handleVissibleInput = () => {
 		if (vissiblePasswordType === "password") {
 			setVissiblePasswordType("text");
-			setVissiblePasswordIcon("fas fa-eye");
+			setIsVissiblePassword(true);
 		} else {
 			setVissiblePasswordType("password");
-			setVissiblePasswordIcon("fas fa-eye-slash");
+			setIsVissiblePassword(false);
 		}
 	};
 
@@ -69,17 +67,28 @@ export const SignUp = () => {
 								set={setEmail}
 								value={email}
 							/>
-
-							<PasswordInput
+							<Formgroup
 								type={vissiblePasswordType}
 								id="password"
-								name="Password"
 								placeholder="Password"
-								handleVissibility={handleVissibleInput}
-								value={password}
+								name="Password"
 								set={setPassword}
-								icon={visiblePasswordIcon}
+								value={password}
 							/>
+							<div className="form-check">
+								<input
+									className="form-check-input"
+									type="checkbox"
+									onClick={handleVissibleInput}
+									id="passwordVissible"
+									checked={isVisiblePassword}
+								/>
+								<label
+									className="form-check-label text-muted small mt-0 mb-2"
+									htmlFor="passwordVissible">
+									Visible password
+								</label>
+							</div>
 
 							<div className="d-flex mb-2 justify-content-center">
 								<button
