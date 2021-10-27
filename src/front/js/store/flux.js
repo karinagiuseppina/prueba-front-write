@@ -33,7 +33,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					body: JSON.stringify({ email: email, password: password })
 				});
 				const data = await resp.json();
-				console.log(data);
 
 				if (data.error) {
 					return { code: 400, msg: "Sorry, invalid email/password" };

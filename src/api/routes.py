@@ -210,3 +210,16 @@ def create_character():
         return jsonify({"msg": "There has been an error creating this character"}),400
 
     return jsonify({"msg": "Character created!"}), 200
+
+
+@api.route("/user/<user_id>/favoritecharacters/<character_id>", methods=["GET"])
+def get_favorite_character_by_id(user_id, character_id):
+
+    try: 
+        ref = db.reference("private/favorite-characters")
+        character = ref.child(user_id).child(character_id).get()
+        print(character)
+    except: 
+        return jsonify({"msg": "Something went wrong"}),400
+
+    return jsonify(character), 200

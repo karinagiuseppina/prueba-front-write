@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/styles.scss";
+import { Link } from "react-router-dom";
 
 export const FavoriteCharacters = () => {
 	const { store, actions } = useContext(Context);
@@ -108,10 +109,10 @@ export const FavoriteCharacters = () => {
 							</p>
 						</div>
 						<div className="card-footer text-center">
-							<button className="btn bg-prin text-white">
+							<Link className="btn bg-prin text-white" to={`/create-character/${character.id}`}>
 								Make it my own
 								<i className="fas fa-location-arrow mx-1" />
-							</button>
+							</Link>
 						</div>
 					</div>
 				</div>

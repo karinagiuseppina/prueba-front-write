@@ -98,7 +98,10 @@ const Layout = () => {
 							<Route exact path="/favoritecharacters">
 								<FavoriteCharacters />
 							</Route>
-							<Route exact path="/create-character">
+							<Route exact path="/create-character/">
+								<CreateCustomCharacterForm />
+							</Route>
+							<Route exact path="/create-character/:fav_character">
 								<CreateCustomCharacterForm />
 							</Route>
 

@@ -18,8 +18,8 @@ export const CreateCustomCharacter = ({ children, title, id, flex, progressBar }
 	);
 };
 CreateCustomCharacter.propTypes = {
-	children: PropTypes.element,
-	progressBar: PropTypes.element,
+	children: PropTypes.node,
+	progressBar: PropTypes.node,
 	title: PropTypes.string,
 	flex: PropTypes.string,
 	id: PropTypes.string
