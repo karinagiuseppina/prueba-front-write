@@ -43,6 +43,10 @@ export const Sidebar = ({ toggled, collapsed, handleToggleSidebar, handleCollaps
 				My Characters
 				<Link to="/mycharacters" />
 			</MenuItem>
+			<MenuItem icon={<i className="fas fa-globe-africa" />}>
+				My Societies
+				<Link to="/mysocieties" />
+			</MenuItem>
 			<MenuItem icon={<i className="fas fa-user-cog" />}>
 				Edite Profile
 				<Link to="/editmyprofile" />

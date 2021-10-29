@@ -41,12 +41,12 @@ export const CharacterModal = () => {
 	};
 
 	const addtofavorite = async () => {
-		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
-		if (user_id !== null) {
+		const token = actions.getUserToken();
+		if (token !== null) {
 			const resp = await fetch(`${process.env.BACKEND_URL}/api/add/favoritecharacters`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ character: character, user_id: user_id })
+				headers: { "Content-Type": "application/json", Authorization: token },
+				body: JSON.stringify({ character: character })
 			});
 			if (!resp.ok) actions.setToast("warning", "Sorry! We couldnt add the prompt");
 			else {
@@ -57,12 +57,12 @@ export const CharacterModal = () => {
 		}
 	};
 	const removefromfavorite = async () => {
-		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
-		if (user_id !== null) {
+		const token = actions.getUserToken();
+		if (token !== null) {
 			const resp = await fetch(`${process.env.BACKEND_URL}/api/delete/favoritecharacters`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ character_id: characterId, user_id: user_id })
+				headers: { "Content-Type": "application/json", Authorization: token },
+				body: JSON.stringify({ character_id: characterId })
 			});
 			if (!resp.ok) actions.setToast("warning", "Sorry! We could not remove the character");
 			else {

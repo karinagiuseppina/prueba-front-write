@@ -2,11 +2,11 @@ import React from "react";
 import "../../styles/styles.scss";
 import PropTypes from "prop-types";
 
-export const CreateCustomCharacter = ({ children, title, id, flex, progressBar }) => {
+export const CreateCustomCharacter = ({ children, title, id, progressBar }) => {
 	return (
 		<div className="row align-items-center" id={id}>
 			<div className="col-lg-10 col-xl-9 mx-auto">
-				<div className={`card ${flex} my-3 border-0 shadow rounded-3 overflow-hidden`}>
+				<div className={`card flex-row my-3 border-0 shadow rounded-3 overflow-hidden`}>
 					<div className="card-img-left-create d-none d-md-flex justify-content-center">{progressBar}</div>
 					<div className="card-body p-4 p-sm-5 create-character-form">
 						<h3 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">{title}</h3>
@@ -21,7 +21,6 @@ CreateCustomCharacter.propTypes = {
 	children: PropTypes.node,
 	progressBar: PropTypes.node,
 	title: PropTypes.string,
-	flex: PropTypes.string,
 	id: PropTypes.string
 };
 

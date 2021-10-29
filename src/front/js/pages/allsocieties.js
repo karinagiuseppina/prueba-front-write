@@ -2,25 +2,25 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/styles.scss";
 import { Link } from "react-router-dom";
-import { CustomCharacterCard } from "../component/customCharacterCard";
+import { SocietyCard } from "../component/societyCard";
 
-export const AllCharacters = () => {
+export const AllSocieties = () => {
 	const { store, actions } = useContext(Context);
-	const [customCharacters, setCustomCharacters] = useState([]);
+	const [societies, setSocieties] = useState([]);
 
 	useEffect(() => {
-		getUserCustomCharacters();
+		getSocieties();
 	}, []);
 
-	const getUserCustomCharacters = async () => {
+	const getSocieties = async () => {
 		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/custom-characters`, {
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/societies`, {
 			method: "GET",
 			headers: { "Content-Type": "application/json", Authorization: token }
 		});
 		if (resp.ok) {
-			const custom_characters = await resp.json();
-			setCustomCharacters(custom_characters);
+			const data = await resp.json();
+			setSocieties(data);
 		}
 	};
 
@@ -30,16 +30,16 @@ export const AllCharacters = () => {
 				<div className="col-lg-10 col-xl-9 mx-auto">
 					<div className="card flex-row my-3 border-0 shadow rounded-3 overflow-hidden">
 						<div className="card-body p-4 p-sm-5">
-							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">My characters</h1>
+							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">My Societies</h1>
 							<div className="d-flex my-3 justify-content-end">
 								<button className="btn btn-prin fw-bold text-uppercase w-25 p-2">
-									<Link to="/create-character" className="text-decoration-none text-white">
-										Create new Character
+									<Link to="/create-society" className="text-decoration-none text-white">
+										Create Society
 									</Link>
 								</button>
 							</div>
-							{customCharacters.map(character => (
-								<CustomCharacterCard character={character} key={character.id} />
+							{societies.map(society => (
+								<SocietyCard society={society} key={society.id} />
 							))}
 						</div>
 					</div>

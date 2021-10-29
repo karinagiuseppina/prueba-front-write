@@ -26,6 +26,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ user: user });
 				}
 			},
+			getUserToken: () => {
+				let user = getStore().user;
+				let token;
+				if (user === null) {
+					getActions().syncUserFromLocalStorage;
+					token = JSON.parse(localStorage.getItem("user"));
+					token = token["idToken"];
+				} else {
+					token = user["idToken"];
+				}
+				return token;
+			},
 			login: async (email, password) => {
 				const resp = await fetch(`${process.env.BACKEND_URL}/api/login`, {
 					method: "POST",

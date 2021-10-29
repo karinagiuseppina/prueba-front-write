@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/styles.scss";
 import { Link } from "react-router-dom";
+import { FavoriteCharacterCard } from "../component/favoriteCharacterCard";
 
 export const FavoriteCharacters = () => {
 	const { store, actions } = useContext(Context);
@@ -11,7 +12,6 @@ export const FavoriteCharacters = () => {
 	const [genderSelected, setGenderSelected] = useState([]);
 
 	useEffect(() => {
-		actions.syncUserFromLocalStorage();
 		getUserFavoriteCharacters();
 	}, []);
 
@@ -33,12 +33,11 @@ export const FavoriteCharacters = () => {
 		},
 		[favoriteCharacters]
 	);
-
 	const getUserFavoriteCharacters = async () => {
-		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/favoritecharacters`, {
+		const token = actions.getUserToken();
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/favoritecharacters`, {
 			method: "GET",
-			headers: { "Content-Type": "application/json" }
+			headers: { "Content-Type": "application/json", Authorization: token }
 		});
 		if (resp.ok) {
 			const favorite_characters = await resp.json();
@@ -61,61 +60,29 @@ export const FavoriteCharacters = () => {
 	};
 
 	const removefromfavorite = async id => {
-		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
-		if (user_id !== null) {
+		const token = actions.getUserToken();
+		if (token !== null) {
 			const resp = await fetch(`${process.env.BACKEND_URL}/api/delete/favoritecharacters`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ character_id: id, user_id: user_id })
+				headers: { "Content-Type": "application/json", Authorization: token },
+				body: JSON.stringify({ character_id: id })
 			});
 			if (!resp.ok) actions.setToast("warning", "Sorry! We could not remove the character");
 			else {
 				const data = await resp.json();
-				actions.setToast("error", "Character removed from your favorites!");
+				actions.setToast("success", "Character removed from your favorites!");
 			}
 		}
 	};
-
 	const buildCharactersHTML = characters_array => {
 		setCharactersInHTML(
 			characters_array.map(character => (
-				<div className="col-12 col-md-6" key={character.id}>
-					<div className="card my-2">
-						<div className="card-header">
-							<div
-								className="text-muted text-right"
-								onClick={() => {
-									handleDeleteFavorite(character.id);
-								}}>
-								<i className="fas fa-times border-0" />
-							</div>
-							<h5 className="card-title text-center text-dark">
-								{character.name} {character.last_name}
-							</h5>
-							<h6 className="card-subtitle mb-2 text-cuar text-center">
-								<i className="fas fa-clock text-ter mx-1" /> {character.age} years
-								<i className="fas fa-briefcase text-ter mx-1" /> {character.occupation}
-								<i className="fas fa-street-view text-ter mx-1" /> {character.personality_name}
-							</h6>
-						</div>
-						<div className="card-body">
-							<p className="card-text text-justify fs-6 overflow-auto" style={{ maxHeight: "200px" }}>
-								{character.personality_desc}
-							</p>
-							<p
-								className={`prompt-genre bg-${character.gender}`}
-								onClick={() => handleSelectGender(character.gender)}>
-								{character.gender}
-							</p>
-						</div>
-						<div className="card-footer text-center">
-							<Link className="btn bg-prin text-white" to={`/create-character/${character.id}`}>
-								Make it my own
-								<i className="fas fa-location-arrow mx-1" />
-							</Link>
-						</div>
-					</div>
-				</div>
+				<FavoriteCharacterCard
+					key={character.id}
+					character={character}
+					handleDeleteFavorite={handleDeleteFavorite}
+					handleSelectGender={handleSelectGender}
+				/>
 			))
 		);
 	};

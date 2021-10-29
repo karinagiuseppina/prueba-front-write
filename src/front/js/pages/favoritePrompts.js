@@ -34,10 +34,10 @@ export const FavoritePrompts = () => {
 	);
 
 	const getUserPrompts = async () => {
-		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}/favoriteprompts`, {
+		const token = actions.getUserToken();
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/favoriteprompts`, {
 			method: "GET",
-			headers: { "Content-Type": "application/json" }
+			headers: { "Content-Type": "application/json", Authorization: token }
 		});
 		if (resp.ok) {
 			const favorite_prompts = await resp.json();
@@ -60,17 +60,17 @@ export const FavoritePrompts = () => {
 	};
 
 	const removefromfavorite = async id => {
-		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
-		if (user_id !== null) {
+		const token = actions.getUserToken();
+		if (token !== null) {
 			const resp = await fetch(`${process.env.BACKEND_URL}/api/delete/favoriteprompts`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ prompt_id: id, user_id: user_id })
+				headers: { "Content-Type": "application/json", Authorization: token },
+				body: JSON.stringify({ prompt_id: id })
 			});
 			if (!resp.ok) actions.setToast("warning", "Sorry! We could not remove the prompt");
 			else {
 				const data = await resp.json();
-				actions.setToast("error", "Prompt removed from your favorites!");
+				actions.setToast("success", "Prompt removed from your favorites!");
 			}
 		}
 	};

@@ -56,7 +56,7 @@ export const CreateCustomCharacterForm = () => {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ character: character, user_id: store.user.localId })
 		});
-		if (!resp.ok) {
+		if (resp.ok) {
 			const data = await resp.json();
 			actions.setToast("success", data.msg);
 		} else {
@@ -107,7 +107,7 @@ export const CreateCustomCharacterForm = () => {
 	);
 
 	const generalInfo = (
-		<CreateCustomCharacter title="General Information" id="general" flex="flex-row" progressBar={progressOne}>
+		<CreateCustomCharacter title="General Information" id="general" progressBar={progressOne}>
 			<NormalInput type="text" id="name" placeholder="Full Name" set={updateValue} value={character.name} />
 			<div className="row">
 				<div className="col-12 col-md-6">
@@ -163,32 +163,22 @@ export const CreateCustomCharacterForm = () => {
 					/>
 				</div>
 			</div>
-			{/* <div className="d-flex my-3 justify-content-center">
-				<a href="#personality" className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-					Next
-				</a>
-			</div> */}
 		</CreateCustomCharacter>
 	);
 
 	const personalityInfo = (
-		<CreateCustomCharacter title="Personality" id="personality" flex="flex-row-reverse" progressBar={progressTwo}>
+		<CreateCustomCharacter title="Personality" id="personality" progressBar={progressTwo}>
 			<TextareaInput
 				id="personality"
 				placeholder="Personality Description"
 				set={updateValue}
 				value={character.personality}
 			/>
-			{/* <div className="d-flex my-3 justify-content-center">
-				<a href="#appearence" className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-					Next
-				</a>
-			</div> */}
 		</CreateCustomCharacter>
 	);
 
 	const appearenceInfo = (
-		<CreateCustomCharacter title="Physical Appearence" id="appearence" flex="flex-row" progressBar={progressThree}>
+		<CreateCustomCharacter title="Physical Appearence" id="appearence" progressBar={progressThree}>
 			<NormalInput
 				type="text"
 				id="eye_color"
@@ -229,7 +219,7 @@ export const CreateCustomCharacterForm = () => {
 								<button
 									onClick={handleCreateCharacter}
 									className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-									Next
+									Save Character
 								</button>
 							</div>
 						</div>
