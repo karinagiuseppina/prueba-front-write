@@ -27,16 +27,16 @@ export const CreateCustomCharacterForm = () => {
 	});
 
 	useEffect(() => {
-		actions.syncUserFromLocalStorage();
 		if (fav_character !== undefined) {
 			handleGetDataFavoriteCharacter(fav_character);
 		}
 	}, []);
 
 	const handleGetDataFavoriteCharacter = async id => {
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${store.user.localId}/favoritecharacters/${id}`, {
+		const token = actions.getUserToken();
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/favoritecharacters/${id}`, {
 			method: "GET",
-			headers: { "Content-Type": "application/json" }
+			headers: { "Content-Type": "application/json", Authorization: token }
 		});
 		if (resp.ok) {
 			const data = await resp.json();
@@ -51,10 +51,11 @@ export const CreateCustomCharacterForm = () => {
 	};
 
 	const handleCreateCharacter = async () => {
+		const token = actions.getUserToken();
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/create-character`, {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ character: character, user_id: store.user.localId })
+			headers: { "Content-Type": "application/json", Authorization: token },
+			body: JSON.stringify({ character: character })
 		});
 		if (resp.ok) {
 			const data = await resp.json();

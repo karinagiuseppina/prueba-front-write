@@ -21,7 +21,6 @@ export const AllPlots = () => {
 		if (resp.ok) {
 			const plots_array = await resp.json();
 			setPlots(plots_array);
-			console.log(plots_array);
 		}
 	};
 	return (

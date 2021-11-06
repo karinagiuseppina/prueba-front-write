@@ -17,16 +17,14 @@ import { SignUp } from "./pages/SignUp";
 import { CreateCustomCharacterForm } from "./pages/createCharacterForm";
 import { UpdateCustomCharacterForm } from "./pages/updateCharacterForm";
 import { AllSocieties } from "./pages/allsocieties";
+import { CreatePlot } from "./pages/createPlot";
+import { UpdatePlot } from "./pages/updatePlot";
+import { CreateSociety } from "./pages/createSociety";
 
 import injectContext from "./store/appContext";
 
 import { Sidebar } from "./component/sidebar";
 import { Footer } from "./component/footer";
-import { Protected } from "./pages/protected";
-import { LoginCookie } from "./pages/loginCookie";
-import { CreatePlot } from "./pages/createPlot";
-import { UpdatePlot } from "./pages/updatePlot";
-import { CreateSociety } from "./pages/createSociety";
 
 //create your first component
 const Layout = () => {
@@ -71,9 +69,6 @@ const Layout = () => {
 						<Switch>
 							<Route exact path="/">
 								<Home />
-							</Route>
-							<Route exact path="/protected">
-								<Protected />
 							</Route>
 							<Route exact path="/login">
 								<Login />
@@ -129,11 +124,6 @@ const Layout = () => {
 							<Route exact path="/favoritecharacters">
 								<FavoriteCharacters />
 							</Route>
-
-							<Route exact path="/loginCookie">
-								<LoginCookie />
-							</Route>
-							<Route exact path="/protectedCooke" />
 
 							<Route>
 								<h1>Not found!</h1>

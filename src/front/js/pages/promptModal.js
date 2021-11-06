@@ -81,7 +81,7 @@ export const PromptModal = ({ genre }) => {
 
 	const addtofavorite = async () => {
 		const token = actions.getUserToken();
-		if (user_id !== null) {
+		if (token !== null) {
 			const resp = await fetch(`${process.env.BACKEND_URL}/api/add/favoriteprompts`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json", Authorization: token },
@@ -92,6 +92,8 @@ export const PromptModal = ({ genre }) => {
 				const data = await resp.json();
 				actions.setToast("success", "Prompt added to your favorites!");
 			}
+		} else {
+			actions.setToast("warning", "Log in first!");
 		}
 	};
 	const removefromfavorite = async () => {
@@ -107,6 +109,8 @@ export const PromptModal = ({ genre }) => {
 				const data = await resp.json();
 				actions.setToast("success", "Prompt removed from your favorites!");
 			}
+		} else {
+			actions.setToast("warning", "Log in first!");
 		}
 	};
 

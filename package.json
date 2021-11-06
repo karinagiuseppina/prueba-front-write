@@ -86,6 +86,7 @@
 		"react-polyfills": "0.0.1",
 		"react-pro-sidebar": "^0.7.1",
 		"react-router-dom": "^5.2.0",
-		"sweetalert2": "^11.1.7"
+		"sweetalert2": "^11.1.7",
+		"universal-cookie": "^4.0.4"
 	}
 }

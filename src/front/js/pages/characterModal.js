@@ -54,6 +54,8 @@ export const CharacterModal = () => {
 				setCharacterId(data["character_id"]);
 				actions.setToast("success", "Character added to your favorites!");
 			}
+		} else {
+			actions.setToast("warning", "Log in first!");
 		}
 	};
 	const removefromfavorite = async () => {
@@ -69,6 +71,8 @@ export const CharacterModal = () => {
 				const data = await resp.json();
 				actions.setToast("error", "Character removed from your favorites!");
 			}
+		} else {
+			actions.setToast("warning", "Log in first!");
 		}
 	};
 

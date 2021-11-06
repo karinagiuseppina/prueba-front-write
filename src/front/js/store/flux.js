@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			user: null,
+			user_session: null,
 			genres: ["fantasy", "sci-fi", "dystopian", "contemporary", "romance", "thriller", "mystery"],
 			genders: ["female", "male"]
 		},
@@ -11,32 +11,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getRandom: length => {
 				return Math.floor(Math.random() * length);
 			},
-			setUserSession: user => {
-				setStore({ user: user });
-				localStorage.setItem("user", JSON.stringify(user));
+			setUserSession: cookie => {
+				setStore({ user_session: cookie });
+				localStorage.setItem("user_session", JSON.stringify(cookie));
 			},
 			deleteUserSession: () => {
-				localStorage.removeItem("user");
-				setStore({ user: null });
+				localStorage.removeItem("user_session");
+				setStore({ user_session: null });
 			},
 			syncUserFromLocalStorage: () => {
-				const user = JSON.parse(localStorage.getItem("user"));
+				const user = localStorage.getItem("user_session");
 
 				if (user && user !== undefined && user !== "") {
-					setStore({ user: user });
+					setStore({ user_session: user });
 				}
 			},
 			getUserToken: () => {
-				let user = getStore().user;
-				let token;
-				if (user === null) {
+				let user_session = getStore().user_session;
+				if (user_session === null) {
 					getActions().syncUserFromLocalStorage;
-					token = JSON.parse(localStorage.getItem("user"));
-					token = token["idToken"];
-				} else {
-					token = user["idToken"];
+					user_session = localStorage.getItem("user_session");
 				}
-				return token;
+				console.log(user_session);
+				return user_session;
 			},
 			login: async (email, password) => {
 				const resp = await fetch(`${process.env.BACKEND_URL}/api/login`, {

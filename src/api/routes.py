@@ -20,6 +20,14 @@ firebaseDatabase = firebase_admin.initialize_app(cred, {
 
 api = Blueprint('api', __name__)
 
+def confirm_access(session_cookie):
+    if not session_cookie:
+        return {"code": 422}
+    try:
+        decoded_claims = auth.verify_session_cookie(session_cookie, check_revoked=True)
+        return {"user_id":decoded_claims["uid"], "code": 200}
+    except auth.InvalidSessionCookieError:
+        return {"code": 422}
 
 @api.route("/login", methods=["POST"])
 def login():
@@ -30,8 +38,14 @@ def login():
     headers = {"content-type": "application/json"}
     data =  json.dumps({"email": email, "password": password, "returnSecureToken": True})
     request_object = requests.post(request_ref, headers=headers, data=data)
-
-    return jsonify(request_object.json()), 200
+    request_object = request_object.json()
+    try:
+        id_token = request_object['idToken']
+        expires_in = datetime.timedelta(days=5)
+        session_cookie = auth.create_session_cookie(id_token, expires_in=expires_in)
+        return jsonify({"cookie": session_cookie, "displayName": request_object["displayName"]}), 200
+    except:
+            return jsonify({"error": "ok"}), 401
 
 @api.route("/signup", methods=["POST"])
 def create_user():
@@ -70,10 +84,12 @@ def get_random_prompts(genre):
 @api.route("/add/favoriteprompts", methods=["POST"])
 def add_favorite_prompt():
     prompt = request.json.get("prompt", None)
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
     if prompt is None: 
-        return jsonify({"msg": "Something went wrong"}),400
+        return jsonify({"msg": "Prompt does not exist"}),400
     try: 
         ref = db.reference("private/favorite-prompts")
         ref.child(user_id).child(prompt['prompt_id']).set({
@@ -88,8 +104,11 @@ def add_favorite_prompt():
 @api.route("/delete/favoriteprompts", methods=["POST"])
 def delete_favorite_prompt():
     prompt_id = request.json.get("prompt_id", None)
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
+
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
     
     if prompt_id is None: 
         return jsonify({"msg": "Something went wrong"}),400
@@ -103,8 +122,10 @@ def delete_favorite_prompt():
 
 @api.route("/user/favoriteprompts", methods=["GET"])
 def get_favorite_prompts():
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
     try: 
         ref = db.reference("private/favorite-prompts")
         data = ref.child(user_id).get()
@@ -148,8 +169,10 @@ def get_random_character():
 @api.route("/add/favoritecharacters", methods=["POST"])
 def add_favorite_character():
     character = request.json.get("character", None)
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
 
     if character is None: 
         return jsonify({"msg": "Something went wrong"}),400
@@ -166,10 +189,13 @@ def add_favorite_character():
 @api.route("/delete/favoritecharacters", methods=["POST"])
 def delete_favorite_character():
     character_id = request.json.get("character_id", None)
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
+
     if character_id is None: 
-        return jsonify({"msg": "Something went wrong"}),400
+        return jsonify({"msg": "Character does not exist."}),400
     try: 
         ref = db.reference("private/favorite-characters")
         prompt = ref.child(user_id).child(character_id).delete()
@@ -181,11 +207,13 @@ def delete_favorite_character():
 
 @api.route("/user/favoritecharacters", methods=["GET"])
 def get_favorite_characters():
-    id_token = request.headers.get('Authorization')
-    uid = get_user_authenticated(id_token)
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
     try: 
         ref = db.reference("private/favorite-characters")
-        data = ref.child(uid).get()
+        data = ref.child(user_id).get()
         characters = []
         for key, val in data.items():
             characters.append({"id": key, 
@@ -202,8 +230,12 @@ def get_favorite_characters():
     return jsonify(characters), 200
 
 
-@api.route("/user/<user_id>/favoritecharacters/<character_id>", methods=["GET"])
-def get_favorite_character_by_id(user_id, character_id):
+@api.route("/user/favoritecharacters/<character_id>", methods=["GET"])
+def get_favorite_character_by_id(character_id):
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
 
     try: 
         ref = db.reference("private/favorite-characters")
@@ -217,10 +249,10 @@ def get_favorite_character_by_id(user_id, character_id):
 @api.route("/create-character", methods=["POST"])
 def create_character():
     character = request.json.get("character", None)
-    user_id = request.json.get("user_id", None)
-
-    if character is None or user_id is None: 
-        return jsonify({"msg": "Something went wrong"}),401
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
 
     try: 
         ref = db.reference("private/custom-character")
@@ -232,11 +264,10 @@ def create_character():
 
 @api.route("/update-character", methods=["PUT"])
 def update_character():
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
-    
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
 
     character = request.json.get("character", None)
     character_id = request.json.get("character_id", None)
@@ -254,11 +285,10 @@ def update_character():
 
 @api.route("/user/custom-characters", methods=["GET"])
 def get_custom_characters():
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
-    
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
     
     try: 
         ref = db.reference("private/custom-character")
@@ -276,11 +306,10 @@ def get_custom_characters():
 
 @api.route("/user/custom-characters/<character_id>", methods=["GET"])
 def get_custom_character(character_id):
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
-    
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
     
     try: 
         ref = db.reference("private/custom-character").child(user_id)
@@ -292,11 +321,10 @@ def get_custom_character(character_id):
 
 @api.route("/user/custom-characters/delete/<character_id>", methods=["PUT"])
 def delete_custom_character(character_id):
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
-    
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
     
     try: 
         ref = db.reference("private/custom-character").child(user_id)
@@ -311,11 +339,10 @@ def delete_custom_character(character_id):
 def create_plot():
     plot = request.json.get("plot", None)
 
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
-    
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
 
     try: 
         ref = db.reference("private/plots")
@@ -327,11 +354,10 @@ def create_plot():
 
 @api.route("/user/plots", methods=["GET"])
 def get_plots():
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
-    
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
     
     try: 
         ref = db.reference("private/plots")
@@ -349,11 +375,10 @@ def get_plots():
 
 @api.route("/user/plots/<plot_id>", methods=["GET"])
 def get_custom_plot(plot_id):
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
-    
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
     
     try: 
         ref = db.reference("private/plots").child(user_id)
@@ -365,11 +390,10 @@ def get_custom_plot(plot_id):
 
 @api.route("/update-plot", methods=["PUT"])
 def update_plot():
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
-    
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
 
     plot = request.json.get("plot", None)
     plot_id = request.json.get("plot_id", None)
@@ -387,11 +411,10 @@ def update_plot():
 
 @api.route("/user/plots/<plot_id>", methods=["DELETE"])
 def delete_plot(plot_id):
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
-    
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
     
     try: 
         ref = db.reference("private/plots").child(user_id)
@@ -405,11 +428,10 @@ def delete_plot(plot_id):
 def create_society():
     society = request.json.get("society", None)
 
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
-    
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
 
     try: 
         ref = db.reference("private/societies")
@@ -421,11 +443,10 @@ def create_society():
 
 @api.route("/user/societies", methods=["GET"])
 def get_societies():
-    id_token = request.headers.get('Authorization')
-    user_id = get_user_authenticated(id_token)
+    cookie = confirm_access(request.headers.get('Authorization'))
     
-    if user_id is None:
-        return jsonify({"msg":"token expired"}), 422
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
     
     try: 
         ref = db.reference("private/societies")
@@ -440,53 +461,6 @@ def get_societies():
 
     return jsonify(societies), 200
 
-def get_user_authenticated(token):
-    try:
-        decoded_token = auth.verify_id_token(token, check_revoked=True)
-        uid = decoded_token['uid']
-        return uid
-    except auth.RevokedIdTokenError:
-        return 
-    except auth.UserDisabledError:
-        return 
-    except auth.InvalidIdTokenError:
-        return 
 
 
-@api.route("/sessionlogin", methods=["POST"])
-def logincookie():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
 
-    request_ref = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={}".format(apiKey)
-    headers = {"content-type": "application/json"}
-    data =  json.dumps({"email": email, "password": password, "returnSecureToken": True})
-    request_object = requests.post(request_ref, headers=headers, data=data)
-    request_object = request_object.json()
-
-    try:
-        id_token = request_object['idToken']
-        expires_in = datetime.timedelta(days=5)
-        try:
-            session_cookie = auth.create_session_cookie(id_token, expires_in=expires_in)
-            expires = datetime.datetime.now() + expires_in
-            response = jsonify({"msg": "ok"})
-            response.set_cookie(
-                'session', session_cookie, expires=expires, httponly=True, secure=True)
-            return response
-        except exceptions.FirebaseError:
-            return jsonify({"error": "ok"}), 401
-    except exceptions.FirebaseError:
-            return jsonify({"error": "ok"}), 401
-
-@api.route('/protectedcookie', methods=['GET'])
-def access_restricted_content():
-    session_cookie = flask.request.cookies.get('session')
-    if not session_cookie:
-        return jsonify({"error": "ok"}),422
-
-    try:
-        decoded_claims = auth.verify_session_cookie(session_cookie, check_revoked=True)
-        return jsonify({"msg": "ok"}),200
-    except auth.InvalidSessionCookieError:
-        return jsonify({"error": "ok"}),422
