@@ -23,10 +23,9 @@ export const SignUp = () => {
 		});
 		const data = await resp.json();
 
-		if (!data.ok) alert("Sorry, invalid email/password");
+		if (!data.ok) actions.setToast("warning", "There has been a mistake during sign up.");
 		else {
 			let msg = await actions.login(email, password);
-			console.log(msg);
 			history.push("/");
 		}
 	};

@@ -8,7 +8,7 @@ export const TextareaInput = ({ placeholder, set, value, id }) => {
 			<textarea
 				className="form-control"
 				id={id}
-				style={{ height: "100px" }}
+				style={{ height: "200px" }}
 				onChange={e => set(id, e.target.value)}
 				value={value}
 				placeholder={placeholder}

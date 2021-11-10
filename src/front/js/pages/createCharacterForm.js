@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../../styles/styles.scss";
+import { useParams } from "react-router";
 import { Context } from "../store/appContext";
 import { NormalInput } from "../component/normalInput";
 import { CreateCustomCharacter } from "./createCharacter";
@@ -9,6 +10,7 @@ import { ProgressTrack } from "../component/progressTrack";
 
 export const CreateCustomCharacterForm = () => {
 	const { actions, store } = useContext(Context);
+	let { fav_character } = useParams();
 	const [character, setCharacter] = useState({
 		name: "",
 		nickname: "",
@@ -18,21 +20,48 @@ export const CreateCustomCharacterForm = () => {
 		eye_color: "",
 		hair_color: "",
 		skin_color: "",
+		gender: "",
 		sexual_orientation: "",
 		personality: "",
 		appearence: ""
 	});
 
+	useEffect(() => {
+		if (fav_character !== undefined) {
+			handleGetDataFavoriteCharacter(fav_character);
+		}
+	}, []);
+
+	const handleGetDataFavoriteCharacter = async id => {
+		const token = actions.getUserToken();
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/favoritecharacters/${id}`, {
+			method: "GET",
+			headers: { "Content-Type": "application/json", Authorization: token }
+		});
+		if (resp.ok) {
+			const data = await resp.json();
+			let old_character = { ...character };
+			old_character["age"] = data.age;
+			old_character["name"] = `${data.name} ${data.last_name}`;
+			old_character["occupation"] = data.occupation;
+			old_character["personality"] = data.personality_desc;
+			old_character["gender"] = data.gender;
+			setCharacter(old_character);
+		}
+	};
+
 	const handleCreateCharacter = async () => {
+		const token = actions.getUserToken();
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/create-character`, {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ character: character, user_id: store.user.localId })
+			headers: { "Content-Type": "application/json", Authorization: token },
+			body: JSON.stringify({ character: character })
 		});
-		const data = await resp.json();
-		if (!data.ok) actions.setToast("warning", data.msg);
-		else {
+		if (resp.ok) {
+			const data = await resp.json();
 			actions.setToast("success", data.msg);
+		} else {
+			actions.setToast("warning", resp.msg);
 		}
 	};
 
@@ -79,7 +108,7 @@ export const CreateCustomCharacterForm = () => {
 	);
 
 	const generalInfo = (
-		<CreateCustomCharacter title="General Information" id="general" flex="flex-row" progressBar={progressOne}>
+		<CreateCustomCharacter title="General Information" id="general" progressBar={progressOne}>
 			<NormalInput type="text" id="name" placeholder="Full Name" set={updateValue} value={character.name} />
 			<div className="row">
 				<div className="col-12 col-md-6">
@@ -92,17 +121,19 @@ export const CreateCustomCharacterForm = () => {
 					/>
 				</div>
 				<div className="col-12 col-md-6">
-					<NormalInput type="date" id="age" placeholder="Age" set={updateValue} value={character.age} />
+					<NormalInput type="number" id="age" placeholder="Age" set={updateValue} value={character.age} />
 				</div>
 			</div>
-			<NormalInput
-				type="text"
-				id="occupation"
-				placeholder="Occupation"
-				set={updateValue}
-				value={character.occupation}
-			/>
 			<div className="row">
+				<div className="col-12 col-md-6">
+					<NormalInput
+						type="text"
+						id="occupation"
+						placeholder="Occupation"
+						set={updateValue}
+						value={character.occupation}
+					/>
+				</div>
 				<div className="col-12 col-md-6">
 					<NormalInput
 						type="text"
@@ -110,6 +141,17 @@ export const CreateCustomCharacterForm = () => {
 						placeholder="Nationality"
 						set={updateValue}
 						value={character.nationality}
+					/>
+				</div>
+			</div>
+			<div className="row">
+				<div className="col-12 col-md-6">
+					<NormalInput
+						type="text"
+						id="gender"
+						placeholder="Gender"
+						set={updateValue}
+						value={character.gender}
 					/>
 				</div>
 				<div className="col-12 col-md-6">
@@ -122,32 +164,22 @@ export const CreateCustomCharacterForm = () => {
 					/>
 				</div>
 			</div>
-			{/* <div className="d-flex my-3 justify-content-center">
-				<a href="#personality" className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-					Next
-				</a>
-			</div> */}
 		</CreateCustomCharacter>
 	);
 
 	const personalityInfo = (
-		<CreateCustomCharacter title="Personality" id="personality" flex="flex-row-reverse" progressBar={progressTwo}>
+		<CreateCustomCharacter title="Personality" id="personality" progressBar={progressTwo}>
 			<TextareaInput
 				id="personality"
 				placeholder="Personality Description"
 				set={updateValue}
 				value={character.personality}
 			/>
-			{/* <div className="d-flex my-3 justify-content-center">
-				<a href="#appearence" className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-					Next
-				</a>
-			</div> */}
 		</CreateCustomCharacter>
 	);
 
 	const appearenceInfo = (
-		<CreateCustomCharacter title="Physical Appearence" id="appearence" flex="flex-row" progressBar={progressThree}>
+		<CreateCustomCharacter title="Physical Appearence" id="appearence" progressBar={progressThree}>
 			<NormalInput
 				type="text"
 				id="eye_color"
@@ -188,7 +220,7 @@ export const CreateCustomCharacterForm = () => {
 								<button
 									onClick={handleCreateCharacter}
 									className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-									Next
+									Save Character
 								</button>
 							</div>
 						</div>

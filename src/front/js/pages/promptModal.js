@@ -80,33 +80,37 @@ export const PromptModal = ({ genre }) => {
 	};
 
 	const addtofavorite = async () => {
-		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
-		if (user_id !== null) {
+		const token = actions.getUserToken();
+		if (token !== null) {
 			const resp = await fetch(`${process.env.BACKEND_URL}/api/add/favoriteprompts`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ prompt: actualPrompt, user_id: user_id })
+				headers: { "Content-Type": "application/json", Authorization: token },
+				body: JSON.stringify({ prompt: actualPrompt })
 			});
 			if (!resp.ok) actions.setToast("warning", "Sorry! We couldnt add the prompt");
 			else {
 				const data = await resp.json();
 				actions.setToast("success", "Prompt added to your favorites!");
 			}
+		} else {
+			actions.setToast("warning", "Log in first!");
 		}
 	};
 	const removefromfavorite = async () => {
-		const user_id = store.user && store.user !== undefined ? store.user["localId"] : null;
-		if (user_id !== null) {
+		const token = actions.getUserToken();
+		if (token !== null) {
 			const resp = await fetch(`${process.env.BACKEND_URL}/api/delete/favoriteprompts`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ prompt_id: actualPrompt["prompt_id"], user_id: user_id })
+				headers: { "Content-Type": "application/json", Authorization: token },
+				body: JSON.stringify({ prompt_id: actualPrompt["prompt_id"] })
 			});
 			if (!resp.ok) actions.setToast("warning", "Sorry! We could not remove the prompt");
 			else {
 				const data = await resp.json();
-				actions.setToast("error", "Prompt removed from your favorites!");
+				actions.setToast("success", "Prompt removed from your favorites!");
 			}
+		} else {
+			actions.setToast("warning", "Log in first!");
 		}
 	};
 

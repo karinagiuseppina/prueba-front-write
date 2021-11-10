@@ -15,6 +15,11 @@ import { FavoriteCharacters } from "./pages/favoriteCharacters";
 import { Login } from "./pages/login";
 import { SignUp } from "./pages/SignUp";
 import { CreateCustomCharacterForm } from "./pages/createCharacterForm";
+import { UpdateCustomCharacterForm } from "./pages/updateCharacterForm";
+import { AllSocieties } from "./pages/allsocieties";
+import { CreatePlot } from "./pages/createPlot";
+import { UpdatePlot } from "./pages/updatePlot";
+import { CreateSociety } from "./pages/createSociety";
 
 import injectContext from "./store/appContext";
 
@@ -77,17 +82,38 @@ const Layout = () => {
 							<Route exact path="/discoverCharacters">
 								<DiscoverCharacters />
 							</Route>
+							<Route exact path="/create-character/">
+								<CreateCustomCharacterForm />
+							</Route>
+							<Route exact path="/create-character/:fav_character">
+								<CreateCustomCharacterForm />
+							</Route>
+							<Route exact path="/update-character/:character_id">
+								<UpdateCustomCharacterForm />
+							</Route>
 							<Route exact path="/mycharacters">
 								<AllCharacters />
 							</Route>
-							<Route exact path="/mycharacters/:id">
+							<Route exact path="/mycharacters/:character_id">
 								<DetailedCharacter />
+							</Route>
+							<Route exact path="/create-plot">
+								<CreatePlot />
+							</Route>
+							<Route exact path="/update-plot/:plot_id">
+								<UpdatePlot />
 							</Route>
 							<Route exact path="/myplots">
 								<AllPlots />
 							</Route>
-							<Route exact path="/myplots/:id">
+							<Route exact path="/myplots/:plot_id">
 								<DetailedPlot />
+							</Route>
+							<Route exact path="/create-society">
+								<CreateSociety />
+							</Route>
+							<Route exact path="/mysocieties">
+								<AllSocieties />
 							</Route>
 							<Route exact path="/editmyprofile">
 								<EditProfile />
@@ -97,9 +123,6 @@ const Layout = () => {
 							</Route>
 							<Route exact path="/favoritecharacters">
 								<FavoriteCharacters />
-							</Route>
-							<Route exact path="/create-character">
-								<CreateCustomCharacterForm />
 							</Route>
 
 							<Route>

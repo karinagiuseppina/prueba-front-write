@@ -65,7 +65,7 @@ export const Login = () => {
 									type="checkbox"
 									onClick={handleVissibleInput}
 									id="passwordVissible"
-									checked={isVisiblePassword}
+									defaultChecked={isVisiblePassword}
 								/>
 								<label
 									className="form-check-label text-muted small mt-0 mb-2"
@@ -75,9 +75,7 @@ export const Login = () => {
 							</div>
 
 							<div className="d-flex mb-2 justify-content-center">
-								<button
-									className="btn btn-prin fw-bold text-uppercase w-100 w-md-25 p-2"
-									onClick={handleLogin}>
+								<button className="btn-prin w-100 w-md-25" onClick={handleLogin}>
 									Log In
 								</button>
 							</div>

@@ -5,15 +5,18 @@ $submenu-bg-color: var(--colorCuar);
 $submenu-bg-color-collapsed: var(--colorCuar);
 $icon-bg-color: var(--colorCuar);
 @import '~react-pro-sidebar/dist/scss/styles.scss';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root {
-  --colorPrin: #8C4B45; //durazno
-  --colorSec: #475957; //verde osc
-  --colorTer: #8C6046; //durazno claro
-  --colorCuar: #748A8C; //verde claro
+  --colorPrin: #262E66;
+  --colorSec: #F28B66; 
+  --colorLight: #F2E3D5;
   --colorGray: #EDEEEF;
   --colorOsc: #0D0C0B;
   --colorSecTrans: rgba(71, 89, 87, 0.25); 
+  --textPrin: #DAAE79;
+  --fontTitle: 'Fira Sans', sans-serif;
+  --fontGeneral: 'Poppins', sans-serif;
 
 }
 /*Main y Navbar*/
@@ -94,9 +97,7 @@ body {
 .text-cuar{
   color: var(--colorCuar);
 }
-.text-ter{
-  color: var(--colorTer);
-}
+
 .bg-prin{
   background-color: var(--colorPrin);
 }
@@ -116,26 +117,15 @@ body {
 }
 .btn-prin {
   color: white;
-  background-color: var(--colorTer);
+  background-color: var(--colorPrin);
+  border: 0;
+  border-radius: 50px;
+  padding: 0.5em;
+  transition: 0.5s ease-in-out;
 }
 .btn-prin:hover {
-  color:white;
+  transition: 0.5s ease-in-out;
   background-color: var(--colorSec);
-}
-
-/*Index*/
-
-.vertical-line-long {
-  width: 2px;
-  background: var(--colorGray);
-  height: 20vh;
-  flex-grow: 1;
-}
-.vertical-line-short {
-  width: 2px;
-  background: var(--colorGray);
-  height: 10vh;
-  flex-grow: 1;
 }
 
 /* Required for full background image */
@@ -370,15 +360,5 @@ textarea.form-control{
   }
   .modal-main {width: 90%}
   .logo-nav {margin-bottom: 0px; }
-
-}
-@media (min-width: 800px) and (max-width: 950px) {
-  html,
-  body,
-  .view {
-    height: 600px;
-  }
-  .modal-main {width: 80%}
-
 
 }

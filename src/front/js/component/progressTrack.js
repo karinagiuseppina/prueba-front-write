@@ -12,5 +12,5 @@ export const ProgressTrack = ({ children }) => {
 };
 
 ProgressTrack.propTypes = {
-	children: PropTypes.element
+	children: PropTypes.node
 };

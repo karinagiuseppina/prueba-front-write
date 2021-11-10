@@ -9,7 +9,6 @@ import { ProSidebar, Menu, MenuItem, SidebarHeader, SidebarFooter, SidebarConten
 export const Sidebar = ({ toggled, collapsed, handleToggleSidebar, handleCollapsedChange }) => {
 	const { store, actions } = useContext(Context);
 	let history = useHistory();
-	const token = store.user && store.user !== undefined && store.user !== "" ? store.user["localId"] : null;
 
 	const handleLogOut = () => {
 		actions.deleteUserSession();
@@ -43,6 +42,10 @@ export const Sidebar = ({ toggled, collapsed, handleToggleSidebar, handleCollaps
 				My Characters
 				<Link to="/mycharacters" />
 			</MenuItem>
+			<MenuItem icon={<i className="fas fa-globe-africa" />}>
+				My Societies
+				<Link to="/mysocieties" />
+			</MenuItem>
 			<MenuItem icon={<i className="fas fa-user-cog" />}>
 				Edite Profile
 				<Link to="/editmyprofile" />
@@ -70,7 +73,7 @@ export const Sidebar = ({ toggled, collapsed, handleToggleSidebar, handleCollaps
 					<MenuItem icon={<i className="fas fa-user-check" />}>
 						Discover Characters <Link to="/discoverCharacters" />
 					</MenuItem>
-					{token && token !== undefined && token !== "" ? logOut : logIn}
+					{actions.getUserToken() ? logOut : logIn}
 				</Menu>
 			</SidebarContent>
 			<SidebarFooter>
