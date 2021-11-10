@@ -1,20 +1,12 @@
-$sidebar-bg-color: var(--colorSec);
-$sidebar-color:  var(--colorGray);
-$highlight-color: #d8d8d8 !default;
-$submenu-bg-color: var(--colorCuar);
-$submenu-bg-color-collapsed: var(--colorCuar);
-$icon-bg-color: var(--colorCuar);
-@import '~react-pro-sidebar/dist/scss/styles.scss';
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root {
   --colorPrin: #262E66;
   --colorSec: #F28B66; 
   --colorLight: #F2E3D5;
-  --colorGray: #EDEEEF;
-  --colorOsc: #0D0C0B;
-  --colorSecTrans: rgba(71, 89, 87, 0.25); 
-  --textPrin: #DAAE79;
+  --colorGeneral: #90989c;
+  --colorOsc: #666666;
+  --highlight: #DAAE79;
   --fontTitle: 'Fira Sans', sans-serif;
   --fontGeneral: 'Poppins', sans-serif;
 
@@ -113,7 +105,8 @@ body {
   }
 
 .bg-gradiente {
-  background: linear-gradient(to right top, var(--colorTer), var(--colorCuar));
+  background: rgb(242,139,102);
+background: linear-gradient(180deg, var(--colorSec) 0%, rgba(255,255,255,1) 78%);
 }
 .btn-prin {
   color: white;

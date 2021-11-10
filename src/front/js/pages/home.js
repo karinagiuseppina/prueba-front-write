@@ -2,67 +2,63 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/styles.scss";
 import { HomeServiceCard } from "../component/HomeServiceCard";
+import maquina from "../../img/Maquina.png";
 
 export const Home = () => {
 	return (
-		<div className="view">
-			<div className="mask rgba-gradient d-flex justify-content-center align-items-center tot-height">
-				<div className="container tot-height">
-					<div className="row">
-						<div className="col-12 col-md-6 col-12 col-md-6 d-flex flex-column align-items-center justify-content-stretch">
-							<div className="vertical-line-long" />
-							<h1 className="h1-responsive text-center">
-								One{" "}
-								<i>
-									<u>plot</u>
-								</i>
-								,<br /> <b>infinite stories</b>
-							</h1>
-							<div className="vertical-line-short" />
-							<h6 className="mb-4">Let your inner writer go wild!</h6>
+		<div className="gradient">
+			<div className="container">
+				<div className="header">
+					<div className="row align-items-center row">
+						<div className="col-12 col-md-6">
+							<div className="header-tit">
+								One plot, <br />
+								<span>infinite stories </span>
+							</div>
+							<div className="header-subtitle">
+								Welcome to Write Me In, little stranger! We hope you are ready to find your inner writer
+								and let your creativity run wild, the world wants to read what you have to write.
+							</div>
 						</div>
-						<div className="col-12 col-md-6 d-flex justify-content-center align-items-center">
-							<img
-								src="https://mdbootstrap.com/img/Mockups/Transparent/Small/admin-new.png"
-								alt=""
-								width="300px"
-							/>
+						<div className="col-12 col-md-6 text-center">
+							<img src={maquina} className="header-img" />
 						</div>
-					</div>
-					<div className="row">
-						<HomeServiceCard
-							icon="fas fa-feather-alt"
-							title="Discover Prompts"
-							text="Generate possible prompt ideas based on a specific gender, and don&apos;t forget
-										to save it if it inspires you!"
-							buttonText="New ideas, please!"
-							link="/discoverPrompts"
-						/>
-						<HomeServiceCard
-							icon="fas fa-user-ninja"
-							title="Discover Characters"
-							text="Generate possible character ideas, and don&apos;t forget to save it if it
-										inspires you!"
-							buttonText="New characters, please!"
-							link="/discoverCharacters"
-						/>
-						<HomeServiceCard
-							icon="fas fa-quote-right"
-							title="Design Plots"
-							text="Organize and prepare everything for your next book, no details left behind"
-							buttonText="Make it happen!"
-							link="/myPlots"
-						/>
-						<HomeServiceCard
-							icon="fas fa-user-edit"
-							title="Design Characters"
-							text="Build your own characters from scratch and always revisit to add new details. "
-							buttonText="Begin creation!"
-							link="/myCharacters"
-						/>
 					</div>
 				</div>
 			</div>
 		</div>
 	);
 };
+
+// <div className="row">
+// 						<HomeServiceCard
+// 							icon="fas fa-feather-alt"
+// 							title="Discover Prompts"
+// 							text="Generate possible prompt ideas based on a specific gender, and don&apos;t forget
+// 										to save it if it inspires you!"
+// 							buttonText="New ideas, please!"
+// 							link="/discoverPrompts"
+// 						/>
+// 						<HomeServiceCard
+// 							icon="fas fa-user-ninja"
+// 							title="Discover Characters"
+// 							text="Generate possible character ideas, and don&apos;t forget to save it if it
+// 										inspires you!"
+// 							buttonText="New characters, please!"
+// 							link="/discoverCharacters"
+// 						/>
+// 						<HomeServiceCard
+// 							icon="fas fa-quote-right"
+// 							title="Design Plots"
+// 							text="Organize and prepare everything for your next book, no details left behind"
+// 							buttonText="Make it happen!"
+// 							link="/myPlots"
+// 						/>
+// 						<HomeServiceCard
+// 							icon="fas fa-user-edit"
+// 							title="Design Characters"
+// 							text="Build your own characters from scratch and always revisit to add new details. "
+// 							buttonText="Begin creation!"
+// 							link="/myCharacters"
+// 						/>
+// 					</div>

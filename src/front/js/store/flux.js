@@ -32,7 +32,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					getActions().syncUserFromLocalStorage;
 					user_session = JSON.parse(localStorage.getItem("user_session"));
 				}
-				return user_session["cookie"];
+				return user_session ? user_session["cookie"] : null;
 			},
 			login: async (email, password) => {
 				const resp = await fetch(`${process.env.BACKEND_URL}/api/login`, {
