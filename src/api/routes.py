@@ -172,6 +172,7 @@ def add_favorite_character():
     cookie = confirm_access(request.headers.get('Authorization'))
     if cookie["code"] != 200:
         return jsonify({"msg": "Invalid session"}), 422
+    
     user_id = cookie["user_id"]
 
     if character is None: 

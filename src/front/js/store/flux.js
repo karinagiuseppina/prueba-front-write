@@ -20,7 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ user_session: null });
 			},
 			syncUserFromLocalStorage: () => {
-				const user = localStorage.getItem("user_session");
+				const user = JSON.parse(localStorage.getItem("user_session"));
 
 				if (user && user !== undefined && user !== "") {
 					setStore({ user_session: user });
@@ -30,10 +30,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				let user_session = getStore().user_session;
 				if (user_session === null) {
 					getActions().syncUserFromLocalStorage;
-					user_session = localStorage.getItem("user_session");
+					user_session = JSON.parse(localStorage.getItem("user_session"));
 				}
-				console.log(user_session);
-				return user_session;
+				return user_session["cookie"];
 			},
 			login: async (email, password) => {
 				const resp = await fetch(`${process.env.BACKEND_URL}/api/login`, {
