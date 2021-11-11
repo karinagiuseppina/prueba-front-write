@@ -140,8 +140,8 @@ export const PromptModal = ({ genre }) => {
 					</a>
 				</section>
 			</div>
-			<button type="button" onClick={handleSelectGenre} className="btn bg-prin text-white">
-				Discover!
+			<button type="button" onClick={handleSelectGenre} className="btn-prin m-5">
+				Discover prompt
 			</button>
 		</div>
 	);

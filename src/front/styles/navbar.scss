@@ -197,6 +197,7 @@ nav .menu-text:hover, nav .menu-link:hover,nav .menu-link a:hover {
 
 
 @media (max-width: 768px) {
+    nav{height: 80px;}
     .desktop-navbar{display: none}
     .mobile-navbar{
         display: flex; align-items: center; color:var(--colorSec);
@@ -208,7 +209,7 @@ nav .menu-text:hover, nav .menu-link:hover,nav .menu-link a:hover {
         position: absolute;
         width: 100%;
         flex-direction: column;
-        top: 38px;
+        top: 90px;
         left: -100%;
         opacity: 1;
         transition: all 0.5s ease;
@@ -236,6 +237,7 @@ nav .menu-text:hover, nav .menu-link:hover,nav .menu-link a:hover {
         margin-right: 20px;
         cursor: pointer;
         color: white;
+        font-size: 1.4rem;
     }
 
 
