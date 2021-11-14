@@ -197,19 +197,21 @@ nav .menu-text:hover, nav .menu-link:hover,nav .menu-link a:hover {
 
 
 @media (max-width: 768px) {
-    nav{height: 80px;}
+    nav{
+        height: 80px;
+        position: fixed;
+        top: 0;
+    }
     .desktop-navbar{display: none}
     .mobile-navbar{
         display: flex; align-items: center; color:var(--colorSec);
     }
-
-
     .nav-menu{
         display:flex;
         position: absolute;
         width: 100%;
         flex-direction: column;
-        top: 90px;
+        top: 79px;
         left: -100%;
         opacity: 1;
         transition: all 0.5s ease;

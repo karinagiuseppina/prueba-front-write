@@ -78,25 +78,19 @@ export const FavoritePrompts = () => {
 	const buildPromptsHTML = prompts_array => {
 		setpromptsInHTML(
 			prompts_array.map(prompt => (
-				<div className="col-12 col-md-6" key={prompt.prompt_id}>
-					<div className="card my-2">
-						<div className="card-body">
-							<div
-								className="text-muted text-right"
-								onClick={() => {
-									handleDeleteFavorite(prompt.prompt_id);
-								}}>
-								<i className="fas fa-times border-0" />
-							</div>
-							<p className="card-text text-justify overflow-auto" style={{ maxHeight: "150px" }}>
-								{prompt.prompt}
-							</p>
-							<p
-								className={`prompt-genre bg-${prompt.genre}`}
-								onClick={() => handleSelectGenre(prompt.genre)}>
-								{prompt.genre}
-							</p>
-						</div>
+				<div className="prompt-card" key={prompt.prompt_id}>
+					<div
+						className="text-muted align-self-end"
+						onClick={() => {
+							handleDeleteFavorite(prompt.prompt_id);
+						}}>
+						<i className="fas fa-times border-0" />
+					</div>
+					<p>{prompt.prompt}</p>
+					<div
+						className={`prompt-genre-hashtag bg-${prompt.genre}`}
+						onClick={() => handleSelectGenre(prompt.genre)}>
+						{prompt.genre}
 					</div>
 				</div>
 			))
@@ -121,7 +115,7 @@ export const FavoritePrompts = () => {
 					<button
 						key={genre}
 						className={
-							genreSelected.includes(genre) ? "prompt-genre mx-4 bg-prin" : "prompt-genre mx-4 bg-white"
+							genreSelected.includes(genre) ? "prompt-genre m-4 bg-prin text-white" : "prompt-genre m-4"
 						}
 						onClick={() => handleSelectGenre(genre)}>
 						{genre}
@@ -131,7 +125,26 @@ export const FavoritePrompts = () => {
 		);
 
 	return (
-		<div className="container-fluid m-0 bg-gradiente">
+		<div className="container-fluid p-0">
+			<div className="row justify-content-center align-items-center">
+				<div className="col-12 col-md-6">
+					<div className="header-tit short-header">
+						Favorite <span>Prompts</span>
+					</div>
+				</div>
+			</div>
+			<div className="row p-4">
+				<div className="col d-flex justify-content-center flex-wrap">{genresInHTML}</div>
+			</div>
+			<div className="row m-auto">
+				<div className="col-12 col-md-8 grid-wrapper m-auto">{prompstInHTML}</div>
+			</div>
+		</div>
+	);
+};
+
+{
+	/* <div className="container-fluid m-0 bg-gradiente">
 			<div className="row align-items-center">
 				<div className="col-lg-12 col-xl-11 mx-auto p-4">
 					<div className="row my-3 border-0 shadow rounded-3 overflow-auto bg-white">
@@ -145,6 +158,5 @@ export const FavoritePrompts = () => {
 					</div>
 				</div>
 			</div>
-		</div>
-	);
-};
+		</div> */
+}

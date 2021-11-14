@@ -6,9 +6,9 @@ import PropTypes from "prop-types";
 
 export const PlotCard = ({ plot }) => {
 	return (
-		<Link to={`/myplots/${plot.id}`}>
-			<li className="col-12 col-md-6">{plot.title}</li>
-		</Link>
+		<div className="plot-list-element">
+			<Link to={`/myplots/${plot.id}`}>{plot.title}</Link>
+		</div>
 	);
 };
 

@@ -105,7 +105,9 @@ export const FavoriteCharacters = () => {
 					<button
 						key={gender}
 						className={
-							genderSelected.includes(gender) ? "prompt-genre mx-4 bg-prin" : "prompt-genre mx-4 bg-white"
+							genderSelected.includes(gender)
+								? "prompt-genre mx-4 bg-prin text-white"
+								: "prompt-genre mx-4"
 						}
 						onClick={() => handleSelectGender(gender)}>
 						{gender}
@@ -115,7 +117,26 @@ export const FavoriteCharacters = () => {
 		);
 
 	return (
-		<div className="container-fluid m-0 bg-gradiente">
+		<div className="container-fluid p-0">
+			<div className="row justify-content-center align-items-center">
+				<div className="col-12 col-md-6">
+					<div className="header-tit short-header">
+						Favorite <span>Characters</span>
+					</div>
+				</div>
+			</div>
+			<div className="row p-4">
+				<div className="col d-flex justify-content-center flex-wrap mt-5">{gendersInHTML}</div>
+			</div>
+			<div className="row m-auto">
+				<div className="col-12 col-md-10 grid-wrapper mx-auto">{charactersInHTML}</div>
+			</div>
+		</div>
+	);
+};
+
+{
+	/* <div className="container-fluid m-0 bg-gradiente">
 			<div className="row align-items-center">
 				<div className="col-lg-12 col-xl-11 mx-auto p-4">
 					<div className="row my-3 border-0 shadow rounded-3 overflow-auto bg-white">
@@ -129,6 +150,5 @@ export const FavoriteCharacters = () => {
 					</div>
 				</div>
 			</div>
-		</div>
-	);
-};
+		</div> */
+}
