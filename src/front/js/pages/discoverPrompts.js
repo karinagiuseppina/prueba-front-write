@@ -30,12 +30,11 @@ export const DiscoverPrompts = () => {
 	);
 
 	return (
-		<div className="container-fluid p-0">
+		<div className="container p-2 p-md-5">
 			<div className="row justify-content-center align-items-center px-1 px-md-5">
 				<div className="col-12 col-md-6">
 					<div className="header-tit">
-						Discover <br />
-						<span>Prompts </span>
+						Discover <span>Prompts </span>
 					</div>
 					<div className="header-subtitle">
 						Discover Prompts allows you to select a gender and discover new prompt ideas related to that

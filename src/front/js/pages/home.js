@@ -12,19 +12,21 @@ export const Home = () => {
 	const { actions } = useContext(Context);
 	return (
 		<div className="container-fluid p-0">
-			<div className="row align-items-center h-tot">
-				<div className="col-12 col-md-6">
-					<div className="header-tit">
-						One plot, <br />
-						<span>infinite stories </span>
+			<div className="container px-2 px-md-5">
+				<div className="row align-items-center h-tot">
+					<div className="col-12 col-md-6">
+						<div className="header-tit">
+							One plot, <br />
+							<span>infinite stories </span>
+						</div>
+						<div className="header-subtitle">
+							Welcome to Write Me In, little stranger! We hope you are ready to find your inner writer and
+							let your creativity run wild, the world wants to read what you have to write.
+						</div>
 					</div>
-					<div className="header-subtitle">
-						Welcome to Write Me In, little stranger! We hope you are ready to find your inner writer and let
-						your creativity run wild, the world wants to read what you have to write.
+					<div className="col-12 col-md-6 text-center">
+						<img src={maquina} className="header-img" />
 					</div>
-				</div>
-				<div className="col-12 col-md-6 text-center">
-					<img src={maquina} className="header-img" />
 				</div>
 			</div>
 

@@ -125,7 +125,7 @@ export const FavoritePrompts = () => {
 		);
 
 	return (
-		<div className="container-fluid p-0">
+		<div className="container p-2 p-md-5">
 			<div className="row justify-content-center align-items-center">
 				<div className="col-12 col-md-6">
 					<div className="header-tit short-header">
@@ -137,7 +137,7 @@ export const FavoritePrompts = () => {
 				<div className="col d-flex justify-content-center flex-wrap">{genresInHTML}</div>
 			</div>
 			<div className="row m-auto">
-				<div className="col-12 col-md-8 grid-wrapper m-auto">{prompstInHTML}</div>
+				<div className="col-12 grid-wrapper m-auto">{prompstInHTML}</div>
 			</div>
 		</div>
 	);

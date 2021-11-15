@@ -60,6 +60,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					icon: icon,
 					title: title
 				});
+			},
+			getUserElements: async route => {
+				const token = getActions().getUserToken();
+				const resp = await fetch(`${process.env.BACKEND_URL}/api/${route}`, {
+					method: "GET",
+					headers: { "Content-Type": "application/json", Authorization: token }
+				});
+				if (resp.ok) {
+					const data = await resp.json();
+					return data;
+				}
 			}
 		}
 	};

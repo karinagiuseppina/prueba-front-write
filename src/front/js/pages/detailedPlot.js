@@ -10,22 +10,90 @@ export const DetailedPlot = () => {
 	const [plot, setPlot] = useState({});
 	const { plot_id } = useParams();
 	let history = useHistory();
+	const [characters, setCharacters] = useState([]);
 
 	useEffect(() => {
 		getPlot();
 	}, []);
 
-	const getPlot = async () => {
+	async function handleAddCharacter() {
+		const characters = await actions.getUserElements(`user/name/custom-characters`);
+		const { value: character } = await Swal.fire({
+			title: "Add new character",
+			input: "select",
+			inputOptions: characters,
+			inputPlaceholder: "Select a character",
+			showClass: {
+				popup: "animate__animated animate__fadeInDown"
+			},
+			hideClass: {
+				popup: "animate__animated animate__fadeOutUp"
+			},
+			customClass: {
+				container: "container-add-modal",
+				popup: "popup-add-modal"
+			},
+			showCancelButton: true
+		});
+
+		if (character) {
+			add_character_to_plot({ id: character, name: characters[character] });
+		}
+	}
+
+	const add_character_to_plot = async character => {
 		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/plots/${plot_id}`, {
-			method: "GET",
-			headers: { "Content-Type": "application/json", Authorization: token }
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/add/plot/character`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json", Authorization: token },
+			body: JSON.stringify({ plot: { id: plot_id, title: plot.title }, character: character })
 		});
 		if (resp.ok) {
-			const plot = await resp.json();
-			setPlot(plot);
+			actions.setToast("success", "Character added to plot!");
+			setCharacters([...characters, character]);
+		} else {
+			actions.setToast("error", "There has been a problem!");
 		}
 	};
+
+	const delete_character_from_plot = async character_id => {
+		console.log(characters);
+		let index = characters.findIndex(c => c.id === character_id);
+		let characters = [...characters];
+		characters.splice(index, 1);
+		setCharacters(characters);
+		// const token = actions.getUserToken();
+		// const resp = await fetch(
+		// 	`${process.env.BACKEND_URL}/api/user/delete/plot/${plot_id}/character/${character_id}`,
+		// 	{
+		// 		method: "DELETE",
+		// 		headers: { "Content-Type": "application/json", Authorization: token }
+		// 	}
+		// );
+		// if (resp.ok) {
+		// 	actions.setToast("success", "Character deleted from plot!");
+
+		// } else {
+		// 	actions.setToast("error", "There has been a problem!");
+		// }
+	};
+
+	const getPlot = async () => {
+		const plot = await actions.getUserElements(`user/plots/${plot_id}`);
+		setPlot(plot);
+		let characters_obj = plot.characters;
+		let array = [];
+		for (let character in characters_obj) {
+			array.push({ id: character, name: characters_obj[character] });
+		}
+		setCharacters(array);
+	};
+	useEffect(
+		() => {
+			console.log(characters);
+		},
+		[characters]
+	);
 	const confirmDeletePlot = () => {
 		Swal.fire({
 			title: `Do you want to delete the plot ${plot.title}?`,
@@ -72,6 +140,14 @@ export const DetailedPlot = () => {
 								synopsis: {plot.synopsis}
 							</p>
 
+							<button onClick={handleAddCharacter}> Add character</button>
+							{characters.map((c, index) => {
+								return (
+									<li key={c.id}>
+										{c.name} <button onClick={() => delete_character_from_plot(c.id)}>X</button>
+									</li>
+								);
+							})}
 							<div className="d-flex my-3 justify-content-center">
 								<button className="btn btn-prin fw-bold text-uppercase w-100 p-2 text-decoration-none text-white">
 									<Link to={`/update-plot/${plot_id}`} className="text-decoration-none text-white">

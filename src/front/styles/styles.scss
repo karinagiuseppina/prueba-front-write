@@ -21,10 +21,12 @@
   transition: 0.5s ease-in-out;
   margin: auto;
   font-family:var(--fontGeneral);
+  cursor: pointer;
 }
 .btn-prin:hover {
   transition: 0.5s ease-in-out;
   background-color: var(--colorPrin);
+  cursor: pointer;
 }
 .bg-prin{
   background-color: var(--colorPrin);

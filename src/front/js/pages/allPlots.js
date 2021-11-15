@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import "../../styles/styles.scss";
 import { Link } from "react-router-dom";
 import { PlotCard } from "../component/plotCard";
+import plots_img from "../../img/Prompts.png";
 
 export const AllPlots = () => {
 	const { actions, store } = useContext(Context);
@@ -28,26 +29,28 @@ export const AllPlots = () => {
 	);
 
 	const getUserPlots = async () => {
-		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/plots`, {
-			method: "GET",
-			headers: { "Content-Type": "application/json", Authorization: token }
-		});
-		if (resp.ok) {
-			const plots_array = await resp.json();
-			setPlots(plots_array);
-			setPlotsSelected(plots_array);
-		}
+		const plots_array = await actions.getUserElements("user/plots");
+		setPlots(plots_array);
+		setPlotsSelected(plots_array);
 	};
 	return (
-		<div className="container p-5">
-			<div className="row justify-content-center align-items-center">
-				<div className="col-12 col-md-8">
-					<div className="header-tit short-header">
-						My <span>Plots</span>
+		<div className="container p-2 p-md-5">
+			<div className="row align-items-center">
+				<div className="col-12 col-md-6">
+					<div className="header-tit">
+						My <span> plots </span>
+					</div>
+					<div className="header-subtitle text-center">
+						<Link to="/create-plot">
+							<button className="btn-prin">Create new plot</button>
+						</Link>
 					</div>
 				</div>
+				<div className="col-12 col-md-6 text-center">
+					<img src={plots_img} className="header-img" />
+				</div>
 			</div>
+
 			<div className="row justify-content-center my-5">
 				<div className="col-12 col-md-8">
 					<input
@@ -58,13 +61,13 @@ export const AllPlots = () => {
 					/>
 				</div>
 			</div>
-			<div className="row justify-content-end">
+			{/* <div className="row justify-content-end">
 				<div className="col-12 col-md-4 align-self-end mt-5 mx-auto m-md-0">
 					<Link to="/create-plot">
 						<button className="btn-prin">Create new plot</button>
 					</Link>
 				</div>
-			</div>
+			</div> */}
 			<div className="row m-auto justify-content-center mt-5">
 				<div className="col-12 col-md-8 my-2">
 					{plotsSelected.map(plot => (

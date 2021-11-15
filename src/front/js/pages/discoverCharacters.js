@@ -4,7 +4,7 @@ import characters_img from "../../img/discover_characters.png";
 
 export const DiscoverCharacters = () => {
 	return (
-		<div className="container-fluid p-0">
+		<div className="container p-2 p-md-5 h-tot">
 			<div className="row justify-content-center align-items-center">
 				<div className="col-12 col-md-6">
 					<div className="header-tit">
