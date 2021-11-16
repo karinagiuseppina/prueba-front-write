@@ -20,11 +20,14 @@ import { AllSocieties } from "./pages/allsocieties";
 import { CreatePlot } from "./pages/createPlot";
 import { UpdatePlot } from "./pages/updatePlot";
 import { CreateSociety } from "./pages/createSociety";
+import { DetailedSociety } from "./pages/detailedSociety";
+import { UpdateSociety } from "./pages/updateSociety";
 
 import injectContext from "./store/appContext";
 
 import { Sidebar } from "./component/sidebar";
 import { Footer } from "./component/footer";
+import { Navbar } from "./component/navbar";
 
 //create your first component
 const Layout = () => {
@@ -44,28 +47,11 @@ const Layout = () => {
 	};
 
 	return (
-		<div className={`app ${toggled ? "toggled" : ""}`}>
+		<div className="app">
 			<BrowserRouter basename={basename}>
 				<ScrollToTop>
-					<Sidebar
-						toggled={toggled}
-						collapsed={collapsed}
-						handleToggleSidebar={handleToggleSidebar}
-						handleCollapsedChange={handleCollapsedChange}
-					/>
 					<main>
-						<div className="btn-toggle" onClick={() => handleToggleSidebar(true)}>
-							<svg
-								stroke="currentColor"
-								fill="currentColor"
-								strokeWidth="0"
-								viewBox="0 0 448 512"
-								height="1em"
-								width="1em"
-								xmlns="http://www.w3.org/2000/svg">
-								<path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
-							</svg>
-						</div>
+						<Navbar />
 						<Switch>
 							<Route exact path="/">
 								<Home />
@@ -115,6 +101,12 @@ const Layout = () => {
 							<Route exact path="/mysocieties">
 								<AllSocieties />
 							</Route>
+							<Route exact path="/mysocieties/:society_id">
+								<DetailedSociety />
+							</Route>
+							<Route exact path="/update-society/:society_id">
+								<UpdateSociety />
+							</Route>
 							<Route exact path="/editmyprofile">
 								<EditProfile />
 							</Route>
@@ -129,7 +121,7 @@ const Layout = () => {
 								<h1>Not found!</h1>
 							</Route>
 						</Switch>
-						<Footer />
+						{/* <Footer /> */}
 					</main>
 				</ScrollToTop>
 			</BrowserRouter>

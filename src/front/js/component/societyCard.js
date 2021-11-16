@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 
 export const SocietyCard = ({ society }) => {
 	return (
-		<Link to={`/mysocieties/${society.id}`}>
-			<li className="col-12 col-md-6">{society.name}</li>
-		</Link>
+		<div className="plot-list-element">
+			<Link to={`/mysocieties/${society.id}`}>{society.name}</Link>
+		</div>
 	);
 };
 

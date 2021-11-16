@@ -6,9 +6,9 @@ import PropTypes from "prop-types";
 
 export const CustomCharacterCard = ({ character }) => {
 	return (
-		<Link to={`/mycharacters/${character.id}`}>
-			<li className="col-12 col-md-6">{character.name}</li>
-		</Link>
+		<div className="plot-list-element">
+			<Link to={`/mycharacters/${character.id}`}>{character.name}</Link>
+		</div>
 	);
 };
 

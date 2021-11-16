@@ -117,12 +117,12 @@ export const PromptModal = ({ genre }) => {
 	return (
 		<div>
 			<div className={Modal ? "modal d-flex" : "modal display-none"}>
-				<section className={`modal-main bg-white rounded text-start animate__animated animate__backInLeft`}>
-					<div className="d-flex flex-column bg-sec p-3 rounded">
-						<button type="button" onClick={hideModal} className="btn text-muted align-self-end">
+				<section className={`modal-main bg-white text-start animate__animated animate__backInLeft`}>
+					<div className="modal-wmi-header">
+						<button type="button" onClick={hideModal} className="btn text-white align-self-end">
 							<i className="fas fa-times" />
 						</button>
-						<h3 className="text-white px-4 py-3 bg-sec">New {genre} prompt </h3>
+						<h3>New {genre} prompt </h3>
 						<button
 							type="button"
 							onClick={handleOnFavorite}
@@ -132,16 +132,16 @@ export const PromptModal = ({ genre }) => {
 							title={favoriteAction}
 						/>
 					</div>
-					<p className="text-center text-dark m-4 p-3">
-						{actualPrompt && actualPrompt !== undefined ? actualPrompt.prompt : ""}
-					</p>
-					<a onClick={handleNextPrompt} className="align-self-end button-next p-4">
-						Next Prompt <i className="fas fa-chevron-right" />
-					</a>
+					<p>{actualPrompt && actualPrompt !== undefined ? actualPrompt.prompt : ""}</p>
+					<div className="modal-wmi-footer">
+						<button onClick={handleNextPrompt}>
+							Next Prompt <i className="fas fa-chevron-right" />
+						</button>
+					</div>
 				</section>
 			</div>
-			<button type="button" onClick={handleSelectGenre} className="btn bg-prin text-white">
-				Discover!
+			<button type="button" onClick={handleSelectGenre} className="btn-prin m-1 m-md-5">
+				Discover prompt
 			</button>
 		</div>
 	);
