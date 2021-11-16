@@ -20,16 +20,8 @@ export const UpdatePlot = () => {
 	}, []);
 
 	const getPlot = async () => {
-		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/plots/${plot_id}`, {
-			method: "GET",
-			headers: { "Content-Type": "application/json", Authorization: token }
-		});
-		if (resp.ok) {
-			const plot = await resp.json();
-
-			setPlot(plot);
-		}
+		const plot = await actions.getUserElements(`user/plots/${plot_id}`);
+		setPlot(plot);
 	};
 
 	const handleUpdatePlot = async () => {

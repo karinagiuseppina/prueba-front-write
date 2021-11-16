@@ -20,6 +20,8 @@ import { AllSocieties } from "./pages/allsocieties";
 import { CreatePlot } from "./pages/createPlot";
 import { UpdatePlot } from "./pages/updatePlot";
 import { CreateSociety } from "./pages/createSociety";
+import { DetailedSociety } from "./pages/detailedSociety";
+import { UpdateSociety } from "./pages/updateSociety";
 
 import injectContext from "./store/appContext";
 
@@ -98,6 +100,12 @@ const Layout = () => {
 							</Route>
 							<Route exact path="/mysocieties">
 								<AllSocieties />
+							</Route>
+							<Route exact path="/mysocieties/:society_id">
+								<DetailedSociety />
+							</Route>
+							<Route exact path="/update-society/:society_id">
+								<UpdateSociety />
 							</Route>
 							<Route exact path="/editmyprofile">
 								<EditProfile />

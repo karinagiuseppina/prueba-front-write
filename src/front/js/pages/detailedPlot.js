@@ -11,11 +11,55 @@ export const DetailedPlot = () => {
 	const { plot_id } = useParams();
 	let history = useHistory();
 	const [characters, setCharacters] = useState([]);
+	const [societies, setSocieties] = useState([]);
 
 	useEffect(() => {
 		getPlot();
 	}, []);
 
+	const getPlot = async () => {
+		const plot = await actions.getUserElements(`user/plots/${plot_id}`);
+		setPlot(plot);
+		elementsToArray(plot.characters, setCharacters);
+		elementsToArray(plot.societies, setSocieties);
+	};
+	const elementsToArray = (elements_obj, set) => {
+		let array = [];
+		for (let element in elements_obj) {
+			array.push({ id: element, name: elements_obj[element] });
+		}
+		set(array);
+	};
+
+	const confirmDeletePlot = () => {
+		Swal.fire({
+			title: `Do you want to delete the plot ${plot.title}?`,
+			text: "You wont be able to get it back!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete please!"
+		}).then(result => {
+			if (result.isConfirmed) {
+				deletePlot();
+			}
+		});
+	};
+
+	const deletePlot = async () => {
+		const token = actions.getUserToken();
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/plots/delete/${plot_id}`, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json", Authorization: token }
+		});
+		if (resp.ok) {
+			history.push("/myplots");
+			actions.setToast("success", "Plot deleted!");
+		} else {
+			actions.setToast("error", "There has been a problem!");
+		}
+	};
 	async function handleAddCharacter() {
 		const characters = await actions.getUserElements(`user/name/custom-characters`);
 		const { value: character } = await Swal.fire({
@@ -57,71 +101,86 @@ export const DetailedPlot = () => {
 	};
 
 	const delete_character_from_plot = async character_id => {
-		console.log(characters);
-		let index = characters.findIndex(c => c.id === character_id);
-		let characters = [...characters];
-		characters.splice(index, 1);
-		setCharacters(characters);
-		// const token = actions.getUserToken();
-		// const resp = await fetch(
-		// 	`${process.env.BACKEND_URL}/api/user/delete/plot/${plot_id}/character/${character_id}`,
-		// 	{
-		// 		method: "DELETE",
-		// 		headers: { "Content-Type": "application/json", Authorization: token }
-		// 	}
-		// );
-		// if (resp.ok) {
-		// 	actions.setToast("success", "Character deleted from plot!");
-
-		// } else {
-		// 	actions.setToast("error", "There has been a problem!");
-		// }
-	};
-
-	const getPlot = async () => {
-		const plot = await actions.getUserElements(`user/plots/${plot_id}`);
-		setPlot(plot);
-		let characters_obj = plot.characters;
-		let array = [];
-		for (let character in characters_obj) {
-			array.push({ id: character, name: characters_obj[character] });
-		}
-		setCharacters(array);
-	};
-	useEffect(
-		() => {
-			console.log(characters);
-		},
-		[characters]
-	);
-	const confirmDeletePlot = () => {
-		Swal.fire({
-			title: `Do you want to delete the plot ${plot.title}?`,
-			text: "You wont be able to get it back!",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#3085d6",
-			cancelButtonColor: "#d33",
-			confirmButtonText: "Yes, delete please!"
-		}).then(result => {
-			if (result.isConfirmed) {
-				deletePlot();
-			}
-		});
-	};
-
-	const deletePlot = async () => {
 		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/plots/${plot_id}`, {
+		const resp = await fetch(
+			`${process.env.BACKEND_URL}/api/user/delete/plot/${plot_id}/character/${character_id}`,
+			{
+				method: "DELETE",
+				headers: { "Content-Type": "application/json", Authorization: token }
+			}
+		);
+		if (resp.ok) {
+			actions.setToast("success", "Character deleted from plot!");
+			delete_character(character_id);
+		} else {
+			actions.setToast("error", "There has been a problem!");
+		}
+	};
+	const delete_character = character_id => {
+		let index = characters.findIndex(c => c.id === character_id);
+		let ch = [...characters];
+		ch.splice(index, 1);
+		setCharacters(ch);
+	};
+
+	async function handleAddSociety() {
+		const societies = await actions.getUserElements(`user/name/societies`);
+		const { value: society } = await Swal.fire({
+			title: "Add new Society",
+			input: "select",
+			inputOptions: societies,
+			inputPlaceholder: "Select a society",
+			showClass: {
+				popup: "animate__animated animate__fadeInDown"
+			},
+			hideClass: {
+				popup: "animate__animated animate__fadeOutUp"
+			},
+			customClass: {
+				container: "container-add-modal",
+				popup: "popup-add-modal"
+			},
+			showCancelButton: true
+		});
+
+		if (society) {
+			add_society_to_plot({ id: society, name: societies[society] });
+		}
+	}
+
+	const add_society_to_plot = async society => {
+		const token = actions.getUserToken();
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/add/plot/society`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json", Authorization: token },
+			body: JSON.stringify({ plot: { id: plot_id, title: plot.title }, society: society })
+		});
+		if (resp.ok) {
+			actions.setToast("success", "Society added to plot!");
+			setCharacters([...societies, society]);
+		} else {
+			actions.setToast("error", "There has been a problem!");
+		}
+	};
+
+	const delete_society_from_plot = async society_id => {
+		const token = actions.getUserToken();
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/delete/plot/${plot_id}/society/${society_id}`, {
 			method: "DELETE",
 			headers: { "Content-Type": "application/json", Authorization: token }
 		});
 		if (resp.ok) {
-			history.push("/myplots");
-			actions.setToast("success", "Plot deleted!");
+			actions.setToast("success", "Society deleted from plot!");
+			delete_society(society_id);
 		} else {
 			actions.setToast("error", "There has been a problem!");
 		}
+	};
+	const delete_society = society_id => {
+		let index = societies.findIndex(c => c.id === society_id);
+		let so = [...societies];
+		so.splice(index, 1);
+		setSocieties(so);
 	};
 
 	return (
@@ -141,13 +200,25 @@ export const DetailedPlot = () => {
 							</p>
 
 							<button onClick={handleAddCharacter}> Add character</button>
-							{characters.map((c, index) => {
-								return (
-									<li key={c.id}>
-										{c.name} <button onClick={() => delete_character_from_plot(c.id)}>X</button>
-									</li>
-								);
-							})}
+							<ul>
+								{characters.map(c => {
+									return (
+										<li key={c.id}>
+											{c.name} <button onClick={() => delete_character_from_plot(c.id)}>X</button>
+										</li>
+									);
+								})}
+							</ul>
+							<button onClick={handleAddSociety}> Add Society</button>
+							<ul>
+								{societies.map(s => {
+									return (
+										<li key={s.id}>
+											{s.name} <button onClick={() => delete_society_from_plot(s.id)}>X</button>
+										</li>
+									);
+								})}
+							</ul>
 							<div className="d-flex my-3 justify-content-center">
 								<button className="btn btn-prin fw-bold text-uppercase w-100 p-2 text-decoration-none text-white">
 									<Link to={`/update-plot/${plot_id}`} className="text-decoration-none text-white">

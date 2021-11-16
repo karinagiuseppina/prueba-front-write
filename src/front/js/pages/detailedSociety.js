@@ -4,30 +4,31 @@ import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 
-export const DetailedCharacter = () => {
+export const DetailedSociety = () => {
 	const { store, actions } = useContext(Context);
-	const [character, setCharacter] = useState({});
+	const [society, setSociety] = useState({});
 	const [plots, setPlots] = useState([]);
-	const { character_id } = useParams();
+	const { society_id } = useParams();
 	let history = useHistory();
 
 	useEffect(() => {
-		getCharacter();
+		getSociety();
 	}, []);
 
-	const getCharacter = async () => {
-		const custom_character = await actions.getUserElements(`user/custom-characters/${character_id}`);
-		setCharacter(custom_character);
-		let pl = custom_character.plots;
+	const getSociety = async () => {
+		const society = await actions.getUserElements(`user/societies/${society_id}`);
+		setSociety(society);
+		let pl = society.plots;
 		let array = [];
 		for (let plot in pl) {
 			array.push({ id: plot, title: pl[plot] });
 		}
 		setPlots(array);
 	};
-	const confirmDeleteCharacter = () => {
+
+	const confirmDeleteSociety = () => {
 		Swal.fire({
-			title: `Do you want to delete ${character.name}?`,
+			title: `Do you want to delete ${society.name}?`,
 			text: "You wont be able to get it back!",
 			icon: "warning",
 			showCancelButton: true,
@@ -36,20 +37,20 @@ export const DetailedCharacter = () => {
 			confirmButtonText: "Yes, delete please!"
 		}).then(result => {
 			if (result.isConfirmed) {
-				deleteCharacter();
+				deleteSociety();
 			}
 		});
 	};
 
-	const deleteCharacter = async () => {
+	const deleteSociety = async () => {
 		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/custom-characters/delete/${character_id}`, {
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/societies/delete/${society_id}`, {
 			method: "PUT",
 			headers: { "Content-Type": "application/json", Authorization: token }
 		});
 		if (resp.ok) {
-			history.push("/mycharacters");
-			actions.setToast("success", "Character deleted!");
+			history.push("/mysocieties");
+			actions.setToast("success", "Society deleted!");
 		} else {
 			actions.setToast("error", "There has been a problem!");
 		}
@@ -75,36 +76,33 @@ export const DetailedCharacter = () => {
 		});
 
 		if (plot) {
-			add_plot_to_character({ id: plot, title: plots[plot] });
+			add_plot_to_society({ id: plot, title: plots[plot] });
 		}
 	}
 
-	const add_plot_to_character = async plot => {
+	const add_plot_to_society = async plot => {
 		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/add/plot/character`, {
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/add/plot/society`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json", Authorization: token },
-			body: JSON.stringify({ plot: plot, character: { id: character_id, name: character.name } })
+			body: JSON.stringify({ plot: plot, society: { id: society_id, name: society.name } })
 		});
 		if (resp.ok) {
-			actions.setToast("success", "Plot added to character!");
+			actions.setToast("success", "Plot added to society!");
 			setPlots([...plots, plot]);
 		} else {
 			actions.setToast("error", "There has been a problem!");
 		}
 	};
 
-	const delete_plot_from_character = async plot_id => {
+	const delete_plot_from_society = async plot_id => {
 		const token = actions.getUserToken();
-		const resp = await fetch(
-			`${process.env.BACKEND_URL}/api/user/delete/plot/${plot_id}/character/${character_id}`,
-			{
-				method: "DELETE",
-				headers: { "Content-Type": "application/json", Authorization: token }
-			}
-		);
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/delete/plot/${plot_id}/society/${society_id}`, {
+			method: "DELETE",
+			headers: { "Content-Type": "application/json", Authorization: token }
+		});
 		if (resp.ok) {
-			actions.setToast("success", "Plot deleted from character!");
+			actions.setToast("success", "Plot deleted from society!");
 			delete_plot(plot_id);
 		} else {
 			actions.setToast("error", "There has been a problem!");
@@ -125,39 +123,40 @@ export const DetailedCharacter = () => {
 					<div className="card flex-row my-3 border-0 shadow rounded-3 overflow-hidden">
 						<div className="card-body p-4 p-sm-5">
 							<div className="d-flex my-3 justify-content-start">
-								<Link to="/mycharacters">Go to all characters</Link>
+								<Link to="/mysocieties">Go to all societies</Link>
 							</div>
 							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">
-								{character.name}
+								{society.name}
 							</h1>
 							<p>
-								nickname: {character.nickname} <br />
-								age: {character.age}
+								{society.basic_needs}
 								<br />
-								occupation: {character.occupation}
+								{society.comfort}
 								<br />
-								nationality: {character.nationality}
+								{society.culture}
 								<br />
-								sexual_orientation: {character.sexual_orientation}
+								{society.demonym}
 								<br />
-							</p>
-							<p>personality: {character.personality}</p>
-							<p>
-								eye_color: {character.eye_color}
+								{society.entertainment}
 								<br />
-								hair_color: {character.hair_color}
+								{society.ethnic_groups}
 								<br />
-								skin_color: {character.skin_color}
+								{society.government}
 								<br />
-								appearence: {character.appearence}
+								{society.language}
 								<br />
+								{society.population}
+								<br />
+								{society.reproduction_needs}
+								<br />
+								{society.social_needs}
 							</p>
 
 							<button onClick={handleAddPlot}> Add plot</button>
 							{plots.map(p => {
 								return (
 									<li key={p.id}>
-										{p.title} <button onClick={() => delete_plot_from_character(p.id)}>X</button>
+										{p.title} <button onClick={() => delete_plot_from_society(p.id)}>X</button>
 									</li>
 								);
 							})}
@@ -165,16 +164,16 @@ export const DetailedCharacter = () => {
 							<div className="d-flex my-3 justify-content-center">
 								<button className="btn btn-prin fw-bold text-uppercase w-100 p-2">
 									<Link
-										to={`/update-character/${character_id}`}
+										to={`/update-society/${society_id}`}
 										className="text-decoration-none text-white">
-										Update Character
+										Update Society
 									</Link>
 								</button>
 
 								<button
-									onClick={confirmDeleteCharacter}
+									onClick={confirmDeleteSociety}
 									className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-									Delete Character
+									Delete Society
 								</button>
 							</div>
 						</div>
