@@ -284,7 +284,7 @@ def update_character():
 
     return jsonify({"msg": "Character updated!"}), 200
 
-@api.route("/user/custom-characters", methods=["GET"])
+@api.route("/user/characters", methods=["GET"])
 def get_custom_characters():
     cookie = confirm_access(request.headers.get('Authorization'))
     if cookie["code"] != 200:
@@ -489,7 +489,7 @@ def update_plot():
     except: 
         return jsonify({"msg": "Ups! There has been an error updating this character"}),400
 
-    return jsonify({"msg": "Character updated!"}), 200
+    return jsonify({"msg": "Plot updated!"}), 200
 
 @api.route("/user/plots/delete/<plot_id>", methods=["PUT"])
 def delete_plot(plot_id):
@@ -513,10 +513,68 @@ def delete_plot_from_characters(plot_id, user_id):
     for character_id, name in characters.items():
         ref = db.reference("private/characters").child(user_id).child(character_id).child("plots").child(plot_id).delete()
 
+
 def delete_plot_from_societies(plot_id, user_id):
     societies = db.reference("private/plots").child(user_id).child(plot_id).child("societies").get()
     for society_id, name in societies.items():
         ref = db.reference("private/societies").child(user_id).child(society_id).child("plots").child(plot_id).delete()
+
+
+@api.route("/user/add/plot/<plot_id>/event", methods=["POST"])
+def add_event_to_plot(plot_id):
+    event = request.json.get("event", None)
+
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
+
+    try: 
+        added = db.reference("private/events").child(user_id).child(plot_id).push(event)
+        event_id = added.key
+    except: 
+        return jsonify({"msg": "Something went wrong"}),400
+
+    return jsonify({"id": event_id}), 200
+
+@api.route("/user/plots/<plot_id>/events", methods=["GET"])
+def get_plot_events(plot_id):
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
+
+    
+    try: 
+        events_obj = db.reference("private/events").child(user_id).child(plot_id).get()
+        if events_obj is not None: 
+            events = []
+            for id, event in events_obj.items():
+                event["id"] = id
+                events.append(event)
+        else:
+            return jsonify([]), 200
+
+    except: 
+        return jsonify({"msg": "Something went wrong"}),400
+
+    return jsonify(events), 200
+
+@api.route("/user/delete/plots/<plot_id>/event/<event_id>", methods=["DELETE"])
+def delete_event(plot_id, event_id):
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
+
+
+    try: 
+        ref = db.reference("private/events")
+        ref.child(user_id).child(plot_id).child(event_id).delete()
+    except: 
+        return jsonify({"msg": "Ups! There has been an error updating this"}),400
+
+    return jsonify({"msg": "Event deleted!"}), 200
 
 @api.route("/create-society", methods=["POST"])
 def create_society():

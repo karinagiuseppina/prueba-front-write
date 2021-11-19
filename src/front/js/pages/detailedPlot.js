@@ -4,6 +4,8 @@ import { useParams } from "react-router";
 import { Link, useHistory } from "react-router-dom";
 import "../../styles/styles.scss";
 import Swal from "sweetalert2";
+import { AddEventButton } from "../component/addEventButton";
+import { EventListElement } from "../component/eventListElement";
 
 export const DetailedPlot = () => {
 	const { store, actions } = useContext(Context);
@@ -12,16 +14,22 @@ export const DetailedPlot = () => {
 	let history = useHistory();
 	const [characters, setCharacters] = useState([]);
 	const [societies, setSocieties] = useState([]);
+	const [events, setEvents] = useState([]);
 
 	useEffect(() => {
 		getPlot();
 	}, []);
 
 	const getPlot = async () => {
+		getEvents();
 		const plot = await actions.getUserElements(`user/plots/${plot_id}`);
 		setPlot(plot);
 		elementsToArray(plot.characters, setCharacters);
 		elementsToArray(plot.societies, setSocieties);
+	};
+	const getEvents = async () => {
+		const events = await actions.getUserElements(`user/plots/${plot_id}/events`);
+		setEvents(events);
 	};
 	const elementsToArray = (elements_obj, set) => {
 		let array = [];
@@ -182,6 +190,16 @@ export const DetailedPlot = () => {
 		so.splice(index, 1);
 		setSocieties(so);
 	};
+	const deleteEvent = event_id => {
+		let index = events.findIndex(e => e.id === event_id);
+		let ev = [...events];
+		ev.splice(index, 1);
+		setEvents(ev);
+	};
+
+	const add_event_to_plot = event => {
+		setEvents([...events, event]);
+	};
 
 	return (
 		<div className="container-fluid m-0 bg-gradiente">
@@ -216,6 +234,20 @@ export const DetailedPlot = () => {
 										<li key={s.id}>
 											{s.name} <button onClick={() => delete_society_from_plot(s.id)}>X</button>
 										</li>
+									);
+								})}
+							</ul>
+
+							<AddEventButton plot_id={plot_id} addEvent={add_event_to_plot} />
+							<ul className="timeline">
+								{events.map(e => {
+									return (
+										<EventListElement
+											event={e}
+											key={e.id}
+											deleteEvent={deleteEvent}
+											plot_id={plot_id}
+										/>
 									);
 								})}
 							</ul>

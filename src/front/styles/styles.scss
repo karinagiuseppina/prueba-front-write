@@ -177,27 +177,18 @@ body{background: white;
   background-size: cover;
 }
 /*Form*/
-.form-control:focus {
-  color: var(--colorOsc);
-  border-color: var(--colorSec);
-  outline: 0;
-  box-shadow: 0 0.15rem var(--colorSecTrans);
-}
-.form-control{
-  color: var(--colorOsc);
-  border-color: var(--colorGray);
-}
-.form-floating label {
-  color: var(--colorPrin);
-}
-.password-type {
-  display: flex;
-  justify-content: stretch;
-  align-items: center;
-  margin-bottom:1rem; 
-  border-bottom: 1px solid var(--colorGray);
-  border-radius: 5px;
-}
+
+// .form-floating label {
+//   color: var(--colorPrin);
+// }
+// .password-type {
+//   display: flex;
+//   justify-content: stretch;
+//   align-items: center;
+//   margin-bottom:1rem; 
+//   border-bottom: 1px solid var(--colorGray);
+//   border-radius: 5px;
+// }
 
 .card-img-top {
   height: 30vh;

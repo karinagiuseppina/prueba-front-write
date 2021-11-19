@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export const TextareaInput = ({ placeholder, set, value, id }) => {
 	return (
-		<div className="mb-3">
+		<>
 			<label htmlFor={id}>{placeholder}</label>
 			<textarea
 				className="form-control"
@@ -13,7 +13,7 @@ export const TextareaInput = ({ placeholder, set, value, id }) => {
 				value={value}
 				placeholder={placeholder}
 			/>
-		</div>
+		</>
 	);
 };
 
