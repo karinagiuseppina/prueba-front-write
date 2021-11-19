@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Context } from "../store/appContext";
-import "../../styles/styles.scss";
+import React from "react";
 import plots_img from "../../img/Prompts.png";
 import { AllElements } from "../component/allElements";
 

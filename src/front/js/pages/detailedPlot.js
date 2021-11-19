@@ -70,53 +70,31 @@ export const DetailedPlot = () => {
 	};
 	async function handleAddCharacter() {
 		const characters = await actions.getUserElements(`user/name/custom-characters`);
-		const { value: character } = await Swal.fire({
-			title: "Add new character",
-			input: "select",
-			inputOptions: characters,
-			inputPlaceholder: "Select a character",
-			showClass: {
-				popup: "animate__animated animate__fadeInDown"
-			},
-			hideClass: {
-				popup: "animate__animated animate__fadeOutUp"
-			},
-			customClass: {
-				container: "container-add-modal",
-				popup: "popup-add-modal"
-			},
-			showCancelButton: true
-		});
-
+		let character = await actions.setModalSelection("character", characters);
 		if (character) {
 			add_character_to_plot({ id: character, name: characters[character] });
 		}
 	}
-
+	async function handleAddSociety() {
+		const societies = await actions.getUserElements(`user/name/societies`);
+		let society = await actions.setModalSelection("society", societies);
+		if (society) {
+			add_society_to_plot({ id: society, name: societies[society] });
+		}
+	}
 	const add_character_to_plot = async character => {
-		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/add/plot/character`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json", Authorization: token },
-			body: JSON.stringify({ plot: { id: plot_id, title: plot.title }, character: character })
-		});
+		let body = { plot: { id: plot_id, title: plot.title }, character: character };
+		const resp = await actions.addRelationshipBetweenElements("plot/character", body);
 		if (resp.ok) {
 			actions.setToast("success", "Character added to plot!");
 			setCharacters([...characters, character]);
 		} else {
-			actions.setToast("error", "There has been a problem!");
+			actions.setToast("error", "Try!");
 		}
 	};
 
 	const delete_character_from_plot = async character_id => {
-		const token = actions.getUserToken();
-		const resp = await fetch(
-			`${process.env.BACKEND_URL}/api/user/delete/plot/${plot_id}/character/${character_id}`,
-			{
-				method: "DELETE",
-				headers: { "Content-Type": "application/json", Authorization: token }
-			}
-		);
+		const resp = await actions.deleteFetch(`delete/plot/${plot_id}/character/${character_id}`);
 		if (resp.ok) {
 			actions.setToast("success", "Character deleted from plot!");
 			delete_character(character_id);
@@ -124,59 +102,20 @@ export const DetailedPlot = () => {
 			actions.setToast("error", "There has been a problem!");
 		}
 	};
-	const delete_character = character_id => {
-		let index = characters.findIndex(c => c.id === character_id);
-		let ch = [...characters];
-		ch.splice(index, 1);
-		setCharacters(ch);
-	};
-
-	async function handleAddSociety() {
-		const societies = await actions.getUserElements(`user/name/societies`);
-		const { value: society } = await Swal.fire({
-			title: "Add new Society",
-			input: "select",
-			inputOptions: societies,
-			inputPlaceholder: "Select a society",
-			showClass: {
-				popup: "animate__animated animate__fadeInDown"
-			},
-			hideClass: {
-				popup: "animate__animated animate__fadeOutUp"
-			},
-			customClass: {
-				container: "container-add-modal",
-				popup: "popup-add-modal"
-			},
-			showCancelButton: true
-		});
-
-		if (society) {
-			add_society_to_plot({ id: society, name: societies[society] });
-		}
-	}
 
 	const add_society_to_plot = async society => {
-		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/add/plot/society`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json", Authorization: token },
-			body: JSON.stringify({ plot: { id: plot_id, title: plot.title }, society: society })
-		});
+		let body = { plot: { id: plot_id, title: plot.title }, society: society };
+		const resp = await actions.addRelationshipBetweenElements("plot/society", body);
 		if (resp.ok) {
 			actions.setToast("success", "Society added to plot!");
-			setCharacters([...societies, society]);
+			setSocieties([...societies, society]);
 		} else {
-			actions.setToast("error", "There has been a problem!");
+			actions.setToast("error", "Try again!");
 		}
 	};
 
 	const delete_society_from_plot = async society_id => {
-		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/delete/plot/${plot_id}/society/${society_id}`, {
-			method: "DELETE",
-			headers: { "Content-Type": "application/json", Authorization: token }
-		});
+		const resp = await actions.deleteFetch(`delete/plot/${plot_id}/society/${society_id}`);
 		if (resp.ok) {
 			actions.setToast("success", "Society deleted from plot!");
 			delete_society(society_id);
@@ -184,17 +123,14 @@ export const DetailedPlot = () => {
 			actions.setToast("error", "There has been a problem!");
 		}
 	};
+	const delete_character = character_id => {
+		actions.deleteElementFromStateList(setCharacters, characters, character_id);
+	};
 	const delete_society = society_id => {
-		let index = societies.findIndex(c => c.id === society_id);
-		let so = [...societies];
-		so.splice(index, 1);
-		setSocieties(so);
+		actions.deleteElementFromStateList(setSocieties, societies, society_id);
 	};
 	const deleteEvent = event_id => {
-		let index = events.findIndex(e => e.id === event_id);
-		let ev = [...events];
-		ev.splice(index, 1);
-		setEvents(ev);
+		actions.deleteElementFromStateList(setEvents, events, event_id);
 	};
 
 	const add_event_to_plot = event => {

@@ -1,8 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Context } from "../store/appContext";
+import React from "react";
 import "../../styles/styles.scss";
-import { Link } from "react-router-dom";
-import { SocietyCard } from "../component/societyCard";
 import plots_img from "../../img/Prompts.png";
 import { AllElements } from "../component/allElements";
 

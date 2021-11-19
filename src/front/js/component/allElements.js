@@ -77,6 +77,6 @@ export const AllElements = ({ elements_plural, elements_singular, img, add_route
 AllElements.propTypes = {
 	elements_plural: PropTypes.string,
 	elements_singular: PropTypes.string,
-	img: PropTypes.element,
+	img: PropTypes.string,
 	add_route: PropTypes.string
 };

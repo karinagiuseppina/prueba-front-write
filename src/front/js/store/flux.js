@@ -71,6 +71,58 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await resp.json();
 					return data;
 				}
+			},
+			setModalSelection: async (element, elements) => {
+				const { value: selection } = await Swal.fire({
+					title: `Add new ${element}`,
+					input: "select",
+					inputOptions: elements,
+					inputPlaceholder: `Select a ${element}`,
+					showClass: {
+						popup: "animate__animated animate__fadeInDown"
+					},
+					hideClass: {
+						popup: "animate__animated animate__fadeOutUp"
+					},
+					customClass: {
+						container: "container-add-modal",
+						popup: "popup-add-modal"
+					},
+					showCancelButton: true,
+					inputValidator: value => {
+						return new Promise(resolve => {
+							if (value) {
+								return resolve();
+							} else {
+								return resolve(`Please, select a ${element}`);
+							}
+						});
+					}
+				});
+				return selection;
+			},
+			addRelationshipBetweenElements: async (route, body) => {
+				const token = getActions().getUserToken();
+				const resp = await fetch(`${process.env.BACKEND_URL}/api/user/add/${route}`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json", Authorization: token },
+					body: JSON.stringify(body)
+				});
+				return resp;
+			},
+			deleteFetch: async route => {
+				const token = getActions().getUserToken();
+				const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${route}`, {
+					method: "DELETE",
+					headers: { "Content-Type": "application/json", Authorization: token }
+				});
+				return resp;
+			},
+			deleteElementFromStateList: (set, elements, element_id) => {
+				let index = elements.findIndex(e => e.id === element_id);
+				let e = [...elements];
+				e.splice(index, 1);
+				set(e);
 			}
 		}
 	};

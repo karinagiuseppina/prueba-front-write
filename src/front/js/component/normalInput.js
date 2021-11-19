@@ -20,7 +20,7 @@ export const NormalInput = ({ type, placeholder, set, value, id }) => {
 NormalInput.propTypes = {
 	placeholder: PropTypes.string,
 	type: PropTypes.string,
-	value: PropTypes.element,
+	value: PropTypes.string,
 	set: PropTypes.func,
 	id: PropTypes.string
 };
