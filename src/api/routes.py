@@ -340,7 +340,7 @@ def get_custom_character(character_id):
 
     return jsonify(character), 200
 
-@api.route("/user/custom-characters/delete/<character_id>", methods=["PUT"])
+@api.route("/user/custom-characters/delete/<character_id>", methods=["DELETE"])
 def delete_custom_character(character_id):
     cookie = confirm_access(request.headers.get('Authorization'))
     if cookie["code"] != 200:
@@ -491,7 +491,7 @@ def update_plot():
 
     return jsonify({"msg": "Plot updated!"}), 200
 
-@api.route("/user/plots/delete/<plot_id>", methods=["PUT"])
+@api.route("/user/plots/delete/<plot_id>", methods=["DELETE"])
 def delete_plot(plot_id):
     cookie = confirm_access(request.headers.get('Authorization'))
     if cookie["code"] != 200:
@@ -706,7 +706,7 @@ def get_society(society_id):
 
     return jsonify(society), 200
 
-@api.route("/user/societies/delete/<society_id>", methods=["PUT"])
+@api.route("/user/societies/delete/<society_id>", methods=["DELETE"])
 def delete_society(society):
     cookie = confirm_access(request.headers.get('Authorization'))
     if cookie["code"] != 200:

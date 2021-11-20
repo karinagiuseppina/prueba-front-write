@@ -123,6 +123,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				let e = [...elements];
 				e.splice(index, 1);
 				set(e);
+			},
+			confirmDelete: (name, deleteElement) => {
+				Swal.fire({
+					title: `Do you want to delete ${name}?`,
+					text: "You wont be able to get it back!",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "Yes, delete please!"
+				}).then(result => {
+					if (result.isConfirmed) {
+						deleteElement();
+					}
+				});
 			}
 		}
 	};

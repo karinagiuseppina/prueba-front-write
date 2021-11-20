@@ -4,7 +4,7 @@ import "../../styles/styles.scss";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-export const EventListElement = ({ event, deleteEvent, plot_id }) => {
+export const EventListElement = ({ event, events, setEvents, plot_id }) => {
 	const { store, actions } = useContext(Context);
 	const delete_event = async () => {
 		const token = actions.getUserToken();
@@ -14,7 +14,7 @@ export const EventListElement = ({ event, deleteEvent, plot_id }) => {
 		});
 		if (resp.ok) {
 			actions.setToast("success", "Event deleted!");
-			deleteEvent(event.id);
+			actions.deleteElementFromStateList(setEvents, events, event.id);
 		} else {
 			actions.setToast("error", "There has been a problem!");
 		}
@@ -36,5 +36,6 @@ export const EventListElement = ({ event, deleteEvent, plot_id }) => {
 EventListElement.propTypes = {
 	event: PropTypes.object,
 	plot_id: PropTypes.string,
-	deleteEvent: PropTypes.func
+	setEvents: PropTypes.func,
+	events: PropTypes.array
 };

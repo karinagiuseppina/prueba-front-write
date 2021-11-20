@@ -6,9 +6,13 @@ import "../../styles/styles.scss";
 import Swal from "sweetalert2";
 import { AddEventButton } from "../component/addEventButton";
 import { EventListElement } from "../component/eventListElement";
+import { AddCharacterRelationshipButton } from "../component/addCharacterRelationshipButton";
+import { AddSocietyRelationshipButton } from "../component/addSocietyRelationshipButton";
+import { CharacterRelatedElement } from "../component/characterRelatedElement";
+import { SocietyRelatedElement } from "../component/societyRelatedElement";
 
 export const DetailedPlot = () => {
-	const { store, actions } = useContext(Context);
+	const { actions } = useContext(Context);
 	const [plot, setPlot] = useState({});
 	const { plot_id } = useParams();
 	let history = useHistory();
@@ -39,102 +43,14 @@ export const DetailedPlot = () => {
 		set(array);
 	};
 
-	const confirmDeletePlot = () => {
-		Swal.fire({
-			title: `Do you want to delete the plot ${plot.title}?`,
-			text: "You wont be able to get it back!",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#3085d6",
-			cancelButtonColor: "#d33",
-			confirmButtonText: "Yes, delete please!"
-		}).then(result => {
-			if (result.isConfirmed) {
-				deletePlot();
-			}
-		});
-	};
-
 	const deletePlot = async () => {
-		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/plots/delete/${plot_id}`, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json", Authorization: token }
-		});
+		const resp = actions.deleteFetch(`plots/delete/${plot_id}`);
 		if (resp.ok) {
 			history.push("/myplots");
 			actions.setToast("success", "Plot deleted!");
 		} else {
 			actions.setToast("error", "There has been a problem!");
 		}
-	};
-	async function handleAddCharacter() {
-		const characters = await actions.getUserElements(`user/name/custom-characters`);
-		let character = await actions.setModalSelection("character", characters);
-		if (character) {
-			add_character_to_plot({ id: character, name: characters[character] });
-		}
-	}
-	async function handleAddSociety() {
-		const societies = await actions.getUserElements(`user/name/societies`);
-		let society = await actions.setModalSelection("society", societies);
-		if (society) {
-			add_society_to_plot({ id: society, name: societies[society] });
-		}
-	}
-	const add_character_to_plot = async character => {
-		let body = { plot: { id: plot_id, title: plot.title }, character: character };
-		const resp = await actions.addRelationshipBetweenElements("plot/character", body);
-		if (resp.ok) {
-			actions.setToast("success", "Character added to plot!");
-			setCharacters([...characters, character]);
-		} else {
-			actions.setToast("error", "Try!");
-		}
-	};
-
-	const delete_character_from_plot = async character_id => {
-		const resp = await actions.deleteFetch(`delete/plot/${plot_id}/character/${character_id}`);
-		if (resp.ok) {
-			actions.setToast("success", "Character deleted from plot!");
-			delete_character(character_id);
-		} else {
-			actions.setToast("error", "There has been a problem!");
-		}
-	};
-
-	const add_society_to_plot = async society => {
-		let body = { plot: { id: plot_id, title: plot.title }, society: society };
-		const resp = await actions.addRelationshipBetweenElements("plot/society", body);
-		if (resp.ok) {
-			actions.setToast("success", "Society added to plot!");
-			setSocieties([...societies, society]);
-		} else {
-			actions.setToast("error", "Try again!");
-		}
-	};
-
-	const delete_society_from_plot = async society_id => {
-		const resp = await actions.deleteFetch(`delete/plot/${plot_id}/society/${society_id}`);
-		if (resp.ok) {
-			actions.setToast("success", "Society deleted from plot!");
-			delete_society(society_id);
-		} else {
-			actions.setToast("error", "There has been a problem!");
-		}
-	};
-	const delete_character = character_id => {
-		actions.deleteElementFromStateList(setCharacters, characters, character_id);
-	};
-	const delete_society = society_id => {
-		actions.deleteElementFromStateList(setSocieties, societies, society_id);
-	};
-	const deleteEvent = event_id => {
-		actions.deleteElementFromStateList(setEvents, events, event_id);
-	};
-
-	const add_event_to_plot = event => {
-		setEvents([...events, event]);
 	};
 
 	return (
@@ -153,35 +69,54 @@ export const DetailedPlot = () => {
 								synopsis: {plot.synopsis}
 							</p>
 
-							<button onClick={handleAddCharacter}> Add character</button>
+							<AddCharacterRelationshipButton
+								setCharacters={setCharacters}
+								body={{ plot: { id: plot_id, title: plot.title } }}
+								route={"plot/character"}
+								characters={characters}
+							/>
 							<ul>
 								{characters.map(c => {
 									return (
-										<li key={c.id}>
-											{c.name} <button onClick={() => delete_character_from_plot(c.id)}>X</button>
-										</li>
+										<CharacterRelatedElement
+											key={c.id}
+											delete_route={`plot/${plot_id}`}
+											setCharacters={setCharacters}
+											characters={characters}
+											character={c}
+										/>
 									);
 								})}
 							</ul>
-							<button onClick={handleAddSociety}> Add Society</button>
+							<AddSocietyRelationshipButton
+								setSocieties={setSocieties}
+								body={{ plot: { id: plot_id, title: plot.title } }}
+								route={"plot/society"}
+								societies={societies}
+							/>
 							<ul>
 								{societies.map(s => {
 									return (
-										<li key={s.id}>
-											{s.name} <button onClick={() => delete_society_from_plot(s.id)}>X</button>
-										</li>
+										<SocietyRelatedElement
+											key={s.id}
+											delete_route={`plot/${plot_id}`}
+											setSocieties={setSocieties}
+											societies={societies}
+											society={s}
+										/>
 									);
 								})}
 							</ul>
 
-							<AddEventButton plot_id={plot_id} addEvent={add_event_to_plot} />
+							<AddEventButton plot_id={plot_id} setEvents={setEvents} events={events} />
 							<ul className="timeline">
 								{events.map(e => {
 									return (
 										<EventListElement
 											event={e}
 											key={e.id}
-											deleteEvent={deleteEvent}
+											setEvents={setEvents}
+											events={events}
 											plot_id={plot_id}
 										/>
 									);
@@ -195,7 +130,7 @@ export const DetailedPlot = () => {
 								</button>
 
 								<button
-									onClick={confirmDeletePlot}
+									onClick={() => actions.confirmDelete(plot.title, deletePlot)}
 									className="btn btn-prin text-decoration-none text-white fw-bold text-uppercase w-50 p-2">
 									Delete Plot
 								</button>
