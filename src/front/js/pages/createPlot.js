@@ -34,45 +34,31 @@ export const CreatePlot = () => {
 	};
 
 	return (
-		<div className="container-fluid m-0 bg-gradiente">
-			<div className="row align-items-center">
-				<div className="col-lg-10 col-xl-9 mx-auto">
-					<div className="card flex-row my-3 border-0 shadow rounded-3 overflow-hidden">
-						<div className="card-body p-4 p-sm-5">
-							<div className="d-flex my-3 justify-content-start">
-								<Link to="/myplots">Go to all Plots</Link>
-							</div>
-							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">Build Plot</h1>
-							<NormalInput
-								type="text"
-								id="title"
-								placeholder="Title"
-								set={updateValue}
-								value={plot.title}
-							/>
-							<NormalInput
-								type="text"
-								id="genre"
-								placeholder="Genre"
-								set={updateValue}
-								value={plot.genre}
-							/>
-							<TextareaInput
-								id="synopsis"
-								placeholder="Synopsis"
-								set={updateValue}
-								value={plot.synopsis}
-							/>
-
-							<div className="d-flex my-3 justify-content-center">
-								<button
-									onClick={handleCreatePlot}
-									className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-									Save plot
-								</button>
-							</div>
-						</div>
+		<div className="container p-2 p-md-5">
+			<div className="row">
+				<div className="col">
+					<Link to="/myplots">Go to all Plots</Link>
+				</div>
+			</div>
+			<div className="row justify-content-center align-items-center">
+				<div className="col-12 col-md-6">
+					<div className="header-tit short-header">
+						Build <span>Plot</span>
 					</div>
+				</div>
+			</div>
+			<div className="row p-4 justify-content-center">
+				<div className="col-12 col-md-6">
+					<NormalInput type="text" id="title" placeholder="Title" set={updateValue} value={plot.title} />
+					<NormalInput type="text" id="genre" placeholder="Genre" set={updateValue} value={plot.genre} />
+					<TextareaInput id="synopsis" placeholder="Synopsis" set={updateValue} value={plot.synopsis} />
+				</div>
+			</div>
+			<div className="row justify-content-center">
+				<div className="col-12 col-md-6 d-flex justify-content-center">
+					<button onClick={handleCreatePlot} className="btn-prin align-self-center">
+						Save plot
+					</button>
 				</div>
 			</div>
 		</div>

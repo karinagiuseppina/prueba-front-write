@@ -71,7 +71,9 @@ export const AddEventButton = ({ plot_id, setEvents, events }) => {
 				</section>
 			</div>
 
-			<button onClick={showModal}> Add event</button>
+			<button className="btn-prin" onClick={showModal}>
+				<i className="fas fa-plus-circle" /> Add event
+			</button>
 		</div>
 	);
 };

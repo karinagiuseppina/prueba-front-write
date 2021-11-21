@@ -39,46 +39,85 @@ export const DetailedCharacter = () => {
 	};
 
 	return (
-		<div className="container-fluid m-0 bg-gradiente">
-			<div className="row align-items-center">
-				<div className="col-lg-10 col-xl-9 mx-auto">
-					<div className="card flex-row my-3 border-0 shadow rounded-3 overflow-hidden">
-						<div className="card-body p-4 p-sm-5">
-							<div className="d-flex my-3 justify-content-start">
-								<Link to="/mycharacters">Go to all characters</Link>
-							</div>
-							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">
-								{character.name}
-							</h1>
-							<p>
-								nickname: {character.nickname} <br />
-								age: {character.age}
-								<br />
-								occupation: {character.occupation}
-								<br />
-								nationality: {character.nationality}
-								<br />
-								sexual_orientation: {character.sexual_orientation}
-								<br />
-							</p>
-							<p>personality: {character.personality}</p>
-							<p>
-								eye_color: {character.eye_color}
-								<br />
-								hair_color: {character.hair_color}
-								<br />
-								skin_color: {character.skin_color}
-								<br />
-								appearence: {character.appearence}
-								<br />
-							</p>
+		<div className="container p-2 p-md-5">
+			<div className="row justify-content-center align-items-center">
+				<div className="col-12 col-md-6">
+					<div className="header-tit detailed-header">{character.name}</div>
+				</div>
+				<div className="col-12 col-md-2 align-self-end">
+					<div className="deatailed-info-buttons">
+						<button className="btn-prin">
+							<Link to={`/update-character/${character_id}`} className="text-decoration-none text-white">
+								Update
+							</Link>
+						</button>
 
+						<button
+							onClick={() => actions.confirmDelete(character.name, deleteCharacter)}
+							className="btn-prin mt-2">
+							Delete
+						</button>
+					</div>
+				</div>
+			</div>
+			<div className="row justify-content-center">
+				<div className="col-12 col-md-8">
+					<div className="tag-container">
+						<div className="info-tag">
+							<span>nickname</span> {character.nickname}
+						</div>
+						<div className="info-tag">
+							<span>age </span>
+							{character.age}
+						</div>
+						<div className="info-tag">
+							<span>occupation</span> {character.occupation}
+						</div>
+						<div className="info-tag">
+							<span>nationality</span> {character.nationality}
+						</div>
+						<div className="info-tag">
+							<span>sexual orientation</span> {character.sexual_orientation}
+						</div>
+						<div className="info-tag">
+							<span>eye color</span> {character.eye_color}
+						</div>
+						<div className="info-tag">
+							<span>hair color</span> {character.hair_color}
+						</div>
+						<div className="info-tag">
+							<span>skin color</span> {character.skin_color}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div className="row justify-content-center">
+				<div className="col-12 col-md-4">
+					<div className="info-container">
+						<h3>Personality </h3>
+						<p>{character.personality}</p>
+					</div>
+				</div>
+				<div className="col-12 col-md-4">
+					<div className="info-container">
+						<h3>Appearence </h3>
+						<p>{character.appearence}</p>
+					</div>
+				</div>
+			</div>
+			<div className="row justify-content-center">
+				<div className="col-12 col-md-8">
+					<div className="relationship-container">
+						<div className="relationship-container-header">
+							<h3>Plots</h3>
 							<AddPlotRelationshipButton
 								setPlots={setPlots}
 								body={{ character: { id: character_id, name: character.name } }}
 								route={"plot/character"}
 								plots={plots}
 							/>
+						</div>
+						<ul>
 							{plots.map(p => {
 								return (
 									<PlotRelatedElement
@@ -90,23 +129,7 @@ export const DetailedCharacter = () => {
 									/>
 								);
 							})}
-
-							<div className="d-flex my-3 justify-content-center">
-								<button className="btn btn-prin fw-bold text-uppercase w-100 p-2">
-									<Link
-										to={`/update-character/${character_id}`}
-										className="text-decoration-none text-white">
-										Update Character
-									</Link>
-								</button>
-
-								<button
-									onClick={() => actions.confirmDelete(character.name, deleteCharacter)}
-									className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-									Delete Character
-								</button>
-							</div>
-						</div>
+						</ul>
 					</div>
 				</div>
 			</div>

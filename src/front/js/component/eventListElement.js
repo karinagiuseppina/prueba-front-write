@@ -20,18 +20,26 @@ export const EventListElement = ({ event, events, setEvents, plot_id }) => {
 		}
 	};
 	return (
-		<li className="timeline-item bg-white rounded ml-3 p-4 shadow">
+		<li className="timeline-item">
 			<div className="timeline-arrow" />
-			<h2 className="h5 mb-0">{event.title}</h2>
-			<span className="small text-gray">
-				<i className="fa fa-clock-o mr-1" />
-				{event.date}
-			</span>
-			<p className="text-small mt-2 font-weight-light">{event.description}</p>
-			<button onClick={delete_event}>x</button>
+			<div className="timeline-info">
+				<div className="flex-grow-1">
+					<h3>{event.title}</h3>
+					<span>
+						<i className="fa fa-clock-o mr-1" />
+						{event.date}
+					</span>
+					<p>{event.description}</p>
+				</div>
+				<button onClick={delete_event} className="align-self-start">
+					<i className="fas fa-times" />
+				</button>
+			</div>
 		</li>
 	);
 };
+
+// bg-white rounded ml-3 p-4 shadow
 
 EventListElement.propTypes = {
 	event: PropTypes.object,

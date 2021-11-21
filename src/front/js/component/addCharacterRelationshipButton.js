@@ -24,7 +24,11 @@ export const AddCharacterRelationshipButton = ({ body, route, setCharacters, cha
 		}
 	};
 
-	return <button onClick={handleAddCharacter}> Add character</button>;
+	return (
+		<button onClick={handleAddCharacter}>
+			<i className="fas fa-plus-circle" />
+		</button>
+	);
 };
 
 AddCharacterRelationshipButton.propTypes = {

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 export const SocietyRelatedElement = ({ delete_route, setSocieties, societies, society }) => {
 	const { actions } = useContext(Context);
@@ -17,7 +18,10 @@ export const SocietyRelatedElement = ({ delete_route, setSocieties, societies, s
 
 	return (
 		<li key={society.id}>
-			{society.name} <button onClick={deleteSocietyFromElement}>X</button>
+			<Link to={`/mysocieties/${society.id}`}>{society.name}</Link>
+			<button onClick={deleteSocietyFromElement}>
+				<i className="fas fa-times" />
+			</button>
 		</li>
 	);
 };

@@ -54,88 +54,107 @@ export const DetailedPlot = () => {
 	};
 
 	return (
-		<div className="container-fluid m-0 bg-gradiente">
-			<div className="row align-items-center">
-				<div className="col-lg-10 col-xl-9 mx-auto">
-					<div className="card flex-row my-3 border-0 shadow rounded-3 overflow-hidden">
-						<div className="card-body p-4 p-sm-5">
-							<div className="d-flex my-3 justify-content-start">
-								<Link to="/myplots">Go to all Plots</Link>
-							</div>
-							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">{plot.title}</h1>
-							<p>
-								genre: {plot.genre}
-								<br />
-								synopsis: {plot.synopsis}
-							</p>
+		<div className="container p-2 p-md-5">
+			<div className="row justify-content-center align-items-center">
+				<div className="col-12 col-md-6">
+					<div className="header-tit detailed-header">{plot.title}</div>
+				</div>
+				<div className="col-12 col-md-2 align-self-end">
+					<div className="deatailed-info-buttons">
+						<button className="btn-prin">
+							<Link to={`/update-plot/${plot_id}`} className="text-decoration-none text-white">
+								Update Plot
+							</Link>
+						</button>
 
+						<button onClick={() => actions.confirmDelete(plot.title, deletePlot)} className="btn-prin mt-2">
+							Delete Plot
+						</button>
+					</div>
+				</div>
+			</div>
+			<div className="row justify-content-center mt-5">
+				<div className="col-12 col-md-8">
+					<div className="info-container">
+						<h3>Genre: {plot.genre} </h3>
+						<hr />
+						<h3>Synopsis </h3>
+						<p>{plot.synopsis}</p>
+					</div>
+				</div>
+			</div>
+			<div className="row justify-content-center">
+				<div className="col-12 col-md-4">
+					<div className="relationship-container">
+						<div className="relationship-container-header">
+							<h3>Characters </h3>
 							<AddCharacterRelationshipButton
 								setCharacters={setCharacters}
 								body={{ plot: { id: plot_id, title: plot.title } }}
 								route={"plot/character"}
 								characters={characters}
 							/>
-							<ul>
-								{characters.map(c => {
-									return (
-										<CharacterRelatedElement
-											key={c.id}
-											delete_route={`plot/${plot_id}`}
-											setCharacters={setCharacters}
-											characters={characters}
-											character={c}
-										/>
-									);
-								})}
-							</ul>
+						</div>
+
+						<ul>
+							{characters.map(c => {
+								return (
+									<CharacterRelatedElement
+										key={c.id}
+										delete_route={`plot/${plot_id}`}
+										setCharacters={setCharacters}
+										characters={characters}
+										character={c}
+									/>
+								);
+							})}
+						</ul>
+					</div>
+				</div>
+				<div className="col-12 col-md-4">
+					<div className="relationship-container">
+						<div className="relationship-container-header">
+							<h3>Societies</h3>
 							<AddSocietyRelationshipButton
 								setSocieties={setSocieties}
 								body={{ plot: { id: plot_id, title: plot.title } }}
 								route={"plot/society"}
 								societies={societies}
 							/>
-							<ul>
-								{societies.map(s => {
-									return (
-										<SocietyRelatedElement
-											key={s.id}
-											delete_route={`plot/${plot_id}`}
-											setSocieties={setSocieties}
-											societies={societies}
-											society={s}
-										/>
-									);
-								})}
-							</ul>
-
-							<AddEventButton plot_id={plot_id} setEvents={setEvents} events={events} />
-							<ul className="timeline">
-								{events.map(e => {
-									return (
-										<EventListElement
-											event={e}
-											key={e.id}
-											setEvents={setEvents}
-											events={events}
-											plot_id={plot_id}
-										/>
-									);
-								})}
-							</ul>
-							<div className="d-flex my-3 justify-content-center">
-								<button className="btn btn-prin fw-bold text-uppercase w-100 p-2 text-decoration-none text-white">
-									<Link to={`/update-plot/${plot_id}`} className="text-decoration-none text-white">
-										Update Plot
-									</Link>
-								</button>
-
-								<button
-									onClick={() => actions.confirmDelete(plot.title, deletePlot)}
-									className="btn btn-prin text-decoration-none text-white fw-bold text-uppercase w-50 p-2">
-									Delete Plot
-								</button>
-							</div>
 						</div>
+						<ul>
+							{societies.map(s => {
+								return (
+									<SocietyRelatedElement
+										key={s.id}
+										delete_route={`plot/${plot_id}`}
+										setSocieties={setSocieties}
+										societies={societies}
+										society={s}
+									/>
+								);
+							})}
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div className="row justify-content-center">
+				<div className="col-12 col-md-8">
+					<div className="events-container">
+						<AddEventButton plot_id={plot_id} setEvents={setEvents} events={events} />
+						<ul className="timeline">
+							{events.map(e => {
+								return (
+									<EventListElement
+										event={e}
+										key={e.id}
+										setEvents={setEvents}
+										events={events}
+										plot_id={plot_id}
+									/>
+								);
+							})}
+						</ul>
 					</div>
 				</div>
 			</div>

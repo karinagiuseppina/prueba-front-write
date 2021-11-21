@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 export const CharacterRelatedElement = ({ delete_route, setCharacters, characters, character }) => {
 	const { actions } = useContext(Context);
@@ -17,7 +18,10 @@ export const CharacterRelatedElement = ({ delete_route, setCharacters, character
 
 	return (
 		<li key={character.id}>
-			{character.name} <button onClick={deleteCharacterFromElement}>X</button>
+			<Link to={`/mycharacters/${character.id}`}>{character.name} </Link>
+			<button onClick={deleteCharacterFromElement}>
+				<i className="fas fa-times" />
+			</button>
 		</li>
 	);
 };

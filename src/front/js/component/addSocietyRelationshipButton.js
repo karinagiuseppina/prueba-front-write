@@ -26,7 +26,11 @@ export const AddSocietyRelationshipButton = ({ body, route, setSocieties, societ
 		}
 	};
 
-	return <button onClick={handleAddSociety}> Add Society</button>;
+	return (
+		<button onClick={handleAddSociety}>
+			<i className="fas fa-plus-circle" />
+		</button>
+	);
 };
 
 AddSocietyRelationshipButton.propTypes = {

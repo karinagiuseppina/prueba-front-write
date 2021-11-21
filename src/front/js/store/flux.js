@@ -118,6 +118,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 				return resp;
 			},
+			createElement: async (route, body) => {
+				const token = getActions().getUserToken();
+				const resp = await fetch(`${process.env.BACKEND_URL}/api/${route}`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json", Authorization: token },
+					body: JSON.stringify(body)
+				});
+				return resp;
+			},
 			deleteElementFromStateList: (set, elements, element_id) => {
 				let index = elements.findIndex(e => e.id === element_id);
 				let e = [...elements];

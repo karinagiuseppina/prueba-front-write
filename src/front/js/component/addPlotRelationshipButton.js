@@ -25,7 +25,11 @@ export const AddPlotRelationshipButton = ({ body, route, setPlots, plots }) => {
 		}
 	};
 
-	return <button onClick={handleAddPlot}> Add plot</button>;
+	return (
+		<button onClick={handleAddPlot}>
+			<i className="fas fa-plus-circle" />
+		</button>
+	);
 };
 
 AddPlotRelationshipButton.propTypes = {

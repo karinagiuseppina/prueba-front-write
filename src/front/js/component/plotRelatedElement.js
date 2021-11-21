@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 export const PlotRelatedElement = ({ delete_route, setPlots, plots, plot }) => {
 	const { actions } = useContext(Context);
@@ -17,7 +18,10 @@ export const PlotRelatedElement = ({ delete_route, setPlots, plots, plot }) => {
 
 	return (
 		<li key={plot.id}>
-			{plot.title} <button onClick={delete_plot_from_element}>X</button>
+			<Link to={`/myplots/${plot.id}`}>{plot.title} </Link>
+			<button onClick={delete_plot_from_element}>
+				<i className="fas fa-times" />
+			</button>
 		</li>
 	);
 };
