@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { TextareaInput } from "../component/textareaInput";
 import { NormalInput } from "../component/normalInput";
 
-export const AddEventButton = ({ plot_id, setEvents, events }) => {
+export const AddEventButton = ({ plot_id, getEvents }) => {
 	const { actions } = useContext(Context);
 	const [Modal, setModal] = useState(false);
 	const [event, setEvent] = useState({ date: "", title: "", description: "" });
@@ -38,7 +38,7 @@ export const AddEventButton = ({ plot_id, setEvents, events }) => {
 			const event_id = await resp.json();
 			event["id"] = event_id.id;
 			actions.setToast("success", "Event added to plot!");
-			setEvents([...events, event]);
+			getEvents();
 			hideModal();
 		} else {
 			actions.setToast("error", "There has been a problem!");
@@ -81,5 +81,6 @@ export const AddEventButton = ({ plot_id, setEvents, events }) => {
 AddEventButton.propTypes = {
 	plot_id: PropTypes.string,
 	setEvents: PropTypes.func,
+	getEvents: PropTypes.func,
 	events: PropTypes.object
 };

@@ -141,7 +141,7 @@ export const DetailedPlot = () => {
 			<div className="row justify-content-center">
 				<div className="col-12 col-md-8">
 					<div className="events-container">
-						<AddEventButton plot_id={plot_id} setEvents={setEvents} events={events} />
+						<AddEventButton plot_id={plot_id} getEvents={getEvents} setEvents={setEvents} events={events} />
 						<ul className="timeline">
 							{events.map(e => {
 								return (
