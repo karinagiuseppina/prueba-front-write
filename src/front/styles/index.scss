@@ -1,5 +1,16 @@
 
 /*header*/
+a{
+    color: var(--colorSec);
+}
+*{
+    font-family: var(--fontGeneral);
+    color: var(--colorGeneral);
+}
+h1, h2, h3, h4 {
+    font-family: var(--fontTitle);
+    font-weight: 600;
+}
 img.header-img {
     width:100%;
 }
@@ -23,6 +34,7 @@ img.header-img {
 .header-tit span{
     font-weight: 600;
     font-style: italic;
+    color: var(--colorPrin);
 }
 .header-subtitle {
     font-size: 1.1rem;
@@ -65,7 +77,25 @@ img.header-img {
 img.service-img{
     width:30%
 }
+
+/*login*/
+.card-img-left {
+    width: 40%;
+    background: scroll center url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
+    background-size: cover;
+    border-radius: 50px 0 0px 50px;
+  }
+  .login-card{
+      display: flex;
+      background: white;
+      margin: 2em;
+      border-radius: 50px;
+      box-shadow: 0 0.4rem 0.8rem rgb(237,237,237);
+
+  }
+
 /*common pages*/
+
 // .min-full-screen{
 //     min-height:100vh;
 //     box-sizing: border-box;
@@ -386,7 +416,8 @@ h2.swal2-title {
     margin: 0.5em 0;
     font-family: var(--fontTitle);
     font-weight: 600;
-    font-size: 1.2em;
+    font-size: 1.1em;
+    text-transform: capitalize;
 }
 
 /*detailed plot*/

@@ -5,7 +5,7 @@ import { Context } from "../store/appContext";
 import { CharacterForm } from "../component/characterForm";
 import { useHistory } from "react-router";
 
-export const CreateCustomCharacterForm = () => {
+export const CreateCharacter = () => {
 	const { actions, store } = useContext(Context);
 	let { fav_character } = useParams();
 	let history = useHistory();

@@ -1,12 +1,14 @@
 import React, { useState, useContext } from "react";
 import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
-import { Formgroup } from "../component/formGroup";
+import { NormalInput } from "../component/normalInput";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const Login = () => {
 	const { actions } = useContext(Context);
+	const [user, setUser] = useState({ email: "", password: "" });
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
 	const [vissiblePasswordType, setVissiblePasswordType] = useState("password");
@@ -14,7 +16,7 @@ export const Login = () => {
 	let history = useHistory();
 
 	const handleLogin = async () => {
-		let response = await actions.login(email, password);
+		let response = await actions.login(user.email, user.password);
 		if (response.code === 400) {
 			actions.setToast("warning", response.msg);
 		} else {
@@ -32,32 +34,54 @@ export const Login = () => {
 		}
 	};
 
-	return (
-		<div className="container-fluid m-0 bg-gradiente">
-			<div className="row tot-height align-items-center">
-				<div className="col-lg-10 col-xl-9 mx-auto">
-					<div className="card flex-row my-3 border-0 shadow rounded-3 overflow-hidden">
-						<div className="card-img-left d-none d-md-flex" />
-						<div className="card-body p-4 p-sm-5">
-							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin font-sec">
-								Sign In
-							</h1>
+	const updateValue = (attr, value) => {
+		let old_value = { ...user };
+		old_value[attr] = value;
+		setUser(old_value);
+	};
 
-							<Formgroup
-								type="email"
+	const handleResetPassword = async () => {
+		const { value: email } = await Swal.fire({
+			title: "Input email address",
+			input: "email",
+			inputLabel: "Your email address",
+			inputPlaceholder: "Enter your email address"
+		});
+
+		if (email) {
+			const resp = await fetch(`${process.env.BACKEND_URL}/api/reset-password`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ email: email })
+			});
+			if (resp.ok) {
+				actions.setToast("success", "Check your email!");
+			} else {
+				actions.setToast("warning", "Email doesn't exist");
+			}
+		}
+	};
+	return (
+		<div className="container">
+			<div className="row align-items-center">
+				<div className="col-12 col-md-8 mx-auto">
+					<div className="login-card">
+						<div className="card-img-left d-none d-md-flex" />
+						<div className="card-body p-5">
+							<h1 className="header-tit py-4">Sign In</h1>
+							<NormalInput
+								type="text"
 								id="email"
-								placeholder="Email Address"
-								name="Email Address"
-								set={setEmail}
-								value={email}
+								placeholder="email"
+								set={updateValue}
+								value={user.email}
 							/>
-							<Formgroup
+							<NormalInput
 								type={vissiblePasswordType}
 								id="password"
-								placeholder="Password"
-								name="Password"
-								set={setPassword}
-								value={password}
+								placeholder="password"
+								set={updateValue}
+								value={user.password}
 							/>
 							<div className="form-check">
 								<input
@@ -65,7 +89,7 @@ export const Login = () => {
 									type="checkbox"
 									onClick={handleVissibleInput}
 									id="passwordVissible"
-									defaultChecked={isVisiblePassword}
+									checked={isVisiblePassword}
 								/>
 								<label
 									className="form-check-label text-muted small mt-0 mb-2"
@@ -75,14 +99,23 @@ export const Login = () => {
 							</div>
 
 							<div className="d-flex mb-2 justify-content-center">
-								<button className="btn-prin w-100 w-md-25" onClick={handleLogin}>
-									Log In
+								<button className="btn-prin" onClick={handleLogin}>
+									Sign in
 								</button>
 							</div>
-							<div className=" d-block text-center small">
-								You do not have an account?
-								<Link className="mx-2 mt-2 text-prin text-decoration-none" to="/register">
-									Sign Up
+							<div className="d-block text-center small">
+								Forgot your password?
+								<button
+									onClick={handleResetPassword}
+									className="mx-2 mt-2 text-prin text-decoration-none">
+									Reset Password
+								</button>
+							</div>
+
+							<div className="d-block text-center small">
+								You have an account?
+								<Link className="mx-2 mt-2 text-prin text-decoration-none" to="/signup">
+									Sign In
 								</Link>
 							</div>
 						</div>

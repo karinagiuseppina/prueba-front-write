@@ -2,9 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import "../../styles/styles.scss";
 import { useParams } from "react-router";
 import { Context } from "../store/appContext";
-import { NormalInput } from "../component/normalInput";
-import { TextareaInput } from "../component/textareaInput";
 import { Link } from "react-router-dom";
+import { PlotForm } from "../component/plotForm";
 
 export const UpdatePlot = () => {
 	const { actions, store } = useContext(Context);
@@ -34,61 +33,20 @@ export const UpdatePlot = () => {
 		if (resp.ok) {
 			const data = await resp.json();
 			actions.setToast("success", data.msg);
+			history.push(`/myplots/${plot_id}`);
 		} else {
 			actions.setToast("warning", resp.msg);
 		}
 	};
 
-	const updateValue = (attr, value) => {
-		let old_plot = { ...plot };
-		old_plot[attr] = value;
-		setPlot(old_plot);
-	};
-
 	return (
-		<div className="container-fluid m-0 bg-gradiente">
-			<div className="row align-items-center">
-				<div className="col-lg-10 col-xl-9 mx-auto">
-					<div className="card flex-row my-3 border-0 shadow rounded-3 overflow-hidden">
-						<div className="card-body p-4 p-sm-5">
-							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">Build Plot</h1>
-							<NormalInput
-								type="text"
-								id="title"
-								placeholder="Title"
-								set={updateValue}
-								value={plot.title}
-							/>
-							<NormalInput
-								type="text"
-								id="genre"
-								placeholder="Genre"
-								set={updateValue}
-								value={plot.genre}
-							/>
-							<TextareaInput
-								id="synopsis"
-								placeholder="Synopsis"
-								set={updateValue}
-								value={plot.synopsis}
-							/>
-
-							<div className="d-flex my-3 justify-content-center">
-								<button
-									onClick={handleUpdatePlot}
-									className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-									Save plot
-								</button>
-								<button className="btn btn-prin text-decoration-none text-white fw-bold text-uppercase w-50 p-2">
-									<Link to={`/myplots/${plot_id}`} className="text-decoration-none text-white">
-										view plot
-									</Link>
-								</button>
-							</div>
-						</div>
-					</div>
+		<div className="container p-2 p-md-5">
+			<div className="row justify-content-center align-items-center">
+				<div className="col-12 col-md-8">
+					<div className="header-tit detailed-header text-center">Update Plot</div>
 				</div>
 			</div>
+			<PlotForm plot={plot} setPlot={setPlot} saveFunction={handleUpdatePlot} />
 		</div>
 	);
 };

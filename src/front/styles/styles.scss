@@ -170,12 +170,7 @@ body{background: white;
 
 
 
-/*login*/
-.card-img-left {
-  width: 45%;
-  background: scroll center url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
-  background-size: cover;
-}
+
 /*Form*/
 
 // .form-floating label {
@@ -190,93 +185,93 @@ body{background: white;
 //   border-radius: 5px;
 // }
 
-.card-img-top {
-  height: 30vh;
-  background: scroll center url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
-  background-size: cover;
-}
-.discover-prompt-image {
-  padding: 25px;
-  background: scroll center url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
-  background-size: cover;
-}
-/*Create plot and characters*/
-.card-img-left-create {
-  width: 20%;
-  background: var(--colorCuar);
-  background-size: cover;
-}
-textarea.form-control{
-  height:10vh;
-}
-/*progress bar*/
+// .card-img-top {
+//   height: 30vh;
+//   background: scroll center url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
+//   background-size: cover;
+// }
+// .discover-prompt-image {
+//   padding: 25px;
+//   background: scroll center url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
+//   background-size: cover;
+// }
+// /*Create plot and characters*/
+// .card-img-left-create {
+//   width: 20%;
+//   background: var(--colorCuar);
+//   background-size: cover;
+// }
+// textarea.form-control{
+//   height:10vh;
+// }
+// /*progress bar*/
 
 
-/*vertical track*/
-.create-character-form label {
-  color: var(--colorTer);
-  font-weight: 700;
-  padding: 5px;
-  letter-spacing: 0.4px;
-}
+// /*vertical track*/
+// .create-character-form label {
+//   color: var(--colorTer);
+//   font-weight: 700;
+//   padding: 5px;
+//   letter-spacing: 0.4px;
+// }
 
-.track {
-  background-color: var(--colorGray);
-  width: 4px;
-  padding: 0;
-  display: -ms-flexbox;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-}
-.track .step {
-  -webkit-box-flex: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  margin: 0px 0px 0px -18px;
-  text-align: center;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 100px;
-  justify-content: center;
-}
-.track .text {
-  display: block;
-  margin-top: 15px;
-  width: 70px;
-  font-size: 0.7rem;
-}
-.track .step.active .text {
-  font-weight: 400;
-  color: var(--colorGray);
-}
+// .track {
+//   background-color: var(--colorGray);
+//   width: 4px;
+//   padding: 0;
+//   display: -ms-flexbox;
+//   display: flex;
+//   flex-wrap: wrap;
+//   flex-direction: column;
+// }
+// .track .step {
+//   -webkit-box-flex: 1;
+//   -ms-flex-positive: 1;
+//   flex-grow: 1;
+//   margin: 0px 0px 0px -18px;
+//   text-align: center;
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
+//   height: 100px;
+//   justify-content: center;
+// }
+// .track .text {
+//   display: block;
+//   margin-top: 15px;
+//   width: 70px;
+//   font-size: 0.7rem;
+// }
+// .track .step.active .text {
+//   font-weight: 400;
+//   color: var(--colorGray);
+// }
 
-.track .step::before {
-  width: 4px;
-  position: absolute;
-  content: "";
-  height: 100%;
-  top: 0;
-  left: 18px;
-}
-.track .step.active .icon {
-  background: var(--colorPrin);
-  color: #fff
-}
-.track .step.active:before {
-  background: var(--colorPrin);
-}
+// .track .step::before {
+//   width: 4px;
+//   position: absolute;
+//   content: "";
+//   height: 100%;
+//   top: 0;
+//   left: 18px;
+// }
+// .track .step.active .icon {
+//   background: var(--colorPrin);
+//   color: #fff
+// }
+// .track .step.active:before {
+//   background: var(--colorPrin);
+// }
 
-.track .icon {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  position: relative;
-  border-radius: 100%;
-  background: #ddd
-}
+// .track .icon {
+//   display: inline-block;
+//   width: 40px;
+//   height: 40px;
+//   line-height: 40px;
+//   position: relative;
+//   border-radius: 100%;
+//   background: #ddd
+// }
 
 /*Responsive*/
 
