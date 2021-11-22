@@ -10,6 +10,7 @@ import json
 from random import seed
 from random import randint
 import datetime
+from datetime import datetime
 import os
 
 apiKey = os.getenv('API_KEY_FIREBASE') 
@@ -47,6 +48,84 @@ def login():
     except:
             return jsonify({"error": "ok"}), 401
 
+@api.route("/reset-password", methods=["POST"])
+def reset_password():
+    email = request.json.get("email", None)
+
+    request_ref = "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={}".format(apiKey)
+    headers = {"content-type": "application/json"}
+    data =  json.dumps({"requestType":"PASSWORD_RESET","email":email})
+    request_object = requests.post(request_ref, headers=headers, data=data)
+    request_object = request_object.json()
+    try:
+        email = request_object['email']
+        return jsonify({}), 200
+    except:
+            return jsonify({"error": "ok"}), 400
+
+@api.route("user/info", methods=["GET"])
+def get_user_data():
+    session_cookie = request.headers.get('Authorization')
+    if not session_cookie:
+        return jsonify({"code": 422}), 422
+
+    try:
+        decoded_claims = auth.verify_session_cookie(session_cookie, check_revoked=True)
+        return jsonify({"user_id":decoded_claims["uid"], "name": decoded_claims["name"], "email":decoded_claims["email"]}), 200
+    except auth.InvalidSessionCookieError:
+        return jsonify({"code": 422}), 422
+
+@api.route("/edit-profile", methods=["PUT"])
+def edit_user_data():
+    user = request.json.get("user", None)
+    current_password = request.json.get("current_password", None)
+    session_cookie = request.headers.get('Authorization')
+
+    headers = {"content-type": "application/json"}
+
+    try:
+        old_data = auth.verify_session_cookie(session_cookie, check_revoked=True)
+        request_ref = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={}".format(apiKey)
+        data =  json.dumps({"email": old_data["email"], "password": current_password, "returnSecureToken": True})
+        request_object = requests.post(request_ref, headers=headers, data=data)
+        request_object = request_object.json()
+        id_token = request_object['idToken']
+    except auth.InvalidSessionCookieError:
+        return jsonify({"msg": "Unathorized"}), 422
+    
+
+    try:
+        if user["name"] and user["name"] != "" and user["name"] != old_data["name"]:
+            request_ref = "https://identitytoolkit.googleapis.com/v1/accounts:update?key={}".format(apiKey)
+            data =  json.dumps({"idToken": id_token,"displayName":user["name"],"returnSecureToken":True})
+            request_object = requests.post(request_ref, headers=headers, data=data)
+            request_object = request_object.json()
+            
+    except :
+        return jsonify({"msg": "Try again!"}), 400
+
+    try:
+        if user["email"] and user["email"] != "" and user["email"] != old_data["email"]:
+            request_ref = "https://identitytoolkit.googleapis.com/v1/accounts:update?key={}".format(apiKey)
+            data =  json.dumps({"idToken": id_token,"email":user["email"],"returnSecureToken":True})
+            request_object = requests.post(request_ref, headers=headers, data=data)
+            request_object = request_object.json()
+            
+    except :
+        return jsonify({"msg": "Email already in use."}), 400
+
+    try:
+        if user["password"] and user["password"] != "":
+            request_ref = "https://identitytoolkit.googleapis.com/v1/accounts:update?key={}".format(apiKey)
+            data =  json.dumps({"idToken": id_token,"password":user["password"],"returnSecureToken":True})
+            request_object = requests.post(request_ref, headers=headers, data=data)
+            request_object = request_object.json()
+            
+    except :
+        return jsonify({"msg": "La contraseña debe de tener más de 6 caracteres"}), 400
+
+    return jsonify([]), 200
+
 @api.route("/signup", methods=["POST"])
 def create_user():
     name = request.json.get("name", None)
@@ -59,11 +138,11 @@ def create_user():
         password=password,
         display_name=name)
 
-        ref = db.reference("private/users")
-        ref.child(user.uid).set({
-            "name": name,
-            "email": email
-        })
+        # ref = db.reference("private/users")
+        # ref.child(user.uid).set({
+        #     "name": name,
+        #     "email": email
+        # })
     except: 
         return jsonify({"msg": "Something went wrong"}),400
 
@@ -241,7 +320,6 @@ def get_favorite_character_by_id(character_id):
     try: 
         ref = db.reference("private/favorite-characters")
         character = ref.child(user_id).child(character_id).get()
-        print(character)
     except: 
         return jsonify({"msg": "Something went wrong"}),400
 
@@ -284,7 +362,7 @@ def update_character():
 
     return jsonify({"msg": "Character updated!"}), 200
 
-@api.route("/user/custom-characters", methods=["GET"])
+@api.route("/user/characters", methods=["GET"])
 def get_custom_characters():
     cookie = confirm_access(request.headers.get('Authorization'))
     if cookie["code"] != 200:
@@ -340,7 +418,7 @@ def get_custom_character(character_id):
 
     return jsonify(character), 200
 
-@api.route("/user/custom-characters/delete/<character_id>", methods=["PUT"])
+@api.route("/user/custom-characters/delete/<character_id>", methods=["DELETE"])
 def delete_custom_character(character_id):
     cookie = confirm_access(request.headers.get('Authorization'))
     if cookie["code"] != 200:
@@ -358,7 +436,6 @@ def delete_custom_character(character_id):
 def delete_character_from_plots(character_id, user_id):
     plots = db.reference("private/custom-character").child(user_id).child(character_id).child("plots").get()
     for plot_id,name in plots.items():
-        print(plot_id)
         ref = db.reference("private/plots").child(user_id).child(plot_id).child("characters").child(character_id).delete()    
 
 @api.route("/user/add/plot/character", methods=["POST"])
@@ -489,9 +566,9 @@ def update_plot():
     except: 
         return jsonify({"msg": "Ups! There has been an error updating this character"}),400
 
-    return jsonify({"msg": "Character updated!"}), 200
+    return jsonify({"msg": "Plot updated!"}), 200
 
-@api.route("/user/plots/delete/<plot_id>", methods=["PUT"])
+@api.route("/user/plots/delete/<plot_id>", methods=["DELETE"])
 def delete_plot(plot_id):
     cookie = confirm_access(request.headers.get('Authorization'))
     if cookie["code"] != 200:
@@ -513,10 +590,69 @@ def delete_plot_from_characters(plot_id, user_id):
     for character_id, name in characters.items():
         ref = db.reference("private/characters").child(user_id).child(character_id).child("plots").child(plot_id).delete()
 
+
 def delete_plot_from_societies(plot_id, user_id):
     societies = db.reference("private/plots").child(user_id).child(plot_id).child("societies").get()
     for society_id, name in societies.items():
         ref = db.reference("private/societies").child(user_id).child(society_id).child("plots").child(plot_id).delete()
+
+
+@api.route("/user/add/plot/<plot_id>/event", methods=["POST"])
+def add_event_to_plot(plot_id):
+    event = request.json.get("event", None)
+
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
+
+    try: 
+        added = db.reference("private/events").child(user_id).child(plot_id).push(event)
+        event_id = added.key
+    except: 
+        return jsonify({"msg": "Something went wrong"}),400
+
+    return jsonify({"id": event_id}), 200
+
+@api.route("/user/plots/<plot_id>/events", methods=["GET"])
+def get_plot_events(plot_id):
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
+    
+    try: 
+        events_obj = db.reference("private/events").child(user_id).child(plot_id).get()
+        if events_obj is not None: 
+            events = []
+            for id, event in events_obj.items():
+                event["id"] = id
+                events.append(event)
+            events.sort(key=lambda x:x['date'])
+
+        else:
+            return jsonify([]), 200
+
+    except: 
+        return jsonify({"msg": "Something went wrong"}),400
+
+    return jsonify(events), 200
+
+@api.route("/user/delete/plots/<plot_id>/event/<event_id>", methods=["DELETE"])
+def delete_event(plot_id, event_id):
+    cookie = confirm_access(request.headers.get('Authorization'))
+    if cookie["code"] != 200:
+        return jsonify({"msg": "Invalid session"}), 422
+    user_id = cookie["user_id"]
+
+
+    try: 
+        ref = db.reference("private/events")
+        ref.child(user_id).child(plot_id).child(event_id).delete()
+    except: 
+        return jsonify({"msg": "Ups! There has been an error updating this"}),400
+
+    return jsonify({"msg": "Event deleted!"}), 200
 
 @api.route("/create-society", methods=["POST"])
 def create_society():
@@ -583,8 +719,6 @@ def add_society_to_plot():
         return jsonify({"msg": "Invalid session"}), 422
     user_id = cookie["user_id"]
 
-    print(plot, society)
-
     db.reference("private/societies").child(user_id).child(society["id"]).child("plots").child(plot["id"]).set(plot["title"])
     db.reference("private/plots").child(user_id).child(plot["id"]).child("societies").child(society["id"]).set(society["name"])
     try: 
@@ -621,7 +755,6 @@ def update_society():
     society = request.json.get("society", None)
     society_id = request.json.get("society_id", None)
 
-    print(society, society_id)
 
     if society is None: 
         return jsonify({"msg": "Something went wrong"}),400
@@ -648,7 +781,7 @@ def get_society(society_id):
 
     return jsonify(society), 200
 
-@api.route("/user/societies/delete/<society_id>", methods=["PUT"])
+@api.route("/user/societies/delete/<society_id>", methods=["DELETE"])
 def delete_society(society):
     cookie = confirm_access(request.headers.get('Authorization'))
     if cookie["code"] != 200:

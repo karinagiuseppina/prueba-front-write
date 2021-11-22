@@ -1,25 +1,28 @@
 import React, { useState, useContext } from "react";
 import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
-import { Formgroup } from "../component/formGroup";
+import { NormalInput } from "../component/normalInput";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export const SignUp = () => {
 	const { actions } = useContext(Context);
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [name, setName] = useState("");
+	const [user, setUser] = useState({ name: "", email: "", password: "" });
 	const [vissiblePasswordType, setVissiblePasswordType] = useState("password");
 	const [isVisiblePassword, setIsVissiblePassword] = useState(false);
-	const [message, setMessage] = useState("");
 	let history = useHistory();
+
+	const updateValue = (attr, value) => {
+		let old_value = { ...user };
+		old_value[attr] = value;
+		setUser(old_value);
+	};
 
 	const handleSignUp = async () => {
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/signup`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ name: name, email: email, password: password })
+			body: JSON.stringify(user)
 		});
 		const data = await resp.json();
 
@@ -41,38 +44,27 @@ export const SignUp = () => {
 	};
 
 	return (
-		<div className="container-fluid m-0 bg-gradiente">
-			<div className="row tot-height align-items-center">
-				<div className="col-lg-10 col-xl-9 mx-auto">
-					<div className="card flex-row my-3 border-0 shadow rounded-3 overflow-hidden">
+		<div className="container">
+			<div className="row align-items-center">
+				<div className="col-12 col-md-8 mx-auto">
+					<div className="login-card">
 						<div className="card-img-left d-none d-md-flex" />
-						<div className="card-body p-4 p-sm-5">
-							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">Sign Up</h1>
-
-							<Formgroup
+						<div className="card-body p-5">
+							<h1 className="header-tit py-4">Sign Up</h1>
+							<NormalInput type="text" id="name" placeholder="name" set={updateValue} value={user.name} />
+							<NormalInput
 								type="text"
-								id="name"
-								placeholder="Name"
-								name="Name"
-								set={setName}
-								value={name}
-							/>
-
-							<Formgroup
-								type="email"
 								id="email"
-								placeholder="Email Address"
-								name="Email Address"
-								set={setEmail}
-								value={email}
+								placeholder="email"
+								set={updateValue}
+								value={user.email}
 							/>
-							<Formgroup
+							<NormalInput
 								type={vissiblePasswordType}
 								id="password"
-								placeholder="Password"
-								name="Password"
-								set={setPassword}
-								value={password}
+								placeholder="password"
+								set={updateValue}
+								value={user.password}
 							/>
 							<div className="form-check">
 								<input

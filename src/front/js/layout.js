@@ -14,7 +14,7 @@ import { DiscoverCharacters } from "./pages/discoverCharacters";
 import { FavoriteCharacters } from "./pages/favoriteCharacters";
 import { Login } from "./pages/login";
 import { SignUp } from "./pages/SignUp";
-import { CreateCustomCharacterForm } from "./pages/createCharacterForm";
+import { CreateCharacter } from "./pages/createCharacter";
 import { UpdateCustomCharacterForm } from "./pages/updateCharacterForm";
 import { AllSocieties } from "./pages/allsocieties";
 import { CreatePlot } from "./pages/createPlot";
@@ -25,7 +25,6 @@ import { UpdateSociety } from "./pages/updateSociety";
 
 import injectContext from "./store/appContext";
 
-import { Sidebar } from "./component/sidebar";
 import { Footer } from "./component/footer";
 import { Navbar } from "./component/navbar";
 
@@ -34,17 +33,6 @@ const Layout = () => {
 	//the basename is used when your project is published in a subdirectory and not in the root of the domain
 	// you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
 	const basename = process.env.BASENAME || "";
-	const [collapsed, setCollapsed] = useState(true);
-	const [toggled, setToggled] = useState(false);
-
-	const handleCollapsedChange = checked => {
-		setCollapsed(checked);
-	};
-
-	const handleToggleSidebar = value => {
-		setCollapsed(false);
-		setToggled(value);
-	};
 
 	return (
 		<div className="app">
@@ -69,10 +57,10 @@ const Layout = () => {
 								<DiscoverCharacters />
 							</Route>
 							<Route exact path="/create-character/">
-								<CreateCustomCharacterForm />
+								<CreateCharacter />
 							</Route>
 							<Route exact path="/create-character/:fav_character">
-								<CreateCustomCharacterForm />
+								<CreateCharacter />
 							</Route>
 							<Route exact path="/update-character/:character_id">
 								<UpdateCustomCharacterForm />

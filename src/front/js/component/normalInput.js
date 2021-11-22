@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export const NormalInput = ({ type, placeholder, set, value, id }) => {
 	return (
-		<div className="mb-3">
+		<>
 			<label htmlFor={id}>{placeholder}</label>
 			<input
 				type={type}
@@ -13,14 +13,14 @@ export const NormalInput = ({ type, placeholder, set, value, id }) => {
 				onChange={e => set(id, e.target.value)}
 				value={value}
 			/>
-		</div>
+		</>
 	);
 };
 
 NormalInput.propTypes = {
 	placeholder: PropTypes.string,
 	type: PropTypes.string,
-	value: PropTypes.element,
+	value: PropTypes.string,
 	set: PropTypes.func,
 	id: PropTypes.string
 };

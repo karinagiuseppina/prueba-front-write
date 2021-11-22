@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
-import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
-import Swal from "sweetalert2";
+import { AddPlotRelationshipButton } from "../component/addPlotRelationshipButton";
+import { PlotRelatedElement } from "../component/plotRelatedElement";
 
 export const DetailedSociety = () => {
 	const { store, actions } = useContext(Context);
@@ -26,28 +26,8 @@ export const DetailedSociety = () => {
 		setPlots(array);
 	};
 
-	const confirmDeleteSociety = () => {
-		Swal.fire({
-			title: `Do you want to delete ${society.name}?`,
-			text: "You wont be able to get it back!",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#3085d6",
-			cancelButtonColor: "#d33",
-			confirmButtonText: "Yes, delete please!"
-		}).then(result => {
-			if (result.isConfirmed) {
-				deleteSociety();
-			}
-		});
-	};
-
 	const deleteSociety = async () => {
-		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/societies/delete/${society_id}`, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json", Authorization: token }
-		});
+		const resp = actions.deleteFetch(`societies/delete/${society_id}`);
 		if (resp.ok) {
 			history.push("/mysocieties");
 			actions.setToast("success", "Society deleted!");
@@ -55,131 +35,190 @@ export const DetailedSociety = () => {
 			actions.setToast("error", "There has been a problem!");
 		}
 	};
-	async function handleAddPlot() {
-		const plots = await actions.getUserElements(`user/name/plots`);
-		const { value: plot } = await Swal.fire({
-			title: "Add new plot",
-			input: "select",
-			inputOptions: plots,
-			inputPlaceholder: "Select a plot",
-			showClass: {
-				popup: "animate__animated animate__fadeInDown"
-			},
-			hideClass: {
-				popup: "animate__animated animate__fadeOutUp"
-			},
-			customClass: {
-				container: "container-add-modal",
-				popup: "popup-add-modal"
-			},
-			showCancelButton: true
-		});
-
-		if (plot) {
-			add_plot_to_society({ id: plot, title: plots[plot] });
-		}
-	}
-
-	const add_plot_to_society = async plot => {
-		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/add/plot/society`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json", Authorization: token },
-			body: JSON.stringify({ plot: plot, society: { id: society_id, name: society.name } })
-		});
-		if (resp.ok) {
-			actions.setToast("success", "Plot added to society!");
-			setPlots([...plots, plot]);
-		} else {
-			actions.setToast("error", "There has been a problem!");
-		}
-	};
-
-	const delete_plot_from_society = async plot_id => {
-		const token = actions.getUserToken();
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/delete/plot/${plot_id}/society/${society_id}`, {
-			method: "DELETE",
-			headers: { "Content-Type": "application/json", Authorization: token }
-		});
-		if (resp.ok) {
-			actions.setToast("success", "Plot deleted from society!");
-			delete_plot(plot_id);
-		} else {
-			actions.setToast("error", "There has been a problem!");
-		}
-	};
-
-	const delete_plot = plot_id => {
-		let index = plots.findIndex(c => c.id === plot_id);
-		let p = [...plots];
-		p.splice(index, 1);
-		setPlots(p);
-	};
 
 	return (
-		<div className="container-fluid m-0 bg-gradiente">
-			<div className="row align-items-center">
-				<div className="col-lg-10 col-xl-9 mx-auto">
-					<div className="card flex-row my-3 border-0 shadow rounded-3 overflow-hidden">
-						<div className="card-body p-4 p-sm-5">
-							<div className="d-flex my-3 justify-content-start">
-								<Link to="/mysocieties">Go to all societies</Link>
-							</div>
-							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">
-								{society.name}
-							</h1>
-							<p>
-								{society.basic_needs}
-								<br />
-								{society.comfort}
-								<br />
-								{society.culture}
-								<br />
-								{society.demonym}
-								<br />
-								{society.entertainment}
-								<br />
-								{society.ethnic_groups}
-								<br />
-								{society.government}
-								<br />
-								{society.language}
-								<br />
-								{society.population}
-								<br />
-								{society.reproduction_needs}
-								<br />
-								{society.social_needs}
-							</p>
+		<div className="container p-2 p-md-5">
+			<div className="row justify-content-center align-items-center">
+				<div className="col-12 col-md-9">
+					<div className="header-tit detailed-header">{society.name}</div>
+				</div>
+				<div className="col-12 col-md-3 align-self-end">
+					<div className="deatailed-info-buttons">
+						<button className="btn-prin">
+							<Link to={`/update-society/${society_id}`} className="text-decoration-none text-white">
+								Update
+							</Link>
+						</button>
 
-							<button onClick={handleAddPlot}> Add plot</button>
-							{plots.map(p => {
-								return (
-									<li key={p.id}>
-										{p.title} <button onClick={() => delete_plot_from_society(p.id)}>X</button>
-									</li>
-								);
-							})}
-
-							<div className="d-flex my-3 justify-content-center">
-								<button className="btn btn-prin fw-bold text-uppercase w-100 p-2">
-									<Link
-										to={`/update-society/${society_id}`}
-										className="text-decoration-none text-white">
-										Update Society
-									</Link>
-								</button>
-
-								<button
-									onClick={confirmDeleteSociety}
-									className="btn btn-prin fw-bold text-uppercase w-50 p-2">
-									Delete Society
-								</button>
-							</div>
-						</div>
+						<button
+							onClick={() => actions.confirmDelete(society.name, deleteSociety)}
+							className="btn-prin mt-2">
+							Delete
+						</button>
 					</div>
 				</div>
 			</div>
+			<div className="row justify-content-center">
+				<div className="col-12 col-md-6">
+					<div className="tag-container-soc">
+						<div className="info-tag-soc">
+							<span>demonym</span> {society.demonym}
+						</div>
+						<div className="info-tag-soc">
+							<span>Ethnic group</span> {society.ethnic_groups}
+						</div>
+						<div className="info-tag-soc">
+							<span>government</span> {society.government}
+						</div>
+						<div className="info-tag-soc">
+							<span>language</span> {society.language}
+						</div>
+						<div className="info-tag-soc">
+							<span>population</span> {society.population}
+						</div>
+					</div>
+				</div>
+				<div className="col-12 col-md-6">
+					<div className="relationship-container">
+						<div className="relationship-container-header">
+							<h3>Plots</h3>
+							<AddPlotRelationshipButton
+								setPlots={setPlots}
+								body={{ society: { id: society_id, name: society.name } }}
+								route={"plot/society"}
+								plots={plots}
+							/>
+						</div>
+						<ul>
+							{plots.map(p => {
+								return (
+									<PlotRelatedElement
+										key={p.id}
+										delete_route={`society/${society_id}`}
+										setPlots={setPlots}
+										plots={plots}
+										plot={p}
+									/>
+								);
+							})}
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div className="row justify-content-center">
+				<div className="col-12 col-md-6 col-lg-4">
+					<div className="info-container">
+						<h3>Basic Needs </h3>
+						<p>{society.basic_needs}</p>
+					</div>
+				</div>
+				<div className="col-12 col-md-6 col-lg-4">
+					<div className="info-container">
+						<h3>Comfort </h3>
+						<p>{society.comfort}</p>
+					</div>
+				</div>
+				<div className="col-12 col-md-6 col-lg-4">
+					<div className="info-container">
+						<h3>Culture </h3>
+						<p>{society.culture}</p>
+					</div>
+				</div>
+				<div className="col-12 col-md-6 col-lg-4">
+					<div className="info-container">
+						<h3> Entertainment</h3>
+						<p>{society.entertainment}</p>
+					</div>
+				</div>
+				<div className="col-12 col-md-6 col-lg-4">
+					<div className="info-container">
+						<h3>Reproduction needs </h3>
+						<p>{society.reproduction_needs}</p>
+					</div>
+				</div>
+				<div className="col-12 col-md-6 col-lg-4">
+					<div className="info-container">
+						<h3>Social needs </h3>
+						<p>{society.social_needs}</p>
+					</div>
+				</div>
+			</div>
+			<div className="row justify-content-center" />
 		</div>
 	);
 };
+
+// <div className="container-fluid m-0 bg-gradiente">
+// 			<div className="row align-items-center">
+// 				<div className="col-lg-10 col-xl-9 mx-auto">
+// 					<div className="card flex-row my-3 border-0 shadow rounded-3 overflow-hidden">
+// 						<div className="card-body p-4 p-sm-5">
+// 							<div className="d-flex my-3 justify-content-start">
+// 								<Link to="/mysocieties">Go to all societies</Link>
+// 							</div>
+// 							<h1 className="card-title text-center mb-3 text-uppercase fs-3 text-prin">
+// 								{society.name}
+// 							</h1>
+// 							<p>
+// 								{society.basic_needs}
+// 								<br />
+
+// 								<br />
+
+// 								<br />
+
+// 								<br />
+
+// 								<br />
+
+// 								<br />
+
+// 								<br />
+
+// 								<br />
+
+// 								<br />
+
+// 								<br />
+
+// 							</p>
+
+// 							<AddPlotRelationshipButton
+// 								setPlots={setPlots}
+// 								body={{ society: { id: society_id, name: society.name } }}
+// 								route={"plot/society"}
+// 								plots={plots}
+// 							/>
+
+// 							{plots.map(p => {
+// 								return (
+// 									<PlotRelatedElement
+// 										key={p.id}
+// 										delete_route={`society/${society_id}`}
+// 										setPlots={setPlots}
+// 										plots={plots}
+// 										plot={p}
+// 									/>
+// 								);
+// 							})}
+
+// 							<div className="d-flex my-3 justify-content-center">
+// 								<button className="btn btn-prin fw-bold text-uppercase w-100 p-2">
+// 									<Link
+// 										to={`/update-society/${society_id}`}
+// 										className="text-decoration-none text-white">
+// 										Update Society
+// 									</Link>
+// 								</button>
+
+// 								<button
+// 									onClick={() => actions.confirmDelete(society.name, deleteSociety)}
+// 									className="btn btn-prin fw-bold text-uppercase w-50 p-2">
+// 									Delete Society
+// 								</button>
+// 							</div>
+// 						</div>
+// 					</div>
+// 				</div>
+// 			</div>
+// 		</div>
