@@ -10,7 +10,6 @@ import json
 from random import seed
 from random import randint
 import datetime
-from datetime import datetime
 import os
 
 apiKey = os.getenv('API_KEY_FIREBASE') 
@@ -152,7 +151,7 @@ def create_user():
 def get_random_prompts(genre):
 
     ref = db.reference('public/writing-prompts')
-    data = ref.order_by_child('genre').equal_to(genre).limit_to_last(10).get()
+    data = ref.order_by_child('genre').equal_to(genre).limit_to_last(30).get()
 
     prompts = []
     for key, val in data.items():
@@ -355,12 +354,19 @@ def update_character():
         return jsonify({"msg": "Something went wrong"}),400
 
     try: 
+        upload_character_name_in_plots(character_id, user_id, character["name"])
         ref = db.reference("private/custom-character")
         ref.child(user_id).child(character_id).set(character)
     except: 
         return jsonify({"msg": "Ups! There has been an error updating this character"}),400
 
     return jsonify({"msg": "Character updated!"}), 200
+
+def upload_character_name_in_plots(character_id, user_id, new_name):
+    current_character = db.reference("private/custom-character").child(user_id).child(character_id).get()
+    if current_character["name"] != new_name:
+        for plot_id, title in current_character["plots"].items():
+            db.reference("private/plots").child(user_id).child(plot_id).child("characters").child(character_id).set(new_name)
 
 @api.route("/user/characters", methods=["GET"])
 def get_custom_characters():
@@ -561,12 +567,21 @@ def update_plot():
         return jsonify({"msg": "Something went wrong"}),400
 
     try: 
+        update_plot_title(plot_id, user_id, plot["title"])
         ref = db.reference("private/plots")
         ref.child(user_id).child(plot_id).set(plot)
     except: 
         return jsonify({"msg": "Ups! There has been an error updating this character"}),400
 
     return jsonify({"msg": "Plot updated!"}), 200
+
+def update_plot_title(plot_id, user_id, new_title):
+    current_plot = db.reference("private/plots").child(user_id).child(plot_id).get()
+    if current_plot["title"] != new_title:
+        for character_id, name in current_plot["characters"].items():
+            db.reference("private/custom-character").child(user_id).child(character_id).child("plots").child(plot_id).set(new_title)
+        for society_id, name in current_plot["societies"].items():
+            db.reference("private/societies").child(user_id).child(society_id).child("plots").child(plot_id).set(new_title)
 
 @api.route("/user/plots/delete/<plot_id>", methods=["DELETE"])
 def delete_plot(plot_id):
@@ -754,18 +769,22 @@ def update_society():
 
     society = request.json.get("society", None)
     society_id = request.json.get("society_id", None)
-
-
-    if society is None: 
-        return jsonify({"msg": "Something went wrong"}),400
-
+    
     try: 
+        upload_society_name_in_plots(society_id, user_id, society["name"])
         ref = db.reference("private/societies")
         ref.child(user_id).child(society_id).set(society)
     except: 
         return jsonify({"msg": "Ups! There has been an error updating this society"}),400
 
     return jsonify({"msg": "Society updated!"}), 200
+
+def upload_society_name_in_plots(society_id, user_id, new_name):
+    current_society = db.reference("private/societies").child(user_id).child(society_id).get()
+    if current_society["name"] != new_name:
+        for plot_id, title in current_society["plots"].items():
+            db.reference("private/plots").child(user_id).child(plot_id).child("societies").child(society_id).set(new_name)
+
 
 @api.route("/user/societies/<society_id>", methods=["GET"])
 def get_society(society_id):

@@ -52,7 +52,7 @@ export const UpdateCustomCharacterForm = () => {
 		<div className="container p-2 p-md-5">
 			<div className="row justify-content-center align-items-center">
 				<div className="col-12 col-md-8">
-					<div className="header-tit detailed-header text-center">Create new character</div>
+					<div className="header-tit detailed-header text-center">Update character</div>
 				</div>
 			</div>
 			<CharacterForm character={character} setCharacter={setCharacter} saveFunction={handleUpdateCharacter} />

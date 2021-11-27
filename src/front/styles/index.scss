@@ -2,6 +2,12 @@
 /*header*/
 a{
     color: var(--colorSec);
+    transition: 0.25s ease-in-out;
+}
+
+a:hover{
+    color: var(--colorPrin);
+    transition: 0.25s ease-in-out;
 }
 *{
     font-family: var(--fontGeneral);
