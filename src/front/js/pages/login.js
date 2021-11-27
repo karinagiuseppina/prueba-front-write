@@ -105,17 +105,15 @@ export const Login = () => {
 							</div>
 							<div className="d-block text-center small">
 								Forgot your password?
-								<button
-									onClick={handleResetPassword}
-									className="mx-2 mt-2 text-prin text-decoration-none">
+								<Link onClick={handleResetPassword} className="mx-2 mt-2 text-decoration-none">
 									Reset Password
-								</button>
+								</Link>
 							</div>
 
 							<div className="d-block text-center small">
-								You have an account?
-								<Link className="mx-2 mt-2 text-prin text-decoration-none" to="/signup">
-									Sign In
+								{`You don't have an account?`}
+								<Link className="mx-2 mt-2 text-decoration-none" to="/register">
+									Sign Up
 								</Link>
 							</div>
 						</div>

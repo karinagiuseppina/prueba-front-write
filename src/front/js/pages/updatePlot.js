@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../../styles/styles.scss";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { PlotForm } from "../component/plotForm";
 
 export const UpdatePlot = () => {
 	const { actions, store } = useContext(Context);
+	let history = useHistory();
 	const [plot, setPlot] = useState({
 		title: "",
 		genre: "",
