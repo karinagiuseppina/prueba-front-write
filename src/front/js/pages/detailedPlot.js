@@ -2,8 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router";
 import { Link, useHistory } from "react-router-dom";
-import "../../styles/styles.scss";
-import Swal from "sweetalert2";
 import { AddEventButton } from "../component/addEventButton";
 import { EventListElement } from "../component/eventListElement";
 import { AddCharacterRelationshipButton } from "../component/addCharacterRelationshipButton";

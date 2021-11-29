@@ -1,4 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+:root {
+  --colorPrin: #262E66;
+  --colorSec: #F28B66; 
+  --colorLight: #f5ddd4; //f5eded
+  --colorGeneral: #7c8183;
+  --colorOsc: #666666;
+  --highlight: #DAAE79;
+  --fontTitle: 'Fira Sans', sans-serif;
+  --fontGeneral: 'Poppins', sans-serif;
+
+}
 /*header*/
 a{
     color: var(--colorSec);
@@ -13,6 +25,7 @@ a:hover{
     font-family: var(--fontGeneral);
     color: var(--colorGeneral);
 }
+
 h1, h2, h3, h4 {
     font-family: var(--fontTitle);
     font-weight: 600;
@@ -20,22 +33,46 @@ h1, h2, h3, h4 {
 img.header-img {
     width:100%;
 }
-// .gradient{
-//     background: rgb(242,139,102);
-//     background: linear-gradient(180deg, rgba(242,139,102,1) 0%, rgba(255,255,255,1) 18%);
-//     background-size: 100% 100%;
-// }
-.full-screen{
-    // min-height:100vh;
-    // display: flex;
-    // box-sizing: border-box;
-}
+.btn-prin {
+    color: white;
+    background-color: var(--colorSec);
+    border: 0;
+    border-radius: 50px;
+    padding: 0.8em 1.6em;
+    transition: 0.5s ease-in-out;
+    margin: auto;
+    font-family:var(--fontGeneral);
+    cursor: pointer;
+  }
+  .btn-prin:hover {
+    transition: 0.5s ease-in-out;
+    background-color: var(--colorPrin);
+    cursor: pointer;
+  }
+  .bg-prin{
+    background-color: var(--colorPrin);
+  }
+  
+  .app main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  body{background: white;
+    background: linear-gradient(180deg, #f28b66 10%, white 50%);
+    height: 100vh;
+    background-repeat: no-repeat;
+  }
+  
+  .text-justify{text-align: justify;}
+
 .header-tit {
-    font-size: 4em;
+    font-size: 3.6em;
     font-family: var(--fontTitle);
     color: var(--colorPrin);
-    // text-align: center;
     line-height: 120%;
+    font-weight: 600;
 }
 .header-tit span{
     font-weight: 600;
@@ -87,7 +124,7 @@ img.service-img{
 /*login*/
 .card-img-left {
     width: 40%;
-    background: scroll center url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
+    background: scroll center url('../img/login.png');
     background-size: cover;
     border-radius: 50px 0 0px 50px;
   }
@@ -102,19 +139,8 @@ img.service-img{
 
 /*common pages*/
 
-// .min-full-screen{
-//     min-height:100vh;
-//     box-sizing: border-box;
-// }
-// .basic-gradient {
-//     background: #f28b66;
-//     background: linear-gradient(180deg, #f28b66 0%, white 34%);
-// }
 img.basic-header{width:80%;}
-// .bg-gradiente {
-//     background: rgb(242,139,102);
-//     background: linear-gradient(180deg, var(--colorSec) 0%, rgba(255,255,255,1) 18%);
-// }
+
 .basic-info {
     padding: 0 4em 4em;
     text-align: center;
@@ -183,13 +209,6 @@ img.basic-header{width:80%;}
     border-radius: 50px;
   }
   
-//   .display-block {
-//     display: block;
-//   }
-  
-//   .display-none {
-//     display: none;
-//   }
   .modal-main p {
     font-size: 1rem;
     font-family: var(--fontGeneral);
@@ -239,10 +258,6 @@ img.basic-header{width:80%;}
     transition: 0.5s ease-in-out;
   }
 /*discover characters*/
-// .basic-gradient-discover-character {
-//     background: #f28b66;
-//     background: linear-gradient(180deg, #f28b66 0%, white 54%);
-// }
 p.modal-wmi-subtitle {
     padding: 0.8rem 1.6rem;
     background: var(--colorLight);
@@ -251,20 +266,6 @@ p.modal-wmi-subtitle {
     text-transform: uppercase;
 }
 /*favorite prompts*/
-// .basic-gradient-short{
-//     background: #f28b66;
-//     background: linear-gradient(180deg, #f28b66 0%, white 20%);
-//     background-attachment: fixed;
-//     background-size: 100% 100%;
-//     top:79px;
-// }
-// .bg {
-//     background: linear-gradient(180deg, #f28b66 0%, white 100%);
-//     background-repeat: no-repeat;
-//     background-position: center;
-//     height: 30vh;
-//     width: 100vw;
-//   }
 .short-header{padding-top:20%; text-align: left; padding-bottom: 1.6rem;}
 
 .grid-wrapper {
@@ -427,6 +428,9 @@ h2.swal2-title {
 }
 
 /*detailed plot*/
+.btn-prin i{
+    color: white;
+}
 .info-container, .relationship-container  {
     background: white;
     border: 1px solid var(--colorLight);
@@ -470,6 +474,15 @@ h2.swal2-title {
     font-size: 1.2em;
     transition: 0.25s ease-in-out;
 }
+.relationship-container i{
+    color: var(--colorSec);
+    transition: 0.25s ease-in-out;
+}
+.relationship-container i:hover{
+    color: var(--colorPrin);
+    transition: 0.25s ease-in-out;
+}
+
 .relationship-container button:hover, .timeline-info button:hover {
     transition: 0.25s ease-in-out;
     color: var(--colorSec);

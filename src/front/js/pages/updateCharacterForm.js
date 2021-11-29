@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router";
 import { CharacterForm } from "../component/characterForm";
@@ -44,7 +43,7 @@ export const UpdateCustomCharacterForm = () => {
 			actions.setToast("success", data.msg);
 			history.push(`/mycharacters/${character_id}`);
 		} else {
-			actions.setToast("warning", resp.msg);
+			actions.setToast("warning", "Try again later!");
 		}
 	};
 

@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
-import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
 
 export const CharacterModal = () => {
-	const { store, actions } = useContext(Context);
+	const { actions } = useContext(Context);
 	const [Modal, setModal] = useState(false);
 	const [character, setCharacter] = useState(null);
 	const [classProperty, setClassProperty] = useState("buttonNotFavorite");

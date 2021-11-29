@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 
@@ -15,8 +15,6 @@ export const AddSocietyRelationshipButton = ({ body, route, setSocieties, societ
 
 	const addSocietyToElement = async society => {
 		body["society"] = society;
-		console.log(body);
-		console.log(societies);
 		const resp = await actions.addRelationshipBetweenElements(route, body);
 		if (resp.ok) {
 			actions.setToast("success", "Society added!");

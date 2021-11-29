@@ -365,8 +365,9 @@ def update_character():
 def upload_character_name_in_plots(character_id, user_id, new_name):
     current_character = db.reference("private/custom-character").child(user_id).child(character_id).get()
     if current_character["name"] != new_name:
-        for plot_id, title in current_character["plots"].items():
-            db.reference("private/plots").child(user_id).child(plot_id).child("characters").child(character_id).set(new_name)
+        if "plots" in current_character:
+            for plot_id, title in current_character["plots"].items():
+                db.reference("private/plots").child(user_id).child(plot_id).child("characters").child(character_id).set(new_name)
 
 @api.route("/user/characters", methods=["GET"])
 def get_custom_characters():
@@ -565,6 +566,8 @@ def update_plot():
 
     if plot is None: 
         return jsonify({"msg": "Something went wrong"}),400
+    
+    update_plot_title(plot_id, user_id, plot["title"])
 
     try: 
         update_plot_title(plot_id, user_id, plot["title"])
@@ -578,10 +581,12 @@ def update_plot():
 def update_plot_title(plot_id, user_id, new_title):
     current_plot = db.reference("private/plots").child(user_id).child(plot_id).get()
     if current_plot["title"] != new_title:
-        for character_id, name in current_plot["characters"].items():
-            db.reference("private/custom-character").child(user_id).child(character_id).child("plots").child(plot_id).set(new_title)
-        for society_id, name in current_plot["societies"].items():
-            db.reference("private/societies").child(user_id).child(society_id).child("plots").child(plot_id).set(new_title)
+        if "characters" in current_plot:
+            for character_id, name in current_plot["characters"].items():
+                db.reference("private/custom-character").child(user_id).child(character_id).child("plots").child(plot_id).set(new_title)
+        if "societies" in current_plot:
+            for society_id, name in current_plot["societies"].items():
+                db.reference("private/societies").child(user_id).child(society_id).child("plots").child(plot_id).set(new_title)
 
 @api.route("/user/plots/delete/<plot_id>", methods=["DELETE"])
 def delete_plot(plot_id):
@@ -637,13 +642,13 @@ def get_plot_events(plot_id):
     user_id = cookie["user_id"]
     
     try: 
-        events_obj = db.reference("private/events").child(user_id).child(plot_id).get()
+        events_obj = db.reference("private/events").child(user_id).child(plot_id).order_by_child('date').get()
         if events_obj is not None: 
             events = []
             for id, event in events_obj.items():
                 event["id"] = id
                 events.append(event)
-            events.sort(key=lambda x:x['date'])
+            # events.sort(key=lambda x:x['date'])
 
         else:
             return jsonify([]), 200
@@ -782,8 +787,9 @@ def update_society():
 def upload_society_name_in_plots(society_id, user_id, new_name):
     current_society = db.reference("private/societies").child(user_id).child(society_id).get()
     if current_society["name"] != new_name:
-        for plot_id, title in current_society["plots"].items():
-            db.reference("private/plots").child(user_id).child(plot_id).child("societies").child(society_id).set(new_name)
+        if "plots" in current_society:
+            for plot_id, title in current_society["plots"].items():
+                db.reference("private/plots").child(user_id).child(plot_id).child("societies").child(society_id).set(new_name)
 
 
 @api.route("/user/societies/<society_id>", methods=["GET"])

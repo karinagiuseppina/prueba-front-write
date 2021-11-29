@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
-import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
-import Swal from "sweetalert2";
 import { AddPlotRelationshipButton } from "../component/addPlotRelationshipButton";
 import { PlotRelatedElement } from "../component/plotRelatedElement";
 
 export const DetailedCharacter = () => {
-	const { store, actions } = useContext(Context);
+	const { actions } = useContext(Context);
 	const [character, setCharacter] = useState({});
 	const [plots, setPlots] = useState([]);
 	const { character_id } = useParams();

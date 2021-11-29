@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import "../../styles/styles.scss";
 
 export const FavoritePrompts = () => {
 	const { store, actions } = useContext(Context);
@@ -142,21 +141,3 @@ export const FavoritePrompts = () => {
 		</div>
 	);
 };
-
-{
-	/* <div className="container-fluid m-0 bg-gradiente">
-			<div className="row align-items-center">
-				<div className="col-lg-12 col-xl-11 mx-auto p-4">
-					<div className="row my-3 border-0 shadow rounded-3 overflow-auto bg-white">
-						<div className="col-12 bg-prin p-5 d-flex align-items-center justify-content-center">
-							<h1 className="card-title text-uppercase fs-1 text-white">My Favorite Prompts</h1>
-						</div>
-						<div className="row p-4">
-							<div className="col d-flex justify-content-center">{genresInHTML}</div>
-						</div>
-						<div className="row p-5">{prompstInHTML}</div>
-					</div>
-				</div>
-			</div>
-		</div> */
-}

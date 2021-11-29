@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../../styles/navbar.scss";
 import PropTypes from "prop-types";
 
 export const NavbarItems = ({ items, columns, title }) => {
