@@ -1,12 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import "../../styles/styles.scss";
 import { useParams } from "react-router";
 import { Context } from "../store/appContext";
 import { CharacterForm } from "../component/characterForm";
 import { useHistory } from "react-router";
 
 export const CreateCharacter = () => {
-	const { actions, store } = useContext(Context);
+	const { actions } = useContext(Context);
 	let { fav_character } = useParams();
 	let history = useHistory();
 	const [character, setCharacter] = useState({
@@ -47,7 +46,7 @@ export const CreateCharacter = () => {
 			actions.setToast("success", data.msg);
 			history.push("/mycharacters");
 		} else {
-			actions.setToast("warning", resp.msg);
+			actions.setToast("warning", "Try again later!");
 		}
 	};
 

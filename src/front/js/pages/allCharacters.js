@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Context } from "../store/appContext";
+import React from "react";
 import my_characters from "../../img/my-characters.png";
 import { AllElements } from "../component/allElements";
 

@@ -1,6 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
-import { Context } from "../store/appContext";
-import "../../styles/styles.scss";
+import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 

@@ -1,7 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import "../../styles/styles.scss";
-import { Link } from "react-router-dom";
 import { FavoriteCharacterCard } from "../component/favoriteCharacterCard";
 
 export const FavoriteCharacters = () => {
@@ -134,21 +132,3 @@ export const FavoriteCharacters = () => {
 		</div>
 	);
 };
-
-{
-	/* <div className="container-fluid m-0 bg-gradiente">
-			<div className="row align-items-center">
-				<div className="col-lg-12 col-xl-11 mx-auto p-4">
-					<div className="row my-3 border-0 shadow rounded-3 overflow-auto bg-white">
-						<div className="col-12 bg-prin p-5 d-flex align-items-center justify-content-center">
-							<h1 className="card-title text-uppercase fs-1 text-white">My Favorite Characters</h1>
-						</div>
-						<div className="row p-4">
-							<div className="col d-flex justify-content-center">{gendersInHTML}</div>
-						</div>
-						<div className="row p-5">{charactersInHTML}</div>
-					</div>
-				</div>
-			</div>
-		</div> */
-}

@@ -1,10 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
-import "../../styles/styles.scss";
+import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { SocietyForm } from "../component/societyForm";
+import { useHistory } from "react-router";
 
 export const CreateSociety = () => {
-	const { actions, store } = useContext(Context);
+	const { actions } = useContext(Context);
+	let history = useHistory();
 	const [society, setSociety] = useState({
 		name: "",
 		language: "",

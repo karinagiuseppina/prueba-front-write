@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
-import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
 import "animate.css";
 

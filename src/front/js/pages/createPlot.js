@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-import "../../styles/styles.scss";
+import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { PlotForm } from "../component/plotForm";
 import { useHistory } from "react-router";
@@ -20,7 +19,7 @@ export const CreatePlot = () => {
 			actions.setToast("success", data.msg);
 			history.push("/myplots");
 		} else {
-			actions.setToast("warning", resp.msg);
+			actions.setToast("warning", "Try again later!");
 		}
 	};
 

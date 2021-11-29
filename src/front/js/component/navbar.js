@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Context } from "../store/appContext";
-import "../../styles/navbar.scss";
 import { NavbarItems } from "./navbarItems";
 
 export const Navbar = () => {
-	const { store, actions } = useContext(Context);
+	const { actions } = useContext(Context);
 	let history = useHistory();
 	const [isClicked, setIsClicked] = useState(false);
 

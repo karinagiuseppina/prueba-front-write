@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
 import { NormalInput } from "../component/normalInput";
 import { useHistory } from "react-router-dom";

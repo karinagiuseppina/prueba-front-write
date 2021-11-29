@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import "../../styles/styles.scss";
 import { Context } from "../store/appContext";
 import { NormalInput } from "../component/normalInput";
 import { useHistory } from "react-router-dom";
@@ -9,8 +8,6 @@ import Swal from "sweetalert2";
 export const Login = () => {
 	const { actions } = useContext(Context);
 	const [user, setUser] = useState({ email: "", password: "" });
-	const [password, setPassword] = useState("");
-	const [email, setEmail] = useState("");
 	const [vissiblePasswordType, setVissiblePasswordType] = useState("password");
 	const [isVisiblePassword, setIsVissiblePassword] = useState(false);
 	let history = useHistory();

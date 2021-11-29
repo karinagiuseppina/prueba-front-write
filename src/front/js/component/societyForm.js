@@ -1,5 +1,4 @@
 import React from "react";
-import "../../styles/styles.scss";
 import PropTypes from "prop-types";
 import { NormalInput } from "../component/normalInput";
 import { TextareaInput } from "../component/textareaInput";
