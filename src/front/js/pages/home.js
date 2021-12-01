@@ -20,7 +20,8 @@ export const Home = () => {
 						</div>
 						<div className="header-subtitle">
 							Welcome to Write Me In, little stranger! We hope you are ready to find your inner writer and
-							let your creativity run wild, the world wants to read what you have to write.
+							let your creativity run wild, the world wants to read what you have to write and we wante to
+							help you.
 						</div>
 					</div>
 					<div className="col-12 col-md-6 text-center">
