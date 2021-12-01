@@ -42,7 +42,8 @@ export const DetailedPlot = () => {
 	};
 
 	const deletePlot = async () => {
-		const resp = actions.deleteFetch(`plots/delete/${plot_id}`);
+		const resp = await actions.deleteFetch(`plots/delete/${plot_id}`);
+		console.log(resp);
 		if (resp.ok) {
 			history.push("/myplots");
 			actions.setToast("success", "Plot deleted!");

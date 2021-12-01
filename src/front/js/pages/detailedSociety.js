@@ -27,7 +27,7 @@ export const DetailedSociety = () => {
 	};
 
 	const deleteSociety = async () => {
-		const resp = actions.deleteFetch(`societies/delete/${society_id}`);
+		const resp = await actions.deleteFetch(`societies/delete/${society_id}`);
 		if (resp.ok) {
 			history.push("/mysocieties");
 			actions.setToast("success", "Society deleted!");

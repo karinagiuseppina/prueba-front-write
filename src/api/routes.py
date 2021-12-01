@@ -137,11 +137,6 @@ def create_user():
         password=password,
         display_name=name)
 
-        # ref = db.reference("private/users")
-        # ref.child(user.uid).set({
-        #     "name": name,
-        #     "email": email
-        # })
     except: 
         return jsonify({"msg": "Something went wrong"}),400
 
@@ -441,9 +436,10 @@ def delete_custom_character(character_id):
     return jsonify(""), 200
 
 def delete_character_from_plots(character_id, user_id):
-    plots = db.reference("private/custom-character").child(user_id).child(character_id).child("plots").get()
-    for plot_id,name in plots.items():
-        ref = db.reference("private/plots").child(user_id).child(plot_id).child("characters").child(character_id).delete()    
+    character = db.reference("private/custom-character").child(user_id).child(character_id).get()
+    if "plots" in character: 
+        for plot_id,name in character["plots"].items():
+            ref = db.reference("private/plots").child(user_id).child(plot_id).child("characters").child(character_id).delete()    
 
 @api.route("/user/add/plot/character", methods=["POST"])
 def add_character_to_plot():
@@ -596,8 +592,11 @@ def delete_plot(plot_id):
     user_id = cookie["user_id"]
     
     try: 
-        delete_plot_from_characters(plot_id, user_id)
-        delete_plot_from_societies(plot_id, user_id)
+        plot = db.reference("private/plots").child(user_id).child(plot_id).get()
+        if "characters" in plot:
+            delete_plot_from_characters(plot_id, user_id, plot["characters"])
+        if "societies" in plot:
+            delete_plot_from_societies(plot_id, user_id, plot["societies"])
         plot = db.reference("private/plots").child(user_id).child(plot_id).delete()
 
     except: 
@@ -605,14 +604,12 @@ def delete_plot(plot_id):
 
     return jsonify(""), 200
 
-def delete_plot_from_characters(plot_id, user_id):
-    characters = db.reference("private/plots").child(user_id).child(plot_id).child("characters").get()
+def delete_plot_from_characters(plot_id, user_id, characters):
     for character_id, name in characters.items():
         ref = db.reference("private/characters").child(user_id).child(character_id).child("plots").child(plot_id).delete()
 
 
-def delete_plot_from_societies(plot_id, user_id):
-    societies = db.reference("private/plots").child(user_id).child(plot_id).child("societies").get()
+def delete_plot_from_societies(plot_id, user_id, societies):
     for society_id, name in societies.items():
         ref = db.reference("private/societies").child(user_id).child(society_id).child("plots").child(plot_id).delete()
 
@@ -807,7 +804,7 @@ def get_society(society_id):
     return jsonify(society), 200
 
 @api.route("/user/societies/delete/<society_id>", methods=["DELETE"])
-def delete_society(society):
+def delete_society(society_id):
     cookie = confirm_access(request.headers.get('Authorization'))
     if cookie["code"] != 200:
         return jsonify({"msg": "Invalid session"}), 422
@@ -823,6 +820,7 @@ def delete_society(society):
     return jsonify(""), 200
 
 def delete_society_from_plots(society_id, user_id):
-    plots = db.reference("private/societies").child(user_id).child(society_id).child("plots").get()
-    for plot_id, name in plots.items():
-        ref = db.reference("private/plots").child(user_id).child(plot_id).child("societies").child(society_id).delete()
+    society = db.reference("private/societies").child(user_id).child(society_id).get()
+    if "plots" in society:
+        for plot_id, name in society["plots"].items():
+            ref = db.reference("private/plots").child(user_id).child(plot_id).child("societies").child(society_id).delete()

@@ -27,7 +27,7 @@ export const DetailedCharacter = () => {
 	};
 
 	const deleteCharacter = async () => {
-		const resp = actions.deleteFetch(`custom-characters/delete/${character_id}`);
+		const resp = await actions.deleteFetch(`custom-characters/delete/${character_id}`);
 		if (resp.ok) {
 			history.push("/mycharacters");
 			actions.setToast("success", "Character deleted!");
