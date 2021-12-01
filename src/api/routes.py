@@ -13,7 +13,20 @@ import datetime
 import os
 
 apiKey = os.getenv('API_KEY_FIREBASE') 
-cred = credentials.Certificate('/workspace/prueba-front-write/firebase-key.json')
+firebase_key = {
+    "type": os.getenv('FB_type') ,
+    "project_id": os.getenv('FB_project_id') ,
+    "private_key_id": os.getenv('FB_private_key_id'),
+    "private_key": os.getenv('FB_private_key'),
+    "client_email": os.getenv('FB_client_email'),
+    "client_id": os.getenv('FB_client_id'),
+    "auth_uri": os.getenv('FB_auth_uri'),
+    "token_uri": os.getenv('FB_token_uri'),
+    "auth_provider_x509_cert_url": os.getenv('FB_auth_provider_x509_cert_url'),
+    "client_x509_cert_url": os.getenv('FB_client_x509_cert_url')
+}
+# cred = credentials.Certificate('/workspace/prueba-front-write/firebase-key.json')
+cred = credentials.Certificate(firebase_key)
 firebaseDatabase = firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://write-me-in-default-rtdb.firebaseio.com/'
 })
