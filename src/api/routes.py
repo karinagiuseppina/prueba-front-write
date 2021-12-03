@@ -17,7 +17,7 @@ firebase_key = {
     "type": os.getenv('FB_type') ,
     "project_id": os.getenv('FB_project_id') ,
     "private_key_id": os.getenv('FB_private_key_id'),
-    "private_key": os.getenv('FB_private_key'),
+    "private_key": os.getenv('FB_private_key').replace("/\\n/g", '\n'),
     "client_email": os.getenv('FB_client_email'),
     "client_id": os.getenv('FB_client_id'),
     "auth_uri": os.getenv('FB_auth_uri'),
