@@ -17,13 +17,15 @@ export const DetailedCharacter = () => {
 
 	const getCharacter = async () => {
 		const custom_character = await actions.getUserElements(`user/custom-characters/${character_id}`);
-		setCharacter(custom_character);
-		let pl = custom_character.plots;
-		let array = [];
-		for (let plot in pl) {
-			array.push({ id: plot, title: pl[plot] });
-		}
-		setPlots(array);
+		if (custom_character) {
+			setCharacter(custom_character);
+			let pl = custom_character.plots;
+			let array = [];
+			for (let plot in pl) {
+				array.push({ id: plot, title: pl[plot] });
+			}
+			setPlots(array);
+		} else history.push("/notfound");
 	};
 
 	const deleteCharacter = async () => {

@@ -27,6 +27,7 @@ import injectContext from "./store/appContext";
 
 import { Footer } from "./component/footer";
 import { Navbar } from "./component/navbar";
+import { NotFound } from "./pages/notFound";
 
 //create your first component
 const Layout = () => {
@@ -104,9 +105,11 @@ const Layout = () => {
 							<Route exact path="/favoritecharacters">
 								<FavoriteCharacters />
 							</Route>
-
+							<Route exact path="/notfound">
+								<NotFound />
+							</Route>
 							<Route>
-								<h1>Not found!</h1>
+								<NotFound />
 							</Route>
 						</Switch>
 						{/* <Footer /> */}

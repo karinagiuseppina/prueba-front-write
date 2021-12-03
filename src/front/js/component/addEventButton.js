@@ -79,5 +79,5 @@ AddEventButton.propTypes = {
 	plot_id: PropTypes.string,
 	setEvents: PropTypes.func,
 	getEvents: PropTypes.func,
-	events: PropTypes.object
+	events: PropTypes.array
 };

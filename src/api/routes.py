@@ -610,6 +610,7 @@ def delete_plot(plot_id):
             delete_plot_from_characters(plot_id, user_id, plot["characters"])
         if "societies" in plot:
             delete_plot_from_societies(plot_id, user_id, plot["societies"])
+        db.reference("private/events").child(user_id).child(plot_id).delete()
         plot = db.reference("private/plots").child(user_id).child(plot_id).delete()
 
     except: 

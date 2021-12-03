@@ -25,9 +25,11 @@ export const DetailedPlot = () => {
 	const getPlot = async () => {
 		getEvents();
 		const plot = await actions.getUserElements(`user/plots/${plot_id}`);
-		setPlot(plot);
-		elementsToArray(plot.characters, setCharacters);
-		elementsToArray(plot.societies, setSocieties);
+		if (plot) {
+			setPlot(plot);
+			elementsToArray(plot.characters, setCharacters);
+			elementsToArray(plot.societies, setSocieties);
+		} else history.push("/notfound");
 	};
 	const getEvents = async () => {
 		const events = await actions.getUserElements(`user/plots/${plot_id}/events`);
@@ -43,7 +45,6 @@ export const DetailedPlot = () => {
 
 	const deletePlot = async () => {
 		const resp = await actions.deleteFetch(`plots/delete/${plot_id}`);
-		console.log(resp);
 		if (resp.ok) {
 			history.push("/myplots");
 			actions.setToast("success", "Plot deleted!");
