@@ -1,64 +1,29 @@
-# WebApp boilerplate with React JS and Flask API
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/4GeeksAcademy/react-flask-hello.git)
 
-<p align="center">
-<a href="https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b"><img src="https://github.com/4GeeksAcademy/flask-rest-hello/blob/main/docs/assets/how-to.png?raw=true?raw=true" /></a>
-</p>
+# Write Me In
+Write Me In es un sistema web dirigido principalmente a escritores noveles y extensible a cualquier escritor que desee planificar las historias que desea escribir. 
+El sistema tendrá funcionalidades disponibles para usuarios no registrados que les permitirá obtener ideas aleatorias sobre posibles líneas de actuación (writing prompts) dentro de una historia de un específico género literario, así como la obtención de ideas aleatorias sobre personajes (personajes generados) que pueden incluirse en sus historias, se ofrecerán al usuario datos como: nombre, apellido, edad, ocupación y personalidad. 
 
-### Styles
-You can update the `styles/index.scss` or_ create new `.scss` files inside `styles/` and import them into your current scss or js files depending on your needs.
+Al mismo tiempo, a los usuarios registrados se les da la opción de poder guardar los writing prompts y personajes generados que más le gusten para acceder a ellos en un futuro. 
 
-### Components
-Add more files into your `./src/js/components` or styles folder as you need them and import them into your current files as needed.
+Dentro del sistema web, un usuario registrado puede planificar su historia de distintas maneras, para ello cuenta con la creación de tres elementos que le ayudarán a almacenar toda la información necesaria en una misma página:
 
-💡Note: There is an example using the Context API inside `views/demo.js`;
+-	Plots: línea de actuación de la historia en donde se puede definir el posible título de la novela, sinopsis y género literario. Así como los eventos que ocurrirán dentro de él especificando por cada uno la fecha y una breve descripción. 
 
-### Views (Components)
-Add more files into your `./src/js/views` and import them in `./src/js/layout.jsx`.
+-	Personajes propios: personajes desarrollados por el usuario en donde se puede definir su nombre, apodo, edad, nacionalidad, género, ocupación, orientación sexual, personalidad, apariencia, color de cabello, color de piel, color de ojos. 
 
-### Context
-This boilerplate comes with a centralized general Context API. The file `./src/js/store/flux.js` has a base structure for the store, we encourage you to change it and adapt it to your needs.
+-	Sociedades: descripción de un territorio o especie sobre la que se basa una historia, el concepto de sociedades puede ser utilizado de distintas maneras dependiendo de cómo se desee implementar, el primer caso es a través de la descripción de un nuevo territorio, por ejemplo, el mundo de Arda para El Señor de los Anillos. Sin embargo, también es posible describir detalles sobre nuevas especies, por ejemplo, los magos en Harry Potter. 
 
-React Context [docs](https://reactjs.org/docs/context.html)
-BreathCode Lesson [view](https://content.breatheco.de/lesson/react-hooks-explained)
+## Sistema Web desplegado
+https://write-me-in.herokuapp.com/
 
-The `Provider` is already set. You can consume from any component using the useContext hook to get the `store` and `actions` from the Context. Check `/views/demo.js` to see a demo.
-
-```jsx
-import { Context } from "../store/appContext";
-const MyComponentSuper = () => {
-  //here you use useContext to get store and actions
-  const { store, actions } = useContext(Context);
-  return <div>{/* you can use your actions or store inside the html */}</div>
-}
-```
-
-### Back-End Manual Installation:
-
-It is recomended to install the backend first, make sure you have Python 3.8, Pipenv and a database engine (Posgress recomended)
-
+## Edición del código
+### Back-End:
 1. Install the python packages: `$ pipenv install`
 2. Create a .env file based on the .env.example: `$ cp .env.example .env`
-3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure yo replace the valudes with your database information:
-
-| Engine	| DATABASE_URL 						|
-| ------------- | ----------------------------------------------------- |
-| SQLite	| sqlite:////test.db	 				|
-| MySQL		| mysql://username:password@localhost:port/example	|
-| Postgress	| postgres://username:password@localhost:5432/example 	|
-
-4. Migrate the migrations: `$ pipenv run migrate` (skip if you have not made changes to the models on the `./src/api/models.py`)
-5. Run the migrations: `$ pipenv run upgrade`
-6. Run the application: `$ pipenv run start
+3. Run the application: `$ pipenv run start
 
 
-### Front-End Manual Installation:
-
-- Make sure you are using node version 14+ and that you have already successfully installed and runned the backend.
-
+### Front-End:
 1. Install the packages: `$ npm install`
 2. Start coding! start the webpack dev server `$ npm run start`
 
-## Publish your website!
-
-This boilerplate it's 100% integrated with Herkou, just by pushing your changes to the heroku repository it will deploy: `$ git push heroku main`
