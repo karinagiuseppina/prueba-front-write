@@ -16,7 +16,7 @@ export const AllElements = ({ elements_plural, elements_singular, img, add_route
 
 	useEffect(
 		() => {
-			let regular_exp = new RegExp(`${searchInput}`);
+			let regular_exp = new RegExp(`${searchInput.toLowerCase()}`);
 			let temp = [];
 			for (let i = 0; i < elements.length; i++) {
 				let name =
@@ -30,8 +30,10 @@ export const AllElements = ({ elements_plural, elements_singular, img, add_route
 
 	const getElements = async () => {
 		const data = await actions.getUserElements(`user/${elements_plural}`);
-		setElements(data);
-		setSelectedElements(data);
+		if (data) {
+			setElements(data);
+			setSelectedElements(data);
+		}
 	};
 
 	return (
