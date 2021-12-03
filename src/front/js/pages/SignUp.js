@@ -23,11 +23,18 @@ export const SignUp = () => {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(user)
 		});
-		const data = await resp.json();
-
-		if (!data.ok) actions.setToast("warning", "There has been a mistake during sign up.");
-		else {
-			let msg = await actions.login(email, password);
+		if (!resp.ok) {
+			actions.setToast("warning", "Email already in use!");
+		} else {
+			handleLogin(user.email, user.password);
+		}
+	};
+	const handleLogin = async (email, password) => {
+		let response = await actions.login(email, password);
+		if (response.code === 400) {
+			actions.setToast("warning", response.msg);
+		} else {
+			actions.setToast("success", response.msg);
 			history.push("/");
 		}
 	};
@@ -49,7 +56,7 @@ export const SignUp = () => {
 					<div className="login-card">
 						<div className="card-img-left d-none d-md-flex" />
 						<div className="card-body p-5">
-							<h1 className="header-tit py-4">Sign Up</h1>
+							<h1 className="header-tit py-1 py-md-4">Sign Up</h1>
 							<NormalInput type="text" id="name" placeholder="name" set={updateValue} value={user.name} />
 							<NormalInput
 								type="text"

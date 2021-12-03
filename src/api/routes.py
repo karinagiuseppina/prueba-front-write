@@ -151,14 +151,16 @@ def create_user():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
 
-    try: 
-        user = auth.create_user(
-        email=email,
-        password=password,
-        display_name=name)
+    user = auth.create_user(email=email,password=password,display_name=name)
 
-    except: 
-        return jsonify({"msg": "Something went wrong"}),400
+    # try: 
+    #     user = auth.create_user(
+    #     email=email,
+    #     password=password,
+    #     display_name=name)
+
+    # except: 
+    #     return jsonify({"msg": "Something went wrong"}),400
 
     return jsonify({"user_id": user.uid}), 200
 

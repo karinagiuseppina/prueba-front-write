@@ -54,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					toast: true,
 					position: "top-end",
 					showConfirmButton: false,
-					timer: 5500
+					timer: 1500
 				});
 				Toast.fire({
 					icon: icon,

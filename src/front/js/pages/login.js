@@ -65,7 +65,7 @@ export const Login = () => {
 					<div className="login-card">
 						<div className="card-img-left d-none d-md-flex" />
 						<div className="card-body p-5">
-							<h1 className="header-tit py-4">Sign In</h1>
+							<h1 className="header-tit py-1 py-md-4">Sign In</h1>
 							<NormalInput
 								type="text"
 								id="email"
