@@ -11,13 +11,18 @@ from random import seed
 from random import randint
 import datetime
 import os
+import base64
+
+private_key_b64 = os.getenv('FB_private_key').encode('ascii')
+private_key_bytes = base64.b64decode(private_key_b64)
+FB_private_key = private_key_bytes.decode('ascii')
 
 apiKey = os.getenv('API_KEY_FIREBASE') 
 firebase_key = {
     "type": os.getenv('FB_type') ,
     "project_id": os.getenv('FB_project_id') ,
     "private_key_id": os.getenv('FB_private_key_id'),
-    "private_key": os.getenv('FB_private_key').replace("/\\n/g", '\n'),
+    "private_key": FB_private_key,
     "client_email": os.getenv('FB_client_email'),
     "client_id": os.getenv('FB_client_id'),
     "auth_uri": os.getenv('FB_auth_uri'),
