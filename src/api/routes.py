@@ -25,6 +25,8 @@ firebase_key = {
     "auth_provider_x509_cert_url": os.getenv('FB_auth_provider_x509_cert_url'),
     "client_x509_cert_url": os.getenv('FB_client_x509_cert_url')
 }
+
+
 # cred = credentials.Certificate('/workspace/prueba-front-write/firebase-key.json')
 cred = credentials.Certificate(firebase_key)
 firebaseDatabase = firebase_admin.initialize_app(cred, {
