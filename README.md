@@ -20,7 +20,7 @@ https://write-me-in.herokuapp.com/
 ### Back-End:
 1. Install the python packages: `$ pipenv install`
 2. Create a .env file based on the .env.example: `$ cp .env.example .env`
-3. Run the application: `$ pipenv run start
+3. Run the application: `$ pipenv run start`
 
 
 ### Front-End:
